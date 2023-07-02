@@ -13,8 +13,7 @@
 body{
 	margin: 0px;
 	padding: 0px;
-	background: rgb(255,162,78);
-background: linear-gradient(220deg, rgba(255,162,78,1) 14%, rgba(255,254,50,1) 59%, rgba(255,245,59,1) 68%, rgba(235,253,65,1) 79%, rgba(151,255,67,1) 100%);
+	background: #00b081;
 	background-attachment: fixed;
 }
 .main{
@@ -44,6 +43,7 @@ background: linear-gradient(220deg, rgba(255,162,78,1) 14%, rgba(255,254,50,1) 5
 	transition: 0.3s;
 	border-radius: 50%;
 	overflow: hidden;
+	cursor: pointer;
 }
 .logo:active{
 	transform: scale(1.1);
@@ -59,7 +59,7 @@ background: linear-gradient(220deg, rgba(255,162,78,1) 14%, rgba(255,254,50,1) 5
 <body>	
 	<div class="main">
 		<a class="logo">
-			<img src="assets/me.png">
+			<img src="assets/me.png" draggable="false">
 		</a>
 	</div>
 </body>
