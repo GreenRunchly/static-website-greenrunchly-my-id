@@ -130,7 +130,7 @@
 						<label for="mediaPlayerSelector" class="btn btn-success">Ubah Lagu</label>
 					</div>
 					<div class="col-auto col-lg-auto">
-						<button class="btn btn-success" id="mediaPlayerToggle">Tampil Panel</button>
+						<button class="btn btn-success" id="mediaPlayerToggle">Tampil</button>
 					</div>
 				</div>
 			</div>
@@ -149,10 +149,10 @@
 		isit = $("#mediaPlayer").hasClass('hide');
         if (isit == true){
             $("#mediaPlayer").removeClass('hide');
-			$("#mediaPlayerToggle").html('Tutup Panel');
+			$("#mediaPlayerToggle").html('Sembunyi');
         }else{
             $("#mediaPlayer").addClass('hide');
-			$("#mediaPlayerToggle").html('Tampil Panel');
+			$("#mediaPlayerToggle").html('Tampil');
         }
     });
 	$(document).on("change", "#mediaPlayerSelector", function(e) {
@@ -249,7 +249,6 @@
 
 		// DOM Manipulation
 		$("#flash").css("background", `linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(255,255,255,${flash}) 100%)`);
-		// $("#flash").css("background", `rgba(255, 255, 255, ${flash})`);
 		$("#spectrumeBass").css("transform", `scale(${(1-bass)})`);
 		$("#spectrumeBassOverlay").css("transform", `scale(${(1+bass)})`);
     }
