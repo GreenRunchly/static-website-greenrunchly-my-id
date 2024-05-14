@@ -46,15 +46,16 @@
 		width: 300px;
 		height: 300px;
 		border-radius: 50%;
-		transition: 0.3s;
 		border:1rem solid white;
 		transform: scale(1);
 		-webkit-tap-highlight-color: transparent;
 		cursor: pointer;
+		z-index: 989;
 	}
 	.logo.bass-overlay{
 		position: absolute;
-		opacity: 0.2;
+		opacity: 0.3;
+		z-index: 990;
 	}
 	.logo img{
 		width: 100%;
@@ -64,19 +65,6 @@
 		overflow: hidden;
 		cursor: pointer;
 	}
-	.logo.paused{
-		z-index: 99;
-	}
-	.logo.paused:active{
-		transform: scale(1.1);
-		filter: drop-shadow(10px 10px 4px #4444dd4c);
-		transition: 0.02s;
-		border:0.4rem solid white;
-	}
-	.logo.paused:active img{
-		transition: 0.05s;
-	}
-
 	.mediaplayer{
 		opacity: 1;
 		transition: 0.5s;
@@ -98,7 +86,7 @@
 	}
 	.spectrume li{
 		position: absolute;
-		width: 9px;
+		width: 7px;
 		min-height: 140px;
 		background-color: white;
 		transform-origin: 0% 100% 0;
@@ -108,16 +96,16 @@
 <body class="overflow-hidden">	
 	<div class="main overflow-hidden" id="flash">
 		<ul class="spectrume" id="spectrumeBeat"></ul>
-		<a class="logo paused mediaPlayerStarter" id="spectrumeBass">
+		<a class="logo" id="spectrumeBass">
 			<img src="assets/me.png" draggable="false">
 		</a>
-		<a class="logo bass-overlay" id="spectrumeBassOverlay">
+		<a class="logo paused mediaPlayerStarter bass-overlay" id="spectrumeBassOverlay">
 			<img src="assets/me.png" draggable="false">
 		</a>
 	</div>
 	<div class="container-fluid py-2 px-2 fixed-bottom">
 		<div class="row">
-			<div id="mediaPlayer" class="col d-none d-lg-block mediaplayer hide">
+			<div id="mediaPlayer" class="col d-none d-lg-block mediaplayer">
 				<div class="row g-2" id="mediaPlayerControl">
 					<div class="col-auto col-lg-auto">
 						<button class="btn btn-success mediaPlayerStarter" id="mediaPlayerStarter">Play</button>
@@ -130,7 +118,7 @@
 						<label for="mediaPlayerSelector" class="btn btn-success">Ubah Lagu</label>
 					</div>
 					<div class="col-auto col-lg-auto">
-						<button class="btn btn-success" id="mediaPlayerToggle">Tampil Panel</button>
+						<button class="btn btn-success" id="mediaPlayerToggle">Sembunyikan</button>
 					</div>
 				</div>
 			</div>
@@ -149,10 +137,10 @@
 		isit = $("#mediaPlayer").hasClass('hide');
         if (isit == true){
             $("#mediaPlayer").removeClass('hide');
-			$("#mediaPlayerToggle").html('Tutup Panel');
+			$("#mediaPlayerToggle").html('Sembunyi');
         }else{
             $("#mediaPlayer").addClass('hide');
-			$("#mediaPlayerToggle").html('Tampil Panel');
+			$("#mediaPlayerToggle").html('Tampil');
         }
     });
 	$(document).on("change", "#mediaPlayerSelector", function(e) {
@@ -173,6 +161,6 @@
     });
 </script>
 <script type="text/javascript">
-    (function(_0x4a5964,_0x1e2c26){const _0x12196a=_0x5e36,_0x45574f=_0x4a5964();while(!![]){try{const _0x5c74b5=-parseInt(_0x12196a(0x207))/0x1*(parseInt(_0x12196a(0x208))/0x2)+-parseInt(_0x12196a(0x1ff))/0x3*(-parseInt(_0x12196a(0x1f2))/0x4)+parseInt(_0x12196a(0x1fb))/0x5+-parseInt(_0x12196a(0x1e8))/0x6+-parseInt(_0x12196a(0x1f1))/0x7+-parseInt(_0x12196a(0x1eb))/0x8+parseInt(_0x12196a(0x1e4))/0x9;if(_0x5c74b5===_0x1e2c26)break;else _0x45574f['push'](_0x45574f['shift']());}catch(_0x1ec077){_0x45574f['push'](_0x45574f['shift']());}}}(_0xfed4,0xac57c));let canvas,fft,teethRatio=0x10,teethRange=0x400;function _0xfed4(){const _0x3c8213=['scale(','opacity','7965549CvIeOt','analyze','position','#spectrumeBeat\x20li','2462736BOvueE','connect','UczdM','17952NktYCC','isDetected','.spectrume','append','QvyBW','PeakDetect','5875198UgwpJt','4301404ivfFJy','length','audio','waveform','createMediaElementSource','deg);\x22></li>','FFT','#flash','background','2339645jrIjEx','update','resume',')\x20100%)','3uMJgZQ','UgtSw','css','round','elt','height','linear-gradient(180deg,\x20rgba(255,255,255,0)\x200%,\x20rgba(255,255,255,','#spectrumeBass','470411wSqmNf','2QrRNsh','none','<li\x20class=\x22teeth-','bvndi','EbmGj','style'];_0xfed4=function(){return _0x3c8213;};return _0xfed4();}function _0x5e36(_0x57aa7b,_0x39dabd){const _0xfed45f=_0xfed4();return _0x5e36=function(_0x5e364c,_0x411a91){_0x5e364c=_0x5e364c-0x1e3;let _0x2b13e9=_0xfed45f[_0x5e364c];return _0x2b13e9;},_0x5e36(_0x57aa7b,_0x39dabd);}function setup(){const _0x57e1c2=_0x5e36;canvas=createCanvas(0xa,0xa),canvas[_0x57e1c2(0x1e6)](0x0,0x0),canvas[_0x57e1c2(0x20d)]('pointer-events',_0x57e1c2(0x209)),fft=new p5[(_0x57e1c2(0x1f8))]();let _0x530369=getAudioContext();for(let _0x566489 of selectAll(_0x57e1c2(0x1f4))){let _0x4f6723=_0x530369[_0x57e1c2(0x1f6)](_0x566489[_0x57e1c2(0x203)]);_0x4f6723[_0x57e1c2(0x1e9)](p5['soundOut']);}peakDetect=new p5[(_0x57e1c2(0x1f0))]();for(let _0x5679e7=0x0;_0x5679e7<teethRange/teethRatio;_0x5679e7++){let _0x2fe1d6=0x168/(teethRange/teethRatio)*_0x5679e7;$(_0x57e1c2(0x1ed))[_0x57e1c2(0x1ee)](_0x57e1c2(0x20a)+_0x5679e7+'\x22\x20style=\x22transform:rotate('+_0x2fe1d6+_0x57e1c2(0x1f7));}}function touchStarted(){const _0xc670da=_0x5e36;getAudioContext()[_0xc670da(0x1fd)]();}let bass_buffer=0x0,flash_buffer=0x0;function draw(){const _0x11b9db=_0x5e36;let _0x3553e6=fft[_0x11b9db(0x1e5)](),_0x2f0cb6=fft[_0x11b9db(0x1f5)](),_0x280493=_0x3553e6,_0x30fb9e=0x0,_0x35cb87=_0x280493[_0x11b9db(0x1f3)];for(let _0x1d15ed=0x0;_0x1d15ed<teethRange/teethRatio;_0x1d15ed++){beat_teeth=_0x280493[_0x1d15ed]*0x2,_0x30fb9e+=_0x280493[_0x1d15ed];let _0x230f50=Math[_0x11b9db(0x202)](_0x1d15ed),_0x1e853f=0x50+beat_teeth/0x4;$(_0x11b9db(0x1e7))['eq'](_0x230f50)[_0x11b9db(0x201)](_0x11b9db(0x204),_0x1e853f+'px'),$(_0x11b9db(0x1e7))['eq'](_0x230f50)[_0x11b9db(0x201)](_0x11b9db(0x1e3),''+(0.3+beat_teeth/_0x35cb87));}let _0x24d4ad=_0x30fb9e/_0x35cb87/(teethRange/teethRatio),_0x1d3917=_0x2f0cb6,_0x8b0ebc=0x0,_0x34ca83=_0x1d3917[_0x11b9db(0x1f3)];for(let _0x3da992=0x0;_0x3da992<_0x34ca83;_0x3da992++){_0x8b0ebc+=_0x1d3917[_0x3da992];}_0x8b0ebc>bass_buffer?bass_buffer=_0x8b0ebc:_0x11b9db(0x20b)!==_0x11b9db(0x20c)?bass_buffer-=bass_buffer/0x3:_0x8a7652+=_0x5d6f46[_0x4c2538];let _0x57e1cc=bass_buffer/_0x34ca83*1.5,_0xb7b8b1=0x0;peakDetect[_0x11b9db(0x1fc)](fft);peakDetect[_0x11b9db(0x1ec)]&&(_0xb7b8b1=_0x24d4ad);_0xb7b8b1>flash_buffer?'UczdM'===_0x11b9db(0x1ea)?flash_buffer=_0xb7b8b1:_0x5af2c0()[_0x11b9db(0x1fd)]():_0x11b9db(0x200)===_0x11b9db(0x1ef)?_0x13d6c4=_0x444b9c:flash_buffer-=flash_buffer/0x3c;let _0xaa02a1=flash_buffer*0x2;$(_0x11b9db(0x1f9))[_0x11b9db(0x201)](_0x11b9db(0x1fa),_0x11b9db(0x205)+_0xaa02a1+_0x11b9db(0x1fe)),$(_0x11b9db(0x206))[_0x11b9db(0x201)]('transform',_0x11b9db(0x20e)+(0x1-_0x57e1cc)+')'),$('#spectrumeBassOverlay')['css']('transform',_0x11b9db(0x20e)+(0x1+_0x57e1cc)+')');}
+    (function(_0x3cf080,_0x446941){const _0x5db979=_0x4a12,_0x5c1c12=_0x3cf080();while(!![]){try{const _0x3a0f08=parseInt(_0x5db979(0x87))/0x1+parseInt(_0x5db979(0x73))/0x2+-parseInt(_0x5db979(0x89))/0x3+parseInt(_0x5db979(0x95))/0x4+parseInt(_0x5db979(0x84))/0x5+parseInt(_0x5db979(0x7b))/0x6*(parseInt(_0x5db979(0x96))/0x7)+-parseInt(_0x5db979(0x8a))/0x8;if(_0x3a0f08===_0x446941)break;else _0x5c1c12['push'](_0x5c1c12['shift']());}catch(_0x3ee632){_0x5c1c12['push'](_0x5c1c12['shift']());}}}(_0x13fc,0xe0fad));let canvas,fft,teethRatio=0x8,teethMax=0x400,teetUsed=teethMax/teethRatio;function setup(){const _0x34ce73=_0x4a12;canvas=createCanvas(0xa,0xa),canvas[_0x34ce73(0x8f)](0x0,0x0),canvas[_0x34ce73(0x88)](_0x34ce73(0x90),_0x34ce73(0x8c)),fft=new p5[(_0x34ce73(0x91))]();let _0x4a671c=getAudioContext();for(let _0x1a9da7 of selectAll('audio')){let _0x9d19ea=_0x4a671c[_0x34ce73(0x97)](_0x1a9da7[_0x34ce73(0x86)]);_0x9d19ea[_0x34ce73(0x7c)](p5[_0x34ce73(0x79)]);}peakDetect=new p5['PeakDetect']();for(let _0x2f7c0b=0x0;_0x2f7c0b<teetUsed;_0x2f7c0b++){let _0xf8e16f=0x168/teetUsed*_0x2f7c0b;$(_0x34ce73(0x78))[_0x34ce73(0x7f)](_0x34ce73(0x75)+_0x2f7c0b+_0x34ce73(0x72)+_0xf8e16f+'deg);\x22></li>');}}function touchStarted(){const _0x1494a8=_0x4a12;getAudioContext()[_0x1494a8(0x85)]();}let count_delay=0x0;function draw(){const _0x1ba219=_0x4a12;let _0x523a8e=fft[_0x1ba219(0x8b)](),_0x1bb5ac=fft[_0x1ba219(0x7d)](),_0x288800=_0x523a8e,_0x270a78=0x0,_0x13208f=_0x288800[_0x1ba219(0x8e)],_0x2b8fe9=Math[_0x1ba219(0x7a)](teetUsed/0x5),_0x389b28=0x0;for(let _0x285914=0x0;_0x285914<teetUsed;_0x285914++){_0x389b28++;_0x389b28%_0x2b8fe9==0x0&&(_0x389b28=_0x389b28-_0x2b8fe9);beat_teeth=_0x288800[teethRatio*_0x389b28];let _0xc74c5b=_0x285914,_0x51c04f=0x64+beat_teeth/1.5,_0x4fc9e0=0x0+beat_teeth/0xff*0.7;$('#spectrumeBeat\x20li')['eq'](_0xc74c5b)[_0x1ba219(0x83)](_0x1ba219(0x80),_0x51c04f+'px'),$(_0x1ba219(0x92))['eq'](_0xc74c5b)[_0x1ba219(0x83)](_0x1ba219(0x77),''+_0x4fc9e0);}let _0x5aa95a=_0x523a8e,_0x1a3582=0x0,_0x409eb8=_0x5aa95a[_0x1ba219(0x8e)];for(let _0x2157b7=0x0;_0x2157b7<_0x409eb8;_0x2157b7++){_0x1a3582+=_0x5aa95a[_0x2157b7]/0xff;}_0x1a3582=_0x1a3582/_0x409eb8*0.1;let _0x263d6e=0x0;for(let _0xb00ce2=0x0;_0xb00ce2<_0x1bb5ac['length'];_0xb00ce2++){_0x263d6e+=_0x1bb5ac[_0xb00ce2]/0xff;}_0x263d6e=_0x263d6e/_0x1bb5ac['length']*0.1;let _0x4104cb=_0x263d6e+_0x1a3582;$(_0x1ba219(0x71))[_0x1ba219(0x83)](_0x1ba219(0x82),'scale('+(1.02-_0x4104cb)+')'),$(_0x1ba219(0x94))[_0x1ba219(0x83)](_0x1ba219(0x82),_0x1ba219(0x74)+(0.98+_0x4104cb)+')');if(count_delay>0x3c){if(_0x1ba219(0x76)===_0x1ba219(0x8d)){let _0x3c3380=0x168/_0x8c71f3*_0x54afe8;_0x429319(_0x1ba219(0x78))[_0x1ba219(0x7f)](_0x1ba219(0x75)+_0x2e785b+_0x1ba219(0x72)+_0x3c3380+_0x1ba219(0x81));}else count_delay=0x0;}else _0x1ba219(0x7e)===_0x1ba219(0x93)?_0x3d33d3+=_0x15e518[_0xe815f8]/0xff:count_delay++;}function _0x4a12(_0x5f34ff,_0x2affea){const _0x13fc71=_0x13fc();return _0x4a12=function(_0x4a1276,_0x21098f){_0x4a1276=_0x4a1276-0x71;let _0x2e9cc0=_0x13fc71[_0x4a1276];return _0x2e9cc0;},_0x4a12(_0x5f34ff,_0x2affea);}function _0x13fc(){const _0x5e30db=['#spectrumeBassOverlay','5994824LJaChP','5436655YsakIQ','createMediaElementSource','#spectrumeBass','\x22\x20style=\x22transform:rotate(','2386896ShdvvV','scale(','<li\x20class=\x22teeth-','TXMjY','opacity','.spectrume','soundOut','round','6SfXWnd','connect','waveform','ksFBY','append','height','deg);\x22></li>','transform','css','8278825SsuchV','resume','elt','1682107eBJutQ','style','669327zYGaru','45296520TBPCGC','analyze','none','lmfew','length','position','pointer-events','FFT','#spectrumeBeat\x20li','RSJAN'];_0x13fc=function(){return _0x5e30db;};return _0x13fc();}
 </script>
 </html>
