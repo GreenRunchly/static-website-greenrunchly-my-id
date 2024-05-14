@@ -190,23 +190,19 @@
     }
 
 	let count_delay = 0;
-	// Peak
-	let peak_buffer = 0;
     function draw() {
         let spectrum = fft.analyze();
         let waveform = fft.waveform();
 
 		// Spectrume Bars
 		let beat_base = spectrum; let beat_temp = 0; let beat_length = beat_base.length;
-		let beat_repeat = Math.round(teetUsed/5);
+		let beat_repeat = Math.round(teetUsed / 5); // teetUsed/{bebas}
+
 		// Teeth
 		let teethSelected = 0;
 		for (let i = 0; i < (teetUsed); i++) { teethSelected ++;
-			
 			if (teethSelected % beat_repeat == 0) { teethSelected = teethSelected - beat_repeat; }
 			beat_teeth = beat_base[ teethRatio * (teethSelected) ];
-			// beat_teeth = beat_base[i*3];
-			// beat_teeth = beat_base[(teethRatio/2)*i];
 			
 			let teethPos = i;
 			let teethHeight = (100 + (beat_teeth/1.5));
@@ -229,18 +225,7 @@
         }
 		wave_temp = (wave_temp / waveform.length)*0.1;
 
-		// Bass dari Peak
-		let peak_temp = 0;
-		peakDetect.update(fft);
-		if ( peakDetect.isDetected ) {
-			peak_temp = 100;
-		}
-		if (peak_temp > peak_buffer){
-			peak_buffer = peak_temp;
-		}else{
-			peak_buffer -= Math.round(peak_buffer/10);
-		}
-
+		// DOM Manipulate spectrum bar secara langsung
 		let bassStrength = wave_temp + bass_temp ;
 		$("#spectrumeBass").css("transform", `scale(${(1.02-bassStrength)})`);
 		$("#spectrumeBassOverlay").css("transform", `scale(${(0.98+bassStrength)})`);
