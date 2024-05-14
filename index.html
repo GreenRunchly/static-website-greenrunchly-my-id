@@ -46,15 +46,16 @@
 		width: 300px;
 		height: 300px;
 		border-radius: 50%;
-		transition: 0.3s;
 		border:1rem solid white;
 		transform: scale(1);
 		-webkit-tap-highlight-color: transparent;
 		cursor: pointer;
+		z-index: 989;
 	}
 	.logo.bass-overlay{
 		position: absolute;
-		opacity: 0.2;
+		opacity: 0.3;
+		z-index: 990;
 	}
 	.logo img{
 		width: 100%;
@@ -64,19 +65,6 @@
 		overflow: hidden;
 		cursor: pointer;
 	}
-	.logo.paused{
-		z-index: 99;
-	}
-	.logo.paused:active{
-		transform: scale(1.1);
-		filter: drop-shadow(10px 10px 4px #4444dd4c);
-		transition: 0.02s;
-		border:0.4rem solid white;
-	}
-	.logo.paused:active img{
-		transition: 0.05s;
-	}
-
 	.mediaplayer{
 		opacity: 1;
 		transition: 0.5s;
@@ -98,7 +86,7 @@
 	}
 	.spectrume li{
 		position: absolute;
-		width: 9px;
+		width: 7px;
 		min-height: 140px;
 		background-color: white;
 		transform-origin: 0% 100% 0;
@@ -108,16 +96,16 @@
 <body class="overflow-hidden">	
 	<div class="main overflow-hidden" id="flash">
 		<ul class="spectrume" id="spectrumeBeat"></ul>
-		<a class="logo paused mediaPlayerStarter" id="spectrumeBass">
+		<a class="logo" id="spectrumeBass">
 			<img src="assets/me.png" draggable="false">
 		</a>
-		<a class="logo bass-overlay" id="spectrumeBassOverlay">
+		<a class="logo paused mediaPlayerStarter bass-overlay" id="spectrumeBassOverlay">
 			<img src="assets/me.png" draggable="false">
 		</a>
 	</div>
 	<div class="container-fluid py-2 px-2 fixed-bottom">
 		<div class="row">
-			<div id="mediaPlayer" class="col d-none d-lg-block mediaplayer hide">
+			<div id="mediaPlayer" class="col d-none d-lg-block mediaplayer">
 				<div class="row g-2" id="mediaPlayerControl">
 					<div class="col-auto col-lg-auto">
 						<button class="btn btn-success mediaPlayerStarter" id="mediaPlayerStarter">Play</button>
@@ -130,7 +118,7 @@
 						<label for="mediaPlayerSelector" class="btn btn-success">Ubah Lagu</label>
 					</div>
 					<div class="col-auto col-lg-auto">
-						<button class="btn btn-success" id="mediaPlayerToggle">Tampil</button>
+						<button class="btn btn-success" id="mediaPlayerToggle">Sembunyikan</button>
 					</div>
 				</div>
 			</div>
@@ -173,10 +161,8 @@
     });
 </script>
 <script type="text/javascript">
-    let canvas;
-    let fft;
-
-	let teethRatio = 16; let teethRange = 1024; // Mengikuti length dari waveform atau spectrum
+    let canvas; let fft;
+	let teethRatio = 8; let teethMax = 1024; let teetUsed = (teethMax / teethRatio);  // Terdapat 64 teeth
 
     function setup() {
         canvas = createCanvas(10, 10);
@@ -191,9 +177,9 @@
         }
 		peakDetect = new p5.PeakDetect();
 	
-		// Init DOM untuk spectrume
-		for (let index = 0; index < (teethRange/teethRatio); index++) {
-			let rot = ((360)/(teethRange/teethRatio))*index;
+		// Init DOM untuk spectrume sebanyak teeth yang dipakai
+		for (let index = 0; index < teetUsed; index++) {
+			let rot = ((360)/teetUsed)*index;
 			$(".spectrume").append(`<li class="teeth-${index}" style="transform:rotate(${rot}deg);"></li>`);
 		}
 		
@@ -202,55 +188,70 @@
     function touchStarted() {
         getAudioContext().resume();
     }
-	let bass_buffer = 0; let flash_buffer = 0;
+
+	let count_delay = 0;
+	// Peak
+	let peak_buffer = 0;
     function draw() {
         let spectrum = fft.analyze();
         let waveform = fft.waveform();
 
 		// Spectrume Bars
 		let beat_base = spectrum; let beat_temp = 0; let beat_length = beat_base.length;
-		for (let i = 0; i < ( ((teethRange/teethRatio))); i++) {
-			beat_teeth = beat_base[i] * 2;
-			beat_temp += beat_base[i];
-
-			let teethPos = (Math.round(i));
-			let teethHeight = 80 + (beat_teeth / 4)
+		let beat_repeat = Math.round(teetUsed/5);
+		// Teeth
+		let teethSelected = 0;
+		for (let i = 0; i < (teetUsed); i++) { teethSelected ++;
+			
+			if (teethSelected % beat_repeat == 0) { teethSelected = teethSelected - beat_repeat; }
+			beat_teeth = beat_base[ teethRatio * (teethSelected) ];
+			// beat_teeth = beat_base[i*3];
+			// beat_teeth = beat_base[(teethRatio/2)*i];
+			
+			let teethPos = i;
+			let teethHeight = (100 + (beat_teeth/1.5));
+			let teethOpaque = 0 + ((beat_teeth/255) * 0.7);
 			$("#spectrumeBeat li").eq((teethPos)).css("height",`${teethHeight}px`);
-			$("#spectrumeBeat li").eq(teethPos).css("opacity",`${(0.3+(beat_teeth/beat_length))}`);
+			$("#spectrumeBeat li").eq(teethPos).css("opacity",`${(teethOpaque)}`);
 		}
 		
-		let beat = (beat_temp / (beat_length)) / (teethRange/teethRatio);
-		// console.log(beat);
-
-		// Bass Logo
-		let bass_base = waveform; let bass_temp = 0; let bass_length = bass_base.length;
+		// Bass dari spectrum
+		let bass_base = spectrum; let bass_temp = 0; let bass_length = bass_base.length;
 		for (let i = 0; i < (bass_length); i++) {
-            bass_temp += bass_base[i];
+            bass_temp += (bass_base[i] / 255);
         }
-		if (bass_temp > bass_buffer){
-			bass_buffer = bass_temp;
-		}else{
-			bass_buffer -= bass_buffer/3;
-		}
-		let bass = (bass_buffer/bass_length) * 1.5;
+		bass_temp = (bass_temp / bass_length)*0.1;
 
-		// Flash
-		let flash_temp = 0;
+		// Bass dari WaveForm
+		let wave_temp = 0;
+		for (let i = 0; i < (waveform.length); i++) {
+            wave_temp += (waveform[i] / 255);
+        }
+		wave_temp = (wave_temp / waveform.length)*0.1;
+
+		// Bass dari Peak
+		let peak_temp = 0;
 		peakDetect.update(fft);
 		if ( peakDetect.isDetected ) {
-			flash_temp = beat;
+			peak_temp = 100;
 		}
-		if (flash_temp > flash_buffer){
-			flash_buffer = flash_temp;
+		if (peak_temp > peak_buffer){
+			peak_buffer = peak_temp;
 		}else{
-			flash_buffer -= flash_buffer/60;
+			peak_buffer -= Math.round(peak_buffer/10);
 		}
-		let flash = flash_buffer*2;
 
-		// DOM Manipulation
-		$("#flash").css("background", `linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(255,255,255,${flash}) 100%)`);
-		$("#spectrumeBass").css("transform", `scale(${(1-bass)})`);
-		$("#spectrumeBassOverlay").css("transform", `scale(${(1+bass)})`);
+		let bassStrength = wave_temp + bass_temp ;
+		$("#spectrumeBass").css("transform", `scale(${(1.02-bassStrength)})`);
+		$("#spectrumeBassOverlay").css("transform", `scale(${(0.98+bassStrength)})`);
+
+		// Debugging
+		if (count_delay > 60){
+			// console.log(bassStrength);
+			count_delay = 0;
+		}else{
+			count_delay ++;
+		}
     }
 </script>
 </html>
