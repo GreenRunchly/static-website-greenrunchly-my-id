@@ -25,6 +25,9 @@
 	<!-- JQuery -->
 	<script src="assets/js/jquery-3.5.1.min.js"></script>
     <script src="assets/js/jquery.countdown.js"></script>
+
+	<!-- DB Framework -->
+	<script src="assets/js/localforage/dist/localforage.js"></script>
 </head>
 <style>
 	body{
@@ -55,7 +58,7 @@
 	}
 	.logo.bass-overlay{
 		position: absolute;
-		opacity: 0.2;
+		opacity: 0.1;
 		z-index: 990;
 	}
 	.logo img{
@@ -129,9 +132,16 @@
 				</div>
 				<div class="row">
 					<div class="col-12">
-						<label for="mediaPlayerMusicImporter" class="btn btn-success w-100 text-start">
-							<small class="m-0">Klik untuk import lagu...</small>
-						</label>
+						<div class="row g-1">
+							<div class="col-auto">
+								<button class="btn btn-danger removeAllMusic"><i class="bi bi-recycle"></i></button>
+							</div>
+							<div class="col">
+								<label for="mediaPlayerMusicImporter" class="btn btn-success w-100 text-start importMusic">
+									<small class="m-0">Klik untuk import lagu...</small>
+								</label>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -154,9 +164,6 @@
 				<button class="btn btn-success" id="mediaListToggle"><i class="bi bi-music-note-list"></i></button>
 			</div>
 			<div class="col-auto d-none d-sm-block">
-				<button class="btn btn-success" id="mediaPlayerToggle"><i class="bi bi-eye-slash-fill"></i></button>
-			</div>
-			<div class="col-auto d-none d-sm-block">
 				<div class="btn text-white text-end">
 					<p class="m-0"><span id="mediaPlayerAudioProgressTextCurrent">0.00</span>%</p>
 				</div>
@@ -171,6 +178,9 @@
 					<p class="m-0">&copy2024 GreenRunchly</p>
 				</a>
 			</div>
+			<div class="col-auto d-none d-sm-block">
+				<button class="btn btn-success" id="mediaPlayerToggle"><i class="bi bi-eye-slash-fill"></i></button>
+			</div>
 		</div>
 		<div class="row">
 			<div class="col-12">
@@ -184,118 +194,126 @@
 <script src="assets/js/p5.js"></script>
 <script src="assets/js/p5.sound.js"></script>
 <script>
+	let importedSongs = localforage.createInstance({
+        name: "Songs"
+    });
 
 	// Mengonversi file ke Base64
     function fileToBase64(file) {
 		return new Promise((resolve, reject) => {
 			const reader = new FileReader();
 			reader.readAsDataURL(file);
-			console.log('Finish!');
 			reader.onload = () => resolve(reader.result);
 			reader.onerror = error => reject(error);
 		});
     }
 
-	// Fungsi untuk membuka file yang disimpan
-	function bukaFile() {
-		var lokasi = localStorage.getItem('lokasiFile');
-		if (lokasi) {
-			// Di sini Anda dapat menggunakan lokasi untuk membuka file
-			// Contoh: jika Anda menyimpan path, Anda bisa menggunakan AJAX untuk mengambil konten file
-			// atau jika ini adalah file gambar, Anda bisa menggunakan elemen <img> untuk menampilkannya di halaman
-			console.log('Lokasi file yang disimpan:', lokasi);
-		} else {
-			console.log('Tidak ada lokasi file yang disimpan.');
-		}
-	}
+	loadMusicLists();
+
 	// Import Listing Baru
     $('#mediaPlayerMusicImporter').on('change', function(event) {
-        const files = event.target.files;
-        const allowedExtensions = ['mp3', 'wav', 'ogg', 'flac', 'webm'];
-		let ImportedCount = 0; let ImportedSelected = files.length;
-
-		console.log('Importing..' + ImportedSelected);
-		new Promise((resolve, reject) => {
-			$.each(files, function(index, file) {
-				const fileExtension = file.name.split('.').pop().toLowerCase();
-				if (allowedExtensions.includes(fileExtension)) {
-					if (file.size > (2 * 1024 * 1024)){
-
-						new Promise((resolve, reject) => {
-							let data = fileToBase64(file);
-							resolve(data);
-						}).then((data) => {
-							let fetchTime = new Date().getMilliseconds();
-							localStorage.setItem('songs' + fetchTime, data);
-							ImportedCount ++;
-						}).catch((error) => {
-							console.error(error);
-							ImportedCount ++;
-						});
-
-					}else{
-						ImportedCount ++;
-					}
-				}else{
-					ImportedCount ++;
-				}
-			});
-			let menungguImport = setInterval(() => {
-				if (ImportedCount === ImportedSelected){
-					console.log('Done!');
-					clearInterval(menungguImport);
-					resolve();
-				}
-			}, 100);
-		}).then(() => {
-			console.log('Memuat Lagu...');
-			// loadMusicLists();
-		}).catch((error) => {
-			console.error(error);
+        const files = event.target.files; 
+		let importedFile = {}; let importedCount = 0; let importingCount = 0;
+		
+		$.each(files, function(index, file) {
+			const fileExtension = file.name.split('.').pop().toLowerCase();
+			if ((['mp3', 'wav', 'ogg', 'flac', 'webm'].includes(fileExtension)) && (file.size > (2 * 1024 * 1024))){
+				new Promise((resolve, reject) => {
+					let folderPath = file.webkitRelativePath.split('/').slice(0, -1);
+					let lagu = fileToBase64(file);
+					$('.importMusic').html(`<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> <small class="m-0">Mengimpor Lagu... (${importedCount}/${importingCount}) ${folderPath[1]} </small>`);
+					importedSongs.setItem(folderPath[1], lagu, function (err) {} ).then(function () {
+						$('.importMusic').html(`<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> <small class="m-0">Menyimpan Lagu... (${importedCount}/${importingCount}) ${folderPath[1]} </small>`);
+						resolve();
+					}).catch(function (err) {
+						console.log(err);
+						reject(err);
+					});
+				}).then(() => {
+					importedCount ++;
+				}).catch((error) => {
+					console.error(error);
+				});
+				importingCount ++;
+			}
 		});
+
+		let waitImporting = setInterval(() => {
+			if (importingCount == importedCount){
+				console.log('Done!', importingCount, importedCount);
+				loadMusicLists();
+				clearInterval(waitImporting);
+			}
+		}, 1000);
     });
 
 	// Load Listing
 	function loadMusicLists() {
-
 		$('#mediaList').children('div').eq(1).html();
+		$('.importMusic').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> <small class="m-0">Memuat Lagu...</small>');
+		let html = ``;
 
-		let storedSongs = localStorage.getItem('songs');
-		console.log(JSON.parse(storedSongs));
-		// if (storedSongs){
-		// 	ImportedList = storedSongs;
-		// 	console.log(ImportedList);
-		// 	let html = ``;
-		// 	$.each(ImportedList, function(index, data) {
-		// 		let file = data;
-		// 		let folderPath = file.webkitRelativePath.split('/').slice(0, -1);
-		// 		html += `
-		// 		<div class="col-12">
-		// 			<button class="btn btn-success w-100 text-start selectMusic" music-number="${index}">
-		// 				<small><small class="m-0">${folderPath[1]}</small></small>
-		// 			</button>
-		// 		</div>
-		// 		`;
-		// 	});
-			
-		// 	$('#mediaList').children('div').eq(1).html(html);
-
-		// 	delete ImportedList;
-		// }
-		// delete storedSongs;
-
-		// console.log('Selesai!');
-		// $("#mediaPlayerMusicImporterStatus").html('Perpustakaan Lagu');
+		importedSongs.keys().then(function(keys) {
+			keys.forEach(function(key, iterationNumber) {
+				html += `
+				<div class="col-12">
+					<div class="row g-1">
+						<div class="col-auto">
+							<button class="btn btn-danger removeMusic" music-number="${key}"><i class="bi bi-trash-fill"></i></button>
+						</div>
+						<div class="col">
+							<button class="btn btn-success w-100 text-start selectMusic" music-number="${key}">
+								<small><small class="m-0">${key}</small></small>
+							</button>
+						</div>
+					</div>
+				</div>
+				`;
+			});
+			$('#mediaList').children('div').eq(1).html(html);
+			$("#mediaPlayerMusicImporterStatus").html('Perpustakaan Lagu');
+			console.log('Selesai!');
+			$('.importMusic').html('<small class="m-0">Klik untuk import lagu...</small>');
+		}).catch(function(err) {
+			console.error("Error during iteration", err);
+		});
 	}
 
 	// Play Selected Music
 	$(document).on("click", ".selectMusic", function(e) {
 		let musicID = $(this).attr('music-number');
-		$("#mediaPlayerAudio").attr("src", URL.createObjectURL(ImportedList[musicID]));
-		$("#mediaPlayerAudio")[0].play();
+
+		importedSongs.getItem(musicID).then(function (lagu) {
+			$("#mediaPlayerAudio").attr("src", lagu);
+			$("#mediaPlayerAudio")[0].play();
+		}).catch(function (err) {
+			console.log(err);
+		});
 	});
 
-	
+	// Hapus Music
+	$(document).on("click", ".removeMusic", function(e) {
+		let musicID = $(this).attr('music-number');
+		$(this).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>');
+		importedSongs.removeItem(musicID).then(function() {
+			loadMusicLists();
+		}).catch(function(err) {
+			alert("Gagal Menghapus!");
+		});
+	});
+
+	// Hapus Semua Music
+	$(document).on("click", ".removeAllMusic", function(e) {
+		let me = this;
+		$(this).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>');
+		importedSongs.clear().then(function() {
+			$(me).html('<i class="bi bi-recycle"></i>');
+			loadMusicLists();
+		}).catch(function(err) {
+			alert("Gagal Menghapus Library!");
+		});
+	});
+
 </script>
 <script>
 	$(document).on("click", "#mediaPlayerToggle", function(e) {
@@ -318,7 +336,6 @@
 			$("#mediaListToggle").html('<i class="bi bi-music-note-list"></i>');
         }
     });
-	
 	$(document).on("change", "#mediaPlayerSelector", function(e) {
         var files = this.files;
         $("#mediaPlayerAudio").attr("src", URL.createObjectURL(files[0]));
@@ -345,7 +362,7 @@
         canvas.position(0, 0);
         canvas.style('pointer-events', 'none');
 
-        fft = new p5.FFT(0.8);
+        fft = new p5.FFT(0.78);
         let context = getAudioContext();
         for (let elem of selectAll('audio')) {
             let mediaSource = context.createMediaElementSource(elem.elt);
@@ -371,11 +388,11 @@
         let waveform = fft.waveform();
 
 		// Audio Progress Bar, biar lengkap
-		// let musicCurrentTime = audioElement.currentTime;
-		// let musicDuration = audioElement.duration;
-		// musicProgress = (musicCurrentTime/musicDuration) * 100;
-		// $("#mediaPlayerAudioProgress").css('--progress', `${musicProgress}%`);
-		// $("#mediaPlayerAudioProgressTextCurrent").html(`${musicProgress.toFixed(2)}`);
+		let musicCurrentTime = audioElement.currentTime;
+		let musicDuration = audioElement.duration;
+		let musicProgress = (musicCurrentTime/musicDuration) * 100;
+		$("#mediaPlayerAudioProgress").css('--progress', `${musicProgress}%`);
+		$("#mediaPlayerAudioProgressTextCurrent").html(`${musicProgress.toFixed(2)}`);
 
 		// Spectrume Bars
 		let beat_base = spectrum; let beat_temp = 0; let beat_length = beat_base.length;
@@ -388,7 +405,7 @@
 			beat_teeth = beat_base[ teethRatio * (teethSelected) ];
 			
 			let teethPos = i;
-			let teethHeight = (125 + ( (beat_teeth/2) * (beat_teeth/150) ));
+			let teethHeight = (100 + ( (beat_teeth/2) * (beat_teeth/150) ));
 			let teethOpaque = 0 + ((beat_teeth/255) * 0.6);
 			$("#spectrumeBeat li").eq((teethPos)).css("height",`${teethHeight}px`);
 			$("#spectrumeBeat li").eq(teethPos).css("opacity",`${(teethOpaque)}`);
@@ -419,11 +436,11 @@
 		highMidEnergy = fft.getEnergy("highMid");
 		trebleEnergy = fft.getEnergy("treble");
 
-		bass_e = (bassEnergy/512) * 0.1;
+		bass_e = (bassEnergy/512) * 0.2;
 		gitar_e = (lowMidEnergy/512) * 0.1;
 		snare_e = (midEnergy/512) * 0.1;
-		simbal_e = (highMidEnergy/512) * 0.1;
-		treble_e = (trebleEnergy/512) * 0.1;
+		simbal_e = (highMidEnergy/512) * 0.15;
+		treble_e = (trebleEnergy/512) * 0.15;
 
 		$("#bassEnergy").html((bass_e*1516).toFixed(0));
 		$("#gitarEnergy").html((gitar_e*1516).toFixed(0));
@@ -432,16 +449,16 @@
 		$("#trebleEnergy").html((treble_e*1516).toFixed(0));
 
 		// DOM Manipulate spectrum bar secara langsung
-		let bassStrength = wave_temp + bass_temp + bass_e + snare_e + simbal_e + treble_e;
-		$("#spectrumeBass").css("transform", `scale(${(1.1-(bassStrength))})`);
-		$("#spectrumeBassOverlay").css("transform", `scale(${(1.1-bassStrength/1.5)})`);
+		let bassStrength = bass_e + treble_e + gitar_e + snare_e + simbal_e;
+		$("#spectrumeBass").css("transform", `scale(${(1.2-(bassStrength))})`);
+		$("#spectrumeBassOverlay").css("transform", `scale(${(1.2-bassStrength/1.3)})`);
 
 		// LR Flash
 		// $("#flash").css("background", `linear-gradient(90deg, rgba(255,255,255,${(bass_e * 15)}) 0%, rgba(255,255,255,0) 30%, rgba(255,255,255,0) 70%, rgba(255,255,255,${(bass_e * 15)}) 100%)`);
 		// Bottom Flash
 		// $("#flash").css("background", `linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(255,255,255,${(bass_e * 30)}) 100%)`);
 		// Center Flash
-		$("#flash").css("background", `radial-gradient(circle, rgba(255,255,255,${(bassStrength * 4)}) 0%, rgba(255,255,255,0) 100%)`);
+		$("#flash").css("background", `radial-gradient(circle, rgba(255,255,255,${(bassStrength * 3)}) 0%, rgba(255,255,255,0) 100%)`);
 		
 		// Debugging
 		if (count_delay > 60){
