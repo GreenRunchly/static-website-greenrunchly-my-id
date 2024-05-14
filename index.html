@@ -54,7 +54,7 @@
 	}
 	.logo.bass-overlay{
 		position: absolute;
-		opacity: 0.3;
+		opacity: 0.2;
 		z-index: 990;
 	}
 	.logo img{
@@ -119,6 +119,23 @@
 					</div>
 					<div class="col-auto col-lg-auto">
 						<button class="btn btn-success" id="mediaPlayerToggle">Sembunyikan</button>
+					</div>
+					<div class="col-auto col-lg-auto">
+						<div class="btn text-white">
+							<p class="m-0">Bass <span id="bassEnergy"></span></p>
+						</div>
+						<div class="btn text-white">
+							<p class="m-0">Gitar <span id="gitarEnergy"></span></p>
+						</div>
+						<div class="btn text-white">
+							<p class="m-0">Snare <span id="snareEnergy"></span></p>
+						</div>
+						<div class="btn text-white">
+							<p class="m-0">Simbal <span id="simbalEnergy"></span></p>
+						</div>
+						<div class="btn text-white">
+							<p class="m-0">Treble <span id="trebleEnergy"></span></p>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -214,24 +231,46 @@
 		// Bass dari spectrum
 		let bass_base = spectrum; let bass_temp = 0; let bass_length = bass_base.length;
 		for (let i = 0; i < (bass_length); i++) {
-            bass_temp += (bass_base[i] / 1024);
+            bass_temp += (bass_base[i] / 600);
         }
 		bass_temp = (bass_temp / bass_length)*0.1;
 
 		// Bass dari WaveForm
 		let wave_temp = 0;
 		for (let i = 0; i < (waveform.length); i++) {
-            wave_temp += (waveform[i] / 1024);
+            wave_temp += (waveform[i] / 600);
         }
 		wave_temp = (wave_temp / waveform.length)*0.1;
 
 		bassEnergy = fft.getEnergy("bass");
-		bass_e = (bassEnergy/1024) * 0.1;
+		lowMidEnergy = fft.getEnergy("lowMid");
+		midEnergy = fft.getEnergy("mid");
+		highMidEnergy = fft.getEnergy("highMid");
+		trebleEnergy = fft.getEnergy("treble");
+
+		bass_e = (bassEnergy/1516) * 0.1;
+		gitar_e = (lowMidEnergy/1516) * 0.1;
+		snare_e = (midEnergy/1516) * 0.1;
+		simbal_e = (highMidEnergy/1516) * 0.1;
+		treble_e = (trebleEnergy/1516) * 0.1;
+
+		$("#bassEnergy").html((bass_e*100).toFixed(2));
+		$("#gitarEnergy").html((gitar_e*100).toFixed(2));
+		$("#snareEnergy").html((snare_e*100).toFixed(2));
+		$("#simbalEnergy").html((simbal_e*100).toFixed(2));
+		$("#trebleEnergy").html((treble_e*100).toFixed(2));
 
 		// DOM Manipulate spectrum bar secara langsung
-		let bassStrength = wave_temp + bass_temp + bass_e;
-		$("#spectrumeBass").css("transform", `scale(${(1.02-bassStrength)})`);
-		$("#spectrumeBassOverlay").css("transform", `scale(${(0.98+bassStrength)})`);
+		let bassStrength = wave_temp + bass_temp + bass_e + snare_e + simbal_e + treble_e;
+		$("#spectrumeBass").css("transform", `scale(${(1.04-bassStrength)})`);
+		$("#spectrumeBassOverlay").css("transform", `scale(${(0.96+bassStrength)})`);
+
+		// LR Flash
+		// $("#flash").css("background", `linear-gradient(90deg, rgba(255,255,255,${(bass_e * 15)}) 0%, rgba(255,255,255,0) 30%, rgba(255,255,255,0) 70%, rgba(255,255,255,${(bass_e * 15)}) 100%)`);
+		// Bottom Flash
+		// $("#flash").css("background", `linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(255,255,255,${(bass_e * 30)}) 100%)`);
+		// Center Flash
+		$("#flash").css("background", `radial-gradient(circle, rgba(255,255,255,${(bassStrength * 10)}) 0%, rgba(255,255,255,0) 100%)`);
 
 		// Debugging
 		if (count_delay > 60){
