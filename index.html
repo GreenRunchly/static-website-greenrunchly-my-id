@@ -205,7 +205,7 @@
 			beat_teeth = beat_base[ teethRatio * (teethSelected) ];
 			
 			let teethPos = i;
-			let teethHeight = (100 + (beat_teeth/1.5));
+			let teethHeight = (75 + (beat_teeth/1.5));
 			let teethOpaque = 0 + ((beat_teeth/255) * 0.7);
 			$("#spectrumeBeat li").eq((teethPos)).css("height",`${teethHeight}px`);
 			$("#spectrumeBeat li").eq(teethPos).css("opacity",`${(teethOpaque)}`);
@@ -214,19 +214,22 @@
 		// Bass dari spectrum
 		let bass_base = spectrum; let bass_temp = 0; let bass_length = bass_base.length;
 		for (let i = 0; i < (bass_length); i++) {
-            bass_temp += (bass_base[i] / 255);
+            bass_temp += (bass_base[i] / 1024);
         }
 		bass_temp = (bass_temp / bass_length)*0.1;
 
 		// Bass dari WaveForm
 		let wave_temp = 0;
 		for (let i = 0; i < (waveform.length); i++) {
-            wave_temp += (waveform[i] / 255);
+            wave_temp += (waveform[i] / 1024);
         }
 		wave_temp = (wave_temp / waveform.length)*0.1;
 
+		bassEnergy = fft.getEnergy("bass");
+		bass_e = (bassEnergy/1024) * 0.1;
+
 		// DOM Manipulate spectrum bar secara langsung
-		let bassStrength = wave_temp + bass_temp ;
+		let bassStrength = wave_temp + bass_temp + bass_e;
 		$("#spectrumeBass").css("transform", `scale(${(1.02-bassStrength)})`);
 		$("#spectrumeBassOverlay").css("transform", `scale(${(0.98+bassStrength)})`);
 
