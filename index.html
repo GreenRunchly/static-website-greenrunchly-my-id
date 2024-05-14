@@ -66,14 +66,14 @@
 		overflow: hidden;
 		cursor: pointer;
 	}
-	.mediaplayer{
+	.visibilitas{
 		opacity: 1;
 		transition: 0.5s;
 	}
-	.mediaplayer.hide{
+	.visibilitas.hide{
 		opacity: 0;
 	}
-	.mediaplayer.hide:hover{
+	.visibilitas.hide:hover{
 		opacity: 1;
 	}
 	.music-progress-bar{
@@ -105,7 +105,7 @@
 	<div class="d-block position-relative overflow-hidden">
 		<div class="main" id="flash">
 			<ul style="transform: rotate(45deg);" class="spectrume" id="spectrumeBeat"></ul>
-			<!-- <ul style="transform: rotate(45deg);" class="spectrume" id="spectrumeBeatOverlay"></ul> -->
+			<!-- <ul style="transform: rotate(90deg);" class="spectrume" id="spectrumeBeatOverlay"></ul> -->
 			<a class="logo" id="spectrumeBass">
 				<img src="assets/me.png" draggable="false">
 			</a>
@@ -114,17 +114,44 @@
 			</a>
 		</div>
 	</div>
-	<div class="container-fluid py-2 px-2 fixed-bottom mediaplayer" id="mediaPlayer">
+	<div class="container-fluid py-2 px-2 fixed-top">
+		<div class="row">
+			<div class="col-12 col-sm-6 col-lg-3 visibilitas hide" id="mediaList">
+				<div class="row g-1 lh-sm">
+					<div class="col-12">
+						<a class="btn text-white text-end">
+							<p class="m-0" id="mediaPlayerMusicImporterStatus">Perpustakaan Lagu</p>
+						</a>
+					</div>
+				</div>
+				<div class="row g-1 lh-sm overflow-hidden overflow-y-scroll my-1 rounded-3" style="max-height: 40vh;">
+					
+				</div>
+				<div class="row">
+					<div class="col-12">
+						<label for="mediaPlayerMusicImporter" class="btn btn-success w-100 text-start">
+							<small class="m-0">Klik untuk import lagu...</small>
+						</label>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="container-fluid py-2 px-2 fixed-bottom visibilitas" id="mediaPlayer">
 		<div class="row g-2 py-2" id="mediaPlayerControl">
 			<div class="col-auto">
 				<button class="btn btn-success mediaPlayerStarter" id="mediaPlayerStarter"><i class="bi bi-play-fill"></i></button>
 			</div>
 			<div class="col-auto">
 				<audio class="d-none" id="mediaPlayerAudio" controls loop>
-					<source src="assets/audio/close to the sun.webm" type="audio/mpeg">
+					<source src="assets/audio/the drum.webm" type="audio/mpeg">
 				</audio>
 				<input class="form-control d-none" id="mediaPlayerSelector" type="file" accept="audio/*" />
-				<label for="mediaPlayerSelector" class="btn btn-success"><i class="bi bi-music-note-list"></i></label>
+				<label for="mediaPlayerSelector" class="btn btn-success"><i class="bi bi-upload"></i></label>
+			</div>
+			<div class="col-auto d-none d-sm-block">
+				<input class="form-control d-none" type="file" id="mediaPlayerMusicImporter" accept="audio/*" webkitdirectory directory multiple />
+				<button class="btn btn-success" id="mediaListToggle"><i class="bi bi-music-note-list"></i></button>
 			</div>
 			<div class="col-auto d-none d-sm-block">
 				<button class="btn btn-success" id="mediaPlayerToggle"><i class="bi bi-eye-slash-fill"></i></button>
@@ -140,7 +167,7 @@
 				</div>
 			</div>
 			<div class="col d-flex justify-content-end justify-content-lg-end align-items-end">
-				<a class="btn text-white text-end" href="https://ieu.link/tentang">
+				<a class="btn text-white text-end" href="https://ieu.link/tentang" target="_blank">
 					<p class="m-0">&copy2024 GreenRunchly</p>
 				</a>
 			</div>
@@ -157,6 +184,120 @@
 <script src="assets/js/p5.js"></script>
 <script src="assets/js/p5.sound.js"></script>
 <script>
+
+	// Mengonversi file ke Base64
+    function fileToBase64(file) {
+		return new Promise((resolve, reject) => {
+			const reader = new FileReader();
+			reader.readAsDataURL(file);
+			console.log('Finish!');
+			reader.onload = () => resolve(reader.result);
+			reader.onerror = error => reject(error);
+		});
+    }
+
+	// Fungsi untuk membuka file yang disimpan
+	function bukaFile() {
+		var lokasi = localStorage.getItem('lokasiFile');
+		if (lokasi) {
+			// Di sini Anda dapat menggunakan lokasi untuk membuka file
+			// Contoh: jika Anda menyimpan path, Anda bisa menggunakan AJAX untuk mengambil konten file
+			// atau jika ini adalah file gambar, Anda bisa menggunakan elemen <img> untuk menampilkannya di halaman
+			console.log('Lokasi file yang disimpan:', lokasi);
+		} else {
+			console.log('Tidak ada lokasi file yang disimpan.');
+		}
+	}
+	// Import Listing Baru
+    $('#mediaPlayerMusicImporter').on('change', function(event) {
+        const files = event.target.files;
+        const allowedExtensions = ['mp3', 'wav', 'ogg', 'flac', 'webm'];
+		let ImportedCount = 0; let ImportedSelected = files.length;
+
+		console.log('Importing..' + ImportedSelected);
+		new Promise((resolve, reject) => {
+			$.each(files, function(index, file) {
+				const fileExtension = file.name.split('.').pop().toLowerCase();
+				if (allowedExtensions.includes(fileExtension)) {
+					if (file.size > (2 * 1024 * 1024)){
+
+						new Promise((resolve, reject) => {
+							let data = fileToBase64(file);
+							resolve(data);
+						}).then((data) => {
+							let fetchTime = new Date().getMilliseconds();
+							localStorage.setItem('songs' + fetchTime, data);
+							ImportedCount ++;
+						}).catch((error) => {
+							console.error(error);
+							ImportedCount ++;
+						});
+
+					}else{
+						ImportedCount ++;
+					}
+				}else{
+					ImportedCount ++;
+				}
+			});
+			let menungguImport = setInterval(() => {
+				if (ImportedCount === ImportedSelected){
+					console.log('Done!');
+					clearInterval(menungguImport);
+					resolve();
+				}
+			}, 100);
+		}).then(() => {
+			console.log('Memuat Lagu...');
+			// loadMusicLists();
+		}).catch((error) => {
+			console.error(error);
+		});
+    });
+
+	// Load Listing
+	function loadMusicLists() {
+
+		$('#mediaList').children('div').eq(1).html();
+
+		let storedSongs = localStorage.getItem('songs');
+		console.log(JSON.parse(storedSongs));
+		// if (storedSongs){
+		// 	ImportedList = storedSongs;
+		// 	console.log(ImportedList);
+		// 	let html = ``;
+		// 	$.each(ImportedList, function(index, data) {
+		// 		let file = data;
+		// 		let folderPath = file.webkitRelativePath.split('/').slice(0, -1);
+		// 		html += `
+		// 		<div class="col-12">
+		// 			<button class="btn btn-success w-100 text-start selectMusic" music-number="${index}">
+		// 				<small><small class="m-0">${folderPath[1]}</small></small>
+		// 			</button>
+		// 		</div>
+		// 		`;
+		// 	});
+			
+		// 	$('#mediaList').children('div').eq(1).html(html);
+
+		// 	delete ImportedList;
+		// }
+		// delete storedSongs;
+
+		// console.log('Selesai!');
+		// $("#mediaPlayerMusicImporterStatus").html('Perpustakaan Lagu');
+	}
+
+	// Play Selected Music
+	$(document).on("click", ".selectMusic", function(e) {
+		let musicID = $(this).attr('music-number');
+		$("#mediaPlayerAudio").attr("src", URL.createObjectURL(ImportedList[musicID]));
+		$("#mediaPlayerAudio")[0].play();
+	});
+
+	
+</script>
+<script>
 	$(document).on("click", "#mediaPlayerToggle", function(e) {
 		isit = $("#mediaPlayer").hasClass('hide');
         if (isit == true){
@@ -167,6 +308,17 @@
 			$("#mediaPlayerToggle").html('<i class="bi bi-eye-fill"></i>');
         }
     });
+	$(document).on("click", "#mediaListToggle", function(e) {
+		isit = $("#mediaList").hasClass('hide');
+        if (isit == true){
+            $("#mediaList").removeClass('hide');
+			$("#mediaListToggle").html('<i class="bi bi-music-note"></i>');
+        }else{
+            $("#mediaList").addClass('hide');
+			$("#mediaListToggle").html('<i class="bi bi-music-note-list"></i>');
+        }
+    });
+	
 	$(document).on("change", "#mediaPlayerSelector", function(e) {
         var files = this.files;
         $("#mediaPlayerAudio").attr("src", URL.createObjectURL(files[0]));
@@ -193,7 +345,7 @@
         canvas.position(0, 0);
         canvas.style('pointer-events', 'none');
 
-        fft = new p5.FFT();
+        fft = new p5.FFT(0.8);
         let context = getAudioContext();
         for (let elem of selectAll('audio')) {
             let mediaSource = context.createMediaElementSource(elem.elt);
@@ -219,11 +371,11 @@
         let waveform = fft.waveform();
 
 		// Audio Progress Bar, biar lengkap
-		let musicCurrentTime = audioElement.currentTime;
-		let musicDuration = audioElement.duration;
-		musicProgress = (musicCurrentTime/musicDuration) * 100;
-		$("#mediaPlayerAudioProgress").css('--progress', `${musicProgress}%`);
-		$("#mediaPlayerAudioProgressTextCurrent").html(`${musicProgress.toFixed(2)}`);
+		// let musicCurrentTime = audioElement.currentTime;
+		// let musicDuration = audioElement.duration;
+		// musicProgress = (musicCurrentTime/musicDuration) * 100;
+		// $("#mediaPlayerAudioProgress").css('--progress', `${musicProgress}%`);
+		// $("#mediaPlayerAudioProgressTextCurrent").html(`${musicProgress.toFixed(2)}`);
 
 		// Spectrume Bars
 		let beat_base = spectrum; let beat_temp = 0; let beat_length = beat_base.length;
@@ -236,7 +388,7 @@
 			beat_teeth = beat_base[ teethRatio * (teethSelected) ];
 			
 			let teethPos = i;
-			let teethHeight = (100 + ( (beat_teeth/2) * (beat_teeth/150) ));
+			let teethHeight = (125 + ( (beat_teeth/2) * (beat_teeth/150) ));
 			let teethOpaque = 0 + ((beat_teeth/255) * 0.6);
 			$("#spectrumeBeat li").eq((teethPos)).css("height",`${teethHeight}px`);
 			$("#spectrumeBeat li").eq(teethPos).css("opacity",`${(teethOpaque)}`);
