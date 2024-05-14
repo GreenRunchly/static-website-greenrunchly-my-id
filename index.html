@@ -20,6 +20,7 @@
 	<!-- Bootstrap Style -->
     <link href="assets/css/bootstrap-5.3.2-dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="assets/css/bootstrap-5.3.2-dist/js/bootstrap.bundle.min.js"></script>
+	<link rel="stylesheet" href="assets/css/bootstrap-icons-1.11.3/font/bootstrap-icons.min.css">
 	
 	<!-- JQuery -->
 	<script src="assets/js/jquery-3.5.1.min.js"></script>
@@ -75,6 +76,14 @@
 	.mediaplayer.hide:hover{
 		opacity: 1;
 	}
+	.music-progress-bar{
+		height: 7px;
+	}
+	.music-progress-bar .filler{
+		width: calc(var(--progress));
+		min-width: 16px;
+		transition: 0.5s;
+	}
 	.spectrume{
 		position: absolute;
 		display: flex;
@@ -87,61 +96,59 @@
 	.spectrume li{
 		position: absolute;
 		width: 7px;
-		min-height: 140px;
 		background-color: white;
 		transform-origin: 0% 100% 0;
 		border-radius: 3px;
 	}
 </style>
 <body class="overflow-hidden">	
-	<div class="main overflow-hidden" id="flash">
-		<ul class="spectrume" id="spectrumeBeat"></ul>
-		<a class="logo" id="spectrumeBass">
-			<img src="assets/me.png" draggable="false">
-		</a>
-		<a class="logo paused mediaPlayerStarter bass-overlay" id="spectrumeBassOverlay">
-			<img src="assets/me.png" draggable="false">
-		</a>
+	<div class="d-block position-relative overflow-hidden">
+		<div class="main" id="flash">
+			<ul style="transform: rotate(45deg);" class="spectrume" id="spectrumeBeat"></ul>
+			<!-- <ul style="transform: rotate(45deg);" class="spectrume" id="spectrumeBeatOverlay"></ul> -->
+			<a class="logo" id="spectrumeBass">
+				<img src="assets/me.png" draggable="false">
+			</a>
+			<a class="logo paused mediaPlayerStarter bass-overlay" id="spectrumeBassOverlay">
+				<img src="assets/me.png" draggable="false">
+			</a>
+		</div>
 	</div>
-	<div class="container-fluid py-2 px-2 fixed-bottom">
-		<div class="row">
-			<div id="mediaPlayer" class="col d-none d-lg-block mediaplayer">
-				<div class="row g-2" id="mediaPlayerControl">
-					<div class="col-auto col-lg-auto">
-						<button class="btn btn-success mediaPlayerStarter" id="mediaPlayerStarter">Play</button>
-					</div>
-					<div class="col col-lg-auto">
-						<audio class="d-none" id="mediaPlayerAudio" controls loop>
-							<source src="assets/audio/lily.webm" type="audio/mpeg">
-						</audio>
-						<input class="form-control d-none" id="mediaPlayerSelector" type="file" accept="audio/*" />
-						<label for="mediaPlayerSelector" class="btn btn-success">Ubah Lagu</label>
-					</div>
-					<div class="col-auto col-lg-auto">
-						<button class="btn btn-success" id="mediaPlayerToggle">Sembunyikan</button>
-					</div>
-					<div class="col-auto col-lg-auto">
-						<div class="btn text-white">
-							<p class="m-0">Bass <span id="bassEnergy"></span></p>
-						</div>
-						<div class="btn text-white">
-							<p class="m-0">Gitar <span id="gitarEnergy"></span></p>
-						</div>
-						<div class="btn text-white">
-							<p class="m-0">Snare <span id="snareEnergy"></span></p>
-						</div>
-						<div class="btn text-white">
-							<p class="m-0">Simbal <span id="simbalEnergy"></span></p>
-						</div>
-						<div class="btn text-white">
-							<p class="m-0">Treble <span id="trebleEnergy"></span></p>
-						</div>
-					</div>
+	<div class="container-fluid py-2 px-2 fixed-bottom mediaplayer" id="mediaPlayer">
+		<div class="row g-2 py-2" id="mediaPlayerControl">
+			<div class="col-auto">
+				<button class="btn btn-success mediaPlayerStarter" id="mediaPlayerStarter"><i class="bi bi-play-fill"></i></button>
+			</div>
+			<div class="col-auto">
+				<audio class="d-none" id="mediaPlayerAudio" controls loop>
+					<source src="assets/audio/close to the sun.webm" type="audio/mpeg">
+				</audio>
+				<input class="form-control d-none" id="mediaPlayerSelector" type="file" accept="audio/*" />
+				<label for="mediaPlayerSelector" class="btn btn-success"><i class="bi bi-music-note-list"></i></label>
+			</div>
+			<div class="col-auto d-none d-sm-block">
+				<button class="btn btn-success" id="mediaPlayerToggle"><i class="bi bi-eye-slash-fill"></i></button>
+			</div>
+			<div class="col-auto d-none d-sm-block">
+				<div class="btn text-white text-end">
+					<p class="m-0"><span id="mediaPlayerAudioProgressTextCurrent">0.00</span>%</p>
 				</div>
 			</div>
-			<div class="col-12 col-lg-auto d-flex  justify-content-center justify-content-lg-end align-items-end">
+			<div class="col-auto d-none">
 				<div class="btn text-white">
+					<p class="m-0">Gi <span id="gitarEnergy"></span>&nbsp;Ba <span id="bassEnergy"></span>&nbsp;Sn <span id="snareEnergy"></span>&nbsp;Si <span id="simbalEnergy"></span>&nbsp;Tr <span id="trebleEnergy"></span></p>
+				</div>
+			</div>
+			<div class="col d-flex justify-content-end justify-content-lg-end align-items-end">
+				<a class="btn text-white text-end" href="https://ieu.link/tentang">
 					<p class="m-0">&copy2024 GreenRunchly</p>
+				</a>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-12">
+				<div class="music-progress-bar bg-body w-100 rounded-3">
+					<div class="filler bg-success h-100 rounded-3" id="mediaPlayerAudioProgress" style="--progress:100%;"></div>
 				</div>
 			</div>
 		</div>
@@ -154,10 +161,10 @@
 		isit = $("#mediaPlayer").hasClass('hide');
         if (isit == true){
             $("#mediaPlayer").removeClass('hide');
-			$("#mediaPlayerToggle").html('Sembunyi');
+			$("#mediaPlayerToggle").html('<i class="bi bi-eye-slash-fill"></i>');
         }else{
             $("#mediaPlayer").addClass('hide');
-			$("#mediaPlayerToggle").html('Tampil');
+			$("#mediaPlayerToggle").html('<i class="bi bi-eye-fill"></i>');
         }
     });
 	$(document).on("change", "#mediaPlayerSelector", function(e) {
@@ -168,17 +175,17 @@
     $(document).on("click", ".mediaPlayerStarter", function(e) {
         if ($('#mediaPlayerAudio').prop("paused") == true){
             $("#mediaPlayerAudio")[0].play();
-			$("#mediaPlayerStarter").html('Pause');
+			$("#mediaPlayerStarter").html('<i class="bi bi-pause-fill"></i>');
 			$("#spectrumeBass").removeClass('paused');
         }else{
             $("#mediaPlayerAudio")[0].pause();
-			$("#mediaPlayerStarter").html('Play');
+			$("#mediaPlayerStarter").html('<i class="bi bi-play-fill"></i>');
 			$("#spectrumeBass").addClass('paused');
         }
     });
 </script>
 <script type="text/javascript">
-    let canvas; let fft;
+    let canvas; let fft; let audioElement
 	let teethRatio = 8; let teethMax = 1024; let teetUsed = (teethMax / teethRatio);  // Terdapat 64 teeth
 
     function setup() {
@@ -193,7 +200,7 @@
             mediaSource.connect(p5.soundOut);
         }
 		peakDetect = new p5.PeakDetect();
-	
+		audioElement = document.getElementById('mediaPlayerAudio');
 		// Init DOM untuk spectrume sebanyak teeth yang dipakai
 		for (let index = 0; index < teetUsed; index++) {
 			let rot = ((360)/teetUsed)*index;
@@ -206,10 +213,17 @@
         getAudioContext().resume();
     }
 
-	let count_delay = 0;
+	let count_delay = 0; let tick = 0;
     function draw() {
         let spectrum = fft.analyze();
         let waveform = fft.waveform();
+
+		// Audio Progress Bar, biar lengkap
+		let musicCurrentTime = audioElement.currentTime;
+		let musicDuration = audioElement.duration;
+		musicProgress = (musicCurrentTime/musicDuration) * 100;
+		$("#mediaPlayerAudioProgress").css('--progress', `${musicProgress}%`);
+		$("#mediaPlayerAudioProgressTextCurrent").html(`${musicProgress.toFixed(2)}`);
 
 		// Spectrume Bars
 		let beat_base = spectrum; let beat_temp = 0; let beat_length = beat_base.length;
@@ -222,10 +236,14 @@
 			beat_teeth = beat_base[ teethRatio * (teethSelected) ];
 			
 			let teethPos = i;
-			let teethHeight = (75 + (beat_teeth/1.5));
-			let teethOpaque = 0 + ((beat_teeth/255) * 0.7);
+			let teethHeight = (100 + ( (beat_teeth/2) * (beat_teeth/150) ));
+			let teethOpaque = 0 + ((beat_teeth/255) * 0.6);
 			$("#spectrumeBeat li").eq((teethPos)).css("height",`${teethHeight}px`);
 			$("#spectrumeBeat li").eq(teethPos).css("opacity",`${(teethOpaque)}`);
+
+			// Overlay Spectrum (Heavy)
+			// $("#spectrumeBeatOverlay li").eq((teethPos)).css("height",`${teethHeight/1.1}px`);
+			// $("#spectrumeBeatOverlay li").eq(teethPos).css("opacity",`${(teethOpaque/3)}`);
 		}
 		
 		// Bass dari spectrum
@@ -242,39 +260,40 @@
         }
 		wave_temp = (wave_temp / waveform.length)*0.1;
 
+		// Bass dari beberapa Frekuensi
 		bassEnergy = fft.getEnergy("bass");
 		lowMidEnergy = fft.getEnergy("lowMid");
 		midEnergy = fft.getEnergy("mid");
 		highMidEnergy = fft.getEnergy("highMid");
 		trebleEnergy = fft.getEnergy("treble");
 
-		bass_e = (bassEnergy/1516) * 0.1;
-		gitar_e = (lowMidEnergy/1516) * 0.1;
-		snare_e = (midEnergy/1516) * 0.1;
-		simbal_e = (highMidEnergy/1516) * 0.1;
-		treble_e = (trebleEnergy/1516) * 0.1;
+		bass_e = (bassEnergy/512) * 0.1;
+		gitar_e = (lowMidEnergy/512) * 0.1;
+		snare_e = (midEnergy/512) * 0.1;
+		simbal_e = (highMidEnergy/512) * 0.1;
+		treble_e = (trebleEnergy/512) * 0.1;
 
-		$("#bassEnergy").html((bass_e*100).toFixed(2));
-		$("#gitarEnergy").html((gitar_e*100).toFixed(2));
-		$("#snareEnergy").html((snare_e*100).toFixed(2));
-		$("#simbalEnergy").html((simbal_e*100).toFixed(2));
-		$("#trebleEnergy").html((treble_e*100).toFixed(2));
+		$("#bassEnergy").html((bass_e*1516).toFixed(0));
+		$("#gitarEnergy").html((gitar_e*1516).toFixed(0));
+		$("#snareEnergy").html((snare_e*1516).toFixed(0));
+		$("#simbalEnergy").html((simbal_e*1516).toFixed(0));
+		$("#trebleEnergy").html((treble_e*1516).toFixed(0));
 
 		// DOM Manipulate spectrum bar secara langsung
 		let bassStrength = wave_temp + bass_temp + bass_e + snare_e + simbal_e + treble_e;
-		$("#spectrumeBass").css("transform", `scale(${(1.04-bassStrength)})`);
-		$("#spectrumeBassOverlay").css("transform", `scale(${(0.96+bassStrength)})`);
+		$("#spectrumeBass").css("transform", `scale(${(1.1-(bassStrength))})`);
+		$("#spectrumeBassOverlay").css("transform", `scale(${(1.1-bassStrength/1.5)})`);
 
 		// LR Flash
 		// $("#flash").css("background", `linear-gradient(90deg, rgba(255,255,255,${(bass_e * 15)}) 0%, rgba(255,255,255,0) 30%, rgba(255,255,255,0) 70%, rgba(255,255,255,${(bass_e * 15)}) 100%)`);
 		// Bottom Flash
 		// $("#flash").css("background", `linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(255,255,255,${(bass_e * 30)}) 100%)`);
 		// Center Flash
-		$("#flash").css("background", `radial-gradient(circle, rgba(255,255,255,${(bassStrength * 10)}) 0%, rgba(255,255,255,0) 100%)`);
-
+		$("#flash").css("background", `radial-gradient(circle, rgba(255,255,255,${(bassStrength * 4)}) 0%, rgba(255,255,255,0) 100%)`);
+		
 		// Debugging
 		if (count_delay > 60){
-			// console.log(bassStrength);
+			tick ++;
 			count_delay = 0;
 		}else{
 			count_delay ++;
