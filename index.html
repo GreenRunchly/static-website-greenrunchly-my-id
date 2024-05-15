@@ -20,10 +20,17 @@
 	<!-- Bootstrap Style -->
     <link href="assets/css/bootstrap-5.3.2-dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="assets/css/bootstrap-5.3.2-dist/js/bootstrap.bundle.min.js"></script>
+	<link rel="stylesheet" href="assets/css/bootstrap-icons-1.11.3/font/bootstrap-icons.min.css">
 	
 	<!-- JQuery -->
 	<script src="assets/js/jquery-3.5.1.min.js"></script>
     <script src="assets/js/jquery.countdown.js"></script>
+
+	<!-- DB Framework -->
+	<script src="assets/js/localforage/dist/localforage.js"></script>
+
+	<!-- JSMedia -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jsmediatags/3.9.5/jsmediatags.min.js"></script>
 </head>
 <style>
 	body{
@@ -54,7 +61,7 @@
 	}
 	.logo.bass-overlay{
 		position: absolute;
-		opacity: 0.3;
+		opacity: 0.1;
 		z-index: 990;
 	}
 	.logo img{
@@ -65,15 +72,23 @@
 		overflow: hidden;
 		cursor: pointer;
 	}
-	.mediaplayer{
+	.visibilitas{
 		opacity: 1;
 		transition: 0.5s;
 	}
-	.mediaplayer.hide{
+	.visibilitas.hide{
 		opacity: 0;
 	}
-	.mediaplayer.hide:hover{
+	.visibilitas.hide:hover{
 		opacity: 1;
+	}
+	.music-progress-bar{
+		height: 7px;
+	}
+	.music-progress-bar .filler{
+		width: calc(var(--progress));
+		min-width: 16px;
+		transition: 0.5s;
 	}
 	.spectrume{
 		position: absolute;
@@ -87,44 +102,156 @@
 	.spectrume li{
 		position: absolute;
 		width: 7px;
-		min-height: 140px;
 		background-color: white;
 		transform-origin: 0% 100% 0;
 		border-radius: 3px;
 	}
+
+	.video{
+		background-color: black;
+	}
+	.video video{
+		--vid-opacity: 50%;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		filter: blur(3px) opacity(var(--vid-opacity));
+	}
+	video::-webkit-media-controls {
+		display: none !important;
+	}
+	video::-webkit-media-controls-enclosure {
+		display: none !important;
+	}
+	video::-webkit-media-controls-panel {
+		display: none !important;
+	}
+	video::-webkit-media-controls-play-button {
+		display: none !important;
+	}
+
+	.bgm{
+		background-color: black;
+	}
+	.bgm img{
+		--vid-opacity: 50%;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		filter: blur(3px) opacity(var(--vid-opacity));
+	}
+
 </style>
 <body class="overflow-hidden">	
-	<div class="main overflow-hidden" id="flash">
-		<ul class="spectrume" id="spectrumeBeat"></ul>
-		<a class="logo" id="spectrumeBass">
-			<img src="assets/me.png" draggable="false">
-		</a>
-		<a class="logo paused mediaPlayerStarter bass-overlay" id="spectrumeBassOverlay">
-			<img src="assets/me.png" draggable="false">
-		</a>
+	<div class="d-block position-fixed w-100 overflow-hidden d-none">
+		<div class="main video video-wallpaper" >
+			<video autoplay="" muted="" loop="" playsinline="">
+				<source src="assets/sora-kasugano-yosuga-no-sora-desktop-wallpaperwaifu.com.mp4" type="video/mp4">
+			</video>
+		</div>
 	</div>
-	<div class="container-fluid py-2 px-2 fixed-bottom">
+	<div class="d-block position-fixed w-100 overflow-hidden d-none">
+		<div class="main bgm bgm-wallpaper">
+			<img src="assets/Anime-Girl-with-Summer-Vibe.png" style="--vid-opacity: 75%;">
+		</div>
+	</div>
+
+	<div class="d-block position-relative overflow-hidden">
+		<div class="main" id="flash">
+			<ul style="transform: rotate(45deg);" class="spectrume" id="spectrumeBeat"></ul>
+			<a class="logo" id="spectrumeBass">
+				<img src="assets/me.png" draggable="false">
+			</a>
+			<a class="logo paused mediaPlayerStarter bass-overlay" id="spectrumeBassOverlay">
+				<img src="assets/me.png" draggable="false">
+			</a>
+		</div>
+	</div>
+	<div class="container-fluid py-2 px-2 fixed-top">
 		<div class="row">
-			<div id="mediaPlayer" class="col d-none d-lg-block mediaplayer">
-				<div class="row g-2" id="mediaPlayerControl">
-					<div class="col-auto col-lg-auto">
-						<button class="btn btn-success mediaPlayerStarter" id="mediaPlayerStarter">Play</button>
+			<div class="col-12 visibilitas mediaList">
+				<div class="row g-1 lh-sm">
+					<div class="col-12">
+						<div class="row g-1">
+							<div class="col-auto d-block">
+								<button class="btn btn-success mediaListLibraryToggle"><i class="bi bi-music-note-list"></i></button>
+							</div>
+							<div class="col-auto">
+								<label class="btn btn-success importMusic" for="mediaPlayerMusicImporter"><i class="bi bi-plus-circle-fill"></i></label>
+							</div>
+							<div class="col-auto d-none confirmRemoveAllMusicToggle">
+								<button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmRemoveAllMusic"><i class="bi bi-radioactive"></i></button>
+							</div>
+							<div class="col">
+								<a class="btn btn-success text-white text-end reloadMusic">
+									<p class="m-0" id="mediaPlayerMusicImporterStatus">Muat Perpustakaan Musik</p>
+								</a>
+							</div>
+						</div>
 					</div>
-					<div class="col col-lg-auto">
-						<audio class="d-none" id="mediaPlayerAudio" controls loop>
-							<source src="assets/audio/lily.webm" type="audio/mpeg">
-						</audio>
-						<input class="form-control d-none" id="mediaPlayerSelector" type="file" accept="audio/*" />
-						<label for="mediaPlayerSelector" class="btn btn-success">Ubah Lagu</label>
-					</div>
-					<div class="col-auto col-lg-auto">
-						<button class="btn btn-success" id="mediaPlayerToggle">Sembunyikan</button>
+				</div>
+				<div class="row g-1 my-1">
+					<div class="col-12 col-sm-6 col-md-5 col-lg-4 col-xl-3 overflow-hidden overflow-y-scroll rounded-3 lh-sm visibilitas mediaListLibrary" style="max-height: 40vh;">
+						<div class="row g-1">
+							<div class="col-12">
+								<a class="btn btn-success text-white text-start w-100">
+									<small class="m-0">Klik muat perpustakaan untuk memuat lagu yang tersimpan sebelumnya.</small>
+								</a>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
-			<div class="col-12 col-lg-auto d-flex  justify-content-center justify-content-lg-end align-items-end">
-				<div class="btn text-white">
+		</div>
+	</div>
+	<div class="container-fluid py-2 px-2 fixed-bottom visibilitas" id="mediaPlayer">
+		<div class="row g-2 py-2" id="mediaPlayerControl">
+			<div class="col-auto">
+				<button class="btn btn-success mediaPlayerStarter" id="mediaPlayerStarter"><i class="bi bi-play-fill"></i></button>
+				<audio class="d-none" id="mediaPlayerAudio" controls>
+					<source src="assets/audio/REOL - ChiruChiru.mp3" type="audio/mpeg">
+				</audio>
+				<input class="form-control d-none" type="file" id="mediaPlayerMusicImporter" accept="audio/*" webkitdirectory directory multiple />
+			</div>
+			<div class="col-auto d-block">
+				<button class="btn btn-success mediaPlayerToggle"><i class="bi bi-eye-fill"></i></button>
+			</div>
+			<div class="col-auto d-none d-sm-flex flex-column justify-content-center">
+				<div class="btn text-white text-start p-0 m-0 lh-1">
+					<p class="m-0 p-0"><small id="mediaPlayerAudioTitle">REOL - ChiruChiru</small></p>
+					<small class="m-0 p-0"><small class="m-0 p-0"><small id="mediaPlayerAudioProgressTextCurrent">0.00</small>%</small></small>
+				</div>
+			</div>
+			<div class="col d-flex justify-content-end justify-content-lg-end align-items-end">
+				<a class="btn text-white text-end" href="https://ieu.link/tentang" target="_blank">
 					<p class="m-0">&copy2024 GreenRunchly</p>
+				</a>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-12">
+				<div class="music-progress-bar bg-body w-100 rounded-3">
+					<div class="filler bg-success h-100 rounded-3" id="mediaPlayerAudioProgress" style="--progress:100%;"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal fade" id="confirmRemoveAllMusic" tabindex="-1" aria-hidden="true" data-bs-backdrop="false">
+		<div class="modal-dialog modal-sm">
+			<div class="modal-content">
+				<div class="modal-header text-danger">
+					<h1 class="modal-title fs-5">Hapus Data Perpustakaan?</h1>
+				</div>
+				<div class="modal-body">
+					<p class="m-0">Seluruh data perpustakaan musik akan dihapus keseluruhan, yakin?</p>
+				</div>
+				<div class="modal-footer row g-1">
+					<div class="col">
+						<button type="button" class="btn btn-secondary w-100" data-bs-dismiss="modal">Tidak Jadi</button>
+					</div>
+					<div class="col">
+						<button type="button" class="btn btn-danger w-100 removeAllMusic" data-bs-dismiss="modal">Kosongkan</button>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -133,34 +260,12 @@
 <script src="assets/js/p5.js"></script>
 <script src="assets/js/p5.sound.js"></script>
 <script>
-	$(document).on("click", "#mediaPlayerToggle", function(e) {
-		isit = $("#mediaPlayer").hasClass('hide');
-        if (isit == true){
-            $("#mediaPlayer").removeClass('hide');
-			$("#mediaPlayerToggle").html('Sembunyi');
-        }else{
-            $("#mediaPlayer").addClass('hide');
-			$("#mediaPlayerToggle").html('Tampil');
-        }
-    });
-	$(document).on("change", "#mediaPlayerSelector", function(e) {
-        var files = this.files;
-        $("#mediaPlayerAudio").attr("src", URL.createObjectURL(files[0]));
-        $("#mediaPlayerAudio")[0].play();
-    });
-    $(document).on("click", ".mediaPlayerStarter", function(e) {
-        if ($('#mediaPlayerAudio').prop("paused") == true){
-            $("#mediaPlayerAudio")[0].play();
-			$("#mediaPlayerStarter").html('Pause');
-			$("#spectrumeBass").removeClass('paused');
-        }else{
-            $("#mediaPlayerAudio")[0].pause();
-			$("#mediaPlayerStarter").html('Play');
-			$("#spectrumeBass").addClass('paused');
-        }
-    });
+	function _0xeb80(){const _0x302c79=['btn-danger','.selectMusic','Gagal\x20Menghapus!','src','addClass','target','play','removeItem','click','<i\x20class=\x22bi\x20bi-exclamation-triangle-fill\x22></i>\x20Gagal\x20Membuka\x20Data!','LaguTestMeta','BgDhR','gOMMd','tags','\x20-\x20','klpYR','files','readAsDataURL','22rVbhue','23256KuwvzT','#mediaPlayerAudioTitle','Scan\x20Done!','title','619160tNSuaK','iterate','then','.reloadMusic','.removeMusic','<span\x20class=\x22spinner-border\x20spinner-border-sm\x22\x20role=\x22status\x22\x20aria-hidden=\x22true\x22></span>\x20Scanning...\x20(','184gVTyft','vmiVn','music-number','Scanning...','pop','html','split','HhzKn','jfTUa',')\x20(','onerror','catch','#mediaPlayerAudio','Gagal\x20Menghapus\x20Library\x20Meta!','clear','6LZiJrz','QjIIj','artist','name','909058cHTtkN','each','#mediaPlayerMusicImporterStatus','jJSBn','#mediaPlayerMusicImporter','.removeAllMusic','111028sglycO','toLowerCase','.confirmRemoveAllMusicToggle','onload','\x0a\x09\x09\x09\x09<div\x20class=\x22col-12\x22>\x0a\x09\x09\x09\x09\x09<a\x20class=\x22btn\x20btn-success\x20text-white\x20text-start\x20w-100\x20selectMusic\x22\x20music-number=\x22','<span\x20class=\x22spinner-border\x20spinner-border-sm\x22\x20role=\x22status\x22\x20aria-hidden=\x22true\x22></span>','wofGv','div','log','size','ykCoU','d-none','33820LRdKnZ','</small>\x0a\x09\x09\x09\x09\x09</a>\x0a\x09\x09\x09\x09</div>\x0a\x09\x09\x09','Perpustakaan\x20Musik','974860eMtBSt','Gagal\x20Menghapus\x20Meta!','read','createInstance','prepend','children','Gagal\x20Menghapus\x20Library!','<span\x20class=\x22spinner-border\x20spinner-border-sm\x22\x20role=\x22status\x22\x20aria-hidden=\x22true\x22></span>\x20Menyiapkan...','current-media','getItem','Error\x20during\x20iteration','removeClass','3DWIEro','attr','3541181EYgUOM','LvNpV','empty'];_0xeb80=function(){return _0x302c79;};return _0xeb80();}const _0x5a45f6=_0x30fb;(function(_0x12f7d3,_0x370edd){const _0x17a3fd=_0x30fb,_0xc1e81c=_0x12f7d3();while(!![]){try{const _0x46af49=-parseInt(_0x17a3fd(0x7e))/0x1+parseInt(_0x17a3fd(0xce))/0x2*(-parseInt(_0x17a3fd(0x99))/0x3)+-parseInt(_0x17a3fd(0x8a))/0x4+parseInt(_0x17a3fd(0xb5))/0x5+-parseInt(_0x17a3fd(0xca))/0x6*(-parseInt(_0x17a3fd(0x9b))/0x7)+parseInt(_0x17a3fd(0xbb))/0x8*(parseInt(_0x17a3fd(0xb1))/0x9)+parseInt(_0x17a3fd(0x8d))/0xa*(parseInt(_0x17a3fd(0xb0))/0xb);if(_0x46af49===_0x370edd)break;else _0xc1e81c['push'](_0xc1e81c['shift']());}catch(_0x4e01cd){_0xc1e81c['push'](_0xc1e81c['shift']());}}}(_0xeb80,0x4bb5b));let importedSongs=localforage[_0x5a45f6(0x90)]({'name':'LaguTest'}),importedSongsMeta=localforage['createInstance']({'name':_0x5a45f6(0xa8)});function loadMusicListing(){const _0x5649a8=_0x5a45f6;$('.mediaList')['children'](_0x5649a8(0x85))['eq'](0x1)['children'](_0x5649a8(0x85))[_0x5649a8(0x92)](_0x5649a8(0x85))[_0x5649a8(0x9d)](),importedSongsMeta[_0x5649a8(0xb6)](function(_0x352eeb,_0x4eb962,_0x270765){const _0x2706bc=_0x5649a8;if(_0x2706bc(0x9c)===_0x2706bc(0x84))_0x93e4fb();else{let _0x19f38d=''+_0x4eb962;_0x352eeb[_0x2706bc(0xb4)]&&(_0x19f38d=_0x352eeb[_0x2706bc(0xcc)]+_0x2706bc(0xac)+_0x352eeb[_0x2706bc(0xb4)]),$('.mediaList')[_0x2706bc(0x92)](_0x2706bc(0x85))['eq'](0x1)['children'](_0x2706bc(0x85))['children'](_0x2706bc(0x85))[_0x2706bc(0x91)](_0x2706bc(0x82)+_0x4eb962+'\x22>\x0a\x09\x09\x09\x09\x09\x09<small\x20class=\x22m-0\x22>'+_0x19f38d+_0x2706bc(0x8b)),_0x270765>0x0&&$(_0x2706bc(0x80))[_0x2706bc(0x98)](_0x2706bc(0x89));}})['then'](function(){const _0x9f6f2f=_0x5649a8;_0x9f6f2f(0xcb)===_0x9f6f2f(0xcb)?$(_0x9f6f2f(0x7a))[_0x9f6f2f(0xc0)](_0x9f6f2f(0x8c)):_0x404cc6++;})[_0x5649a8(0xc6)](function(_0x3f821f){const _0x4cac28=_0x5649a8;_0x4cac28(0x88)!=='fsThx'?($(_0x4cac28(0x7a))[_0x4cac28(0xc0)](_0x4cac28(0xa7)),console['error'](_0x4cac28(0x97),_0x3f821f)):(_0x3480b4(_0x4cac28(0x80))['addClass']('d-none'),_0x4d677a());}),$(_0x5649a8(0x7a))[_0x5649a8(0xc0)]('<span\x20class=\x22spinner-border\x20spinner-border-sm\x22\x20role=\x22status\x22\x20aria-hidden=\x22true\x22></span>\x20Memuat\x20Data...');}function _0x30fb(_0x4af481,_0x5df3c3){const _0xeb8054=_0xeb80();return _0x30fb=function(_0x30fb66,_0x5dae00){_0x30fb66=_0x30fb66-0x79;let _0x53860b=_0xeb8054[_0x30fb66];return _0x53860b;},_0x30fb(_0x4af481,_0x5df3c3);}$(_0x5a45f6(0x7c))['on']('change',function(_0x41999f){const _0x9409b4=_0x5a45f6,_0x3772cc=_0x41999f[_0x9409b4(0xa3)][_0x9409b4(0xae)];let _0x292ff2=0x0,_0x1d32d6=0x0,_0xc7e66e=0x0,_0x5d8116=0x0;function _0x31ef07(_0x5b9d0b){const _0x3dc086=_0x9409b4;if(_0x3dc086(0xa9)===_0x3dc086(0xa9))return new Promise((_0x307d62,_0x18c577)=>{const _0xad00f5=_0x3dc086;if(_0xad00f5(0xaa)==='vVaTX')_0x2dbde1(_0xad00f5(0x93));else{const _0x469800=new FileReader();_0x469800[_0xad00f5(0xaf)](_0x5b9d0b),_0x469800[_0xad00f5(0x81)]=()=>_0x307d62(_0x469800['result']),_0x469800[_0xad00f5(0xc5)]=_0x357a68=>_0x18c577(_0x357a68);}});else _0x51892f('#mediaPlayerMusicImporterStatus')[_0x3dc086(0xc0)](_0x3dc086(0xa7)),_0x4dc56b['error'](_0x3dc086(0x97),_0x28b744);}$(_0x9409b4(0x7a))[_0x9409b4(0xc0)](_0x9409b4(0x94)),$[_0x9409b4(0x79)](_0x3772cc,function(_0x1200e2,_0x3009c7){const _0xfbc38a=_0x9409b4;_0x3009c7[_0xfbc38a(0x87)]>0x2*0x400*0x400?(new Promise((_0x2ac026,_0x1bb73a)=>{const _0x5d7072=_0xfbc38a;let _0x3f7970=_0x3009c7[_0x5d7072(0xcd)],_0x384424=_0x3009c7[_0x5d7072(0xcd)][_0x5d7072(0xc1)]('.')[_0x5d7072(0xbf)]()[_0x5d7072(0x7f)](),_0x44ce4a=_0x3009c7[_0x5d7072(0x87)],_0x198862=_0x44ce4a['toString'](),_0x201a49={};jsmediatags[_0x5d7072(0x8f)](_0x3009c7,{'onSuccess':function(_0x48c0ea){const _0x2f2bd8=_0x5d7072;_0x201a49=_0x48c0ea[_0x2f2bd8(0xab)],importedSongsMeta['setItem'](_0x198862,_0x201a49)[_0x2f2bd8(0xb7)](function(){const _0x4979d0=_0x2f2bd8;let _0x5a86d2=_0x31ef07(_0x3009c7);importedSongs['setItem'](_0x198862,_0x5a86d2)[_0x4979d0(0xb7)](function(){const _0x5dd90b=_0x4979d0;_0x2ac026(),$(_0x5dd90b(0x7a))[_0x5dd90b(0xc0)](_0x5dd90b(0xba)+_0x1d32d6+'/'+_0x292ff2+_0x5dd90b(0xc4)+_0xc7e66e+'/'+_0x5d8116+'\x20OK)');})[_0x4979d0(0xc6)](function(_0x38c1e6){const _0x24532a=_0x4979d0;'jJSBn'!==_0x24532a(0x7b)?(_0x20b841[_0x24532a(0x86)](_0x47a6ff),_0x1b6d40(_0x350737)):_0x1bb73a(_0x38c1e6);});})[_0x2f2bd8(0xc6)](function(_0x4c31f7){_0x1bb73a(_0x4c31f7);});},'onError':function(_0x3bf536){const _0x42ba7b=_0x5d7072;_0x42ba7b(0xc2)===_0x42ba7b(0xc2)?(console[_0x42ba7b(0x86)](_0x3bf536),_0x1bb73a(_0x3bf536)):_0x2de6c2(_0x16d001);}});})[_0xfbc38a(0xb7)](()=>{_0xc7e66e++,_0x1d32d6++;})[_0xfbc38a(0xc6)](()=>{_0xc7e66e++,_0x1d32d6++;}),_0x5d8116++):_0xfbc38a(0xad)==='klpYR'?_0x1d32d6++:(_0x3b3381(),_0x51c341(_0x45b544),_0x45866a['log'](_0xfbc38a(0xb3),_0x210733)),_0x292ff2++;});let _0x5bbd8b=setInterval(()=>{const _0x29b7e6=_0x9409b4;console['log'](_0x29b7e6(0xbe),_0x1d32d6,_0x292ff2,_0xc7e66e),_0x1d32d6==_0x292ff2&&(loadMusicListing(),clearInterval(_0x5bbd8b),console[_0x29b7e6(0x86)](_0x29b7e6(0xb3),_0xc7e66e));},0x64);}),$(document)['on'](_0x5a45f6(0xa6),_0x5a45f6(0xb8),function(_0x5c30ed){loadMusicListing();}),$(document)['on'](_0x5a45f6(0xa6),_0x5a45f6(0x9f),function(_0x15edd3){const _0x5c2f9b=_0x5a45f6;let _0x666eb9=$(this)[_0x5c2f9b(0x9a)](_0x5c2f9b(0xbd));importedSongsMeta[_0x5c2f9b(0x96)](_0x666eb9)['then'](function(_0x438f13){const _0xcd672=_0x5c2f9b;let _0x457ef8=''+_0x666eb9;_0x438f13[_0xcd672(0xb4)]&&(_0x457ef8=_0x438f13[_0xcd672(0xcc)]+_0xcd672(0xac)+_0x438f13['title']),$(_0xcd672(0xb2))[_0xcd672(0xc0)](_0x457ef8),$(_0xcd672(0x9f))[_0xcd672(0x98)](_0xcd672(0x9e)),$('.selectMusic[music-number='+_0x666eb9+']')[_0xcd672(0xa2)](_0xcd672(0x9e));})['catch'](function(_0x3907c8){const _0x1eef39=_0x5c2f9b;console[_0x1eef39(0x86)](_0x3907c8);}),importedSongs[_0x5c2f9b(0x96)](_0x666eb9)[_0x5c2f9b(0xb7)](function(_0x9f6f99){const _0x2ea99d=_0x5c2f9b;$(_0x2ea99d(0xc7))[_0x2ea99d(0x9a)](_0x2ea99d(0x95),_0x666eb9),$(_0x2ea99d(0xc7))[_0x2ea99d(0x9a)](_0x2ea99d(0xa1),_0x9f6f99),$(_0x2ea99d(0xc7))[0x0][_0x2ea99d(0xa4)]();})[_0x5c2f9b(0xc6)](function(_0x250501){const _0x59c931=_0x5c2f9b;console[_0x59c931(0x86)](_0x250501);});}),$(document)['on'](_0x5a45f6(0xa6),_0x5a45f6(0xb9),function(_0x28a4d8){const _0x44622c=_0x5a45f6;let _0x16eadd=$(this)[_0x44622c(0x9a)]('music-number');$(this)[_0x44622c(0xc0)](_0x44622c(0x83)),importedSongs[_0x44622c(0xa5)](_0x16eadd)[_0x44622c(0xb7)](function(){const _0x44b85a=_0x44622c;importedSongsMeta[_0x44b85a(0xa5)](_0x16eadd)[_0x44b85a(0xb7)](function(){const _0x2041a1=_0x44b85a;'UkOAI'===_0x2041a1(0xbc)?_0x4544d9[_0x2041a1(0x86)](_0x239b5f):loadMusicListing();})[_0x44b85a(0xc6)](function(_0xc76440){const _0x4049e8=_0x44b85a;alert(_0x4049e8(0x8e));});})[_0x44622c(0xc6)](function(_0x244205){const _0x361ed5=_0x44622c;_0x361ed5(0xc3)===_0x361ed5(0xc3)?alert(_0x361ed5(0xa0)):_0x10f52e=_0x18fcc1['artist']+_0x361ed5(0xac)+_0x1c2df2[_0x361ed5(0xb4)];});}),$(document)['on']('click',_0x5a45f6(0x7d),function(_0x149b58){const _0x3c7f9d=_0x5a45f6;let _0x29ad95=this;importedSongs[_0x3c7f9d(0xc9)]()[_0x3c7f9d(0xb7)](function(){const _0x25bd7c=_0x3c7f9d;importedSongsMeta[_0x25bd7c(0xc9)]()[_0x25bd7c(0xb7)](function(){const _0x221f7d=_0x25bd7c;$(_0x221f7d(0x80))[_0x221f7d(0xa2)](_0x221f7d(0x89)),loadMusicListing();})[_0x25bd7c(0xc6)](function(_0x45917a){const _0x20c3be=_0x25bd7c;alert(_0x20c3be(0xc8));});})[_0x3c7f9d(0xc6)](function(_0x43cb25){alert('Gagal\x20Menghapus\x20Library!');});});
+</script>
+<script>
+	var _0x54f0eb=_0x44b4;(function(_0x438cfd,_0x25772c){var _0x226963=_0x44b4,_0x5bd276=_0x438cfd();while(!![]){try{var _0x597dd7=parseInt(_0x226963(0x1ae))/0x1*(parseInt(_0x226963(0x1ad))/0x2)+parseInt(_0x226963(0x1c2))/0x3+-parseInt(_0x226963(0x1a9))/0x4*(-parseInt(_0x226963(0x1a7))/0x5)+parseInt(_0x226963(0x1b2))/0x6*(parseInt(_0x226963(0x1b4))/0x7)+-parseInt(_0x226963(0x1ba))/0x8+parseInt(_0x226963(0x1ac))/0x9*(parseInt(_0x226963(0x1be))/0xa)+-parseInt(_0x226963(0x1bb))/0xb*(parseInt(_0x226963(0x1b1))/0xc);if(_0x597dd7===_0x25772c)break;else _0x5bd276['push'](_0x5bd276['shift']());}catch(_0x498658){_0x5bd276['push'](_0x5bd276['shift']());}}}(_0x11d0,0x593df),$(document)['on']('click',_0x54f0eb(0x1b3),function(_0x3c1852){var _0x462881=_0x54f0eb;isit=$(_0x462881(0x1b0))[_0x462881(0x1bc)](_0x462881(0x1aa)),isit==!![]?$(_0x462881(0x1b0))[_0x462881(0x1b8)](_0x462881(0x1aa)):'NMfXQ'==='NMfXQ'?$(_0x462881(0x1b0))[_0x462881(0x1b6)](_0x462881(0x1aa)):(_0x4dd0b5=_0x17e513('.mediaListLibrary')['hasClass'](_0x462881(0x1aa)),_0x3661bc==!![]?_0x113a96(_0x462881(0x1bd))['removeClass'](_0x462881(0x1aa)):_0x4443b3(_0x462881(0x1bd))[_0x462881(0x1b6)](_0x462881(0x1aa)));}),$(document)['on'](_0x54f0eb(0x1af),'.mediaListLibraryToggle',function(_0x4fc2c1){var _0x467e8f=_0x54f0eb;isit=$(_0x467e8f(0x1bd))[_0x467e8f(0x1bc)](_0x467e8f(0x1aa)),isit==!![]?$(_0x467e8f(0x1bd))[_0x467e8f(0x1b8)]('hide'):$(_0x467e8f(0x1bd))['addClass'](_0x467e8f(0x1aa));}),$(document)['on']('click','.mediaPlayerStarter',function(_0x28ef26){var _0x230395=_0x54f0eb;$(_0x230395(0x1bf))[_0x230395(0x1c1)](_0x230395(0x1b9))?$(_0x230395(0x1bf))[0x0]['play']():$('#mediaPlayerAudio')[0x0][_0x230395(0x1a8)](),$(_0x230395(0x1bf))['prop'](_0x230395(0x1b9))==!![]?'qKWeJ'!==_0x230395(0x1b7)?($(_0x230395(0x1ab))[_0x230395(0x1a6)]('<i\x20class=\x22bi\x20bi-play-fill\x22></i>'),$(_0x230395(0x1b5))[_0x230395(0x1b8)]('paused')):_0x3da39c('.visibilitas')[_0x230395(0x1b6)]('hide'):($(_0x230395(0x1ab))[_0x230395(0x1a6)](_0x230395(0x1c0)),$(_0x230395(0x1b5))[_0x230395(0x1b6)]('paused'));}));function _0x44b4(_0x99d945,_0x342b6b){var _0x11d00e=_0x11d0();return _0x44b4=function(_0x44b492,_0x3412bf){_0x44b492=_0x44b492-0x1a6;var _0x21b596=_0x11d00e[_0x44b492];return _0x21b596;},_0x44b4(_0x99d945,_0x342b6b);}function _0x11d0(){var _0x5d8c4c=['etcDv','removeClass','paused','4767904iwUkSR','253fdVEoc','hasClass','.mediaListLibrary','860RAsFbr','#mediaPlayerAudio','<i\x20class=\x22bi\x20bi-pause-fill\x22></i>','prop','2111577dNkdhR','html','25AnPGeW','pause','86704qfOrGd','hide','#mediaPlayerStarter','30339bwijHu','2CHaHug','486565dRRMmL','click','.visibilitas','522996NKlEMF','2251332vWyqAw','.mediaPlayerToggle','7BpGXLu','#spectrumeBass','addClass'];_0x11d0=function(){return _0x5d8c4c;};return _0x11d0();}
 </script>
 <script type="text/javascript">
-    (function(_0x3cf080,_0x446941){const _0x5db979=_0x4a12,_0x5c1c12=_0x3cf080();while(!![]){try{const _0x3a0f08=parseInt(_0x5db979(0x87))/0x1+parseInt(_0x5db979(0x73))/0x2+-parseInt(_0x5db979(0x89))/0x3+parseInt(_0x5db979(0x95))/0x4+parseInt(_0x5db979(0x84))/0x5+parseInt(_0x5db979(0x7b))/0x6*(parseInt(_0x5db979(0x96))/0x7)+-parseInt(_0x5db979(0x8a))/0x8;if(_0x3a0f08===_0x446941)break;else _0x5c1c12['push'](_0x5c1c12['shift']());}catch(_0x3ee632){_0x5c1c12['push'](_0x5c1c12['shift']());}}}(_0x13fc,0xe0fad));let canvas,fft,teethRatio=0x8,teethMax=0x400,teetUsed=teethMax/teethRatio;function setup(){const _0x34ce73=_0x4a12;canvas=createCanvas(0xa,0xa),canvas[_0x34ce73(0x8f)](0x0,0x0),canvas[_0x34ce73(0x88)](_0x34ce73(0x90),_0x34ce73(0x8c)),fft=new p5[(_0x34ce73(0x91))]();let _0x4a671c=getAudioContext();for(let _0x1a9da7 of selectAll('audio')){let _0x9d19ea=_0x4a671c[_0x34ce73(0x97)](_0x1a9da7[_0x34ce73(0x86)]);_0x9d19ea[_0x34ce73(0x7c)](p5[_0x34ce73(0x79)]);}peakDetect=new p5['PeakDetect']();for(let _0x2f7c0b=0x0;_0x2f7c0b<teetUsed;_0x2f7c0b++){let _0xf8e16f=0x168/teetUsed*_0x2f7c0b;$(_0x34ce73(0x78))[_0x34ce73(0x7f)](_0x34ce73(0x75)+_0x2f7c0b+_0x34ce73(0x72)+_0xf8e16f+'deg);\x22></li>');}}function touchStarted(){const _0x1494a8=_0x4a12;getAudioContext()[_0x1494a8(0x85)]();}let count_delay=0x0;function draw(){const _0x1ba219=_0x4a12;let _0x523a8e=fft[_0x1ba219(0x8b)](),_0x1bb5ac=fft[_0x1ba219(0x7d)](),_0x288800=_0x523a8e,_0x270a78=0x0,_0x13208f=_0x288800[_0x1ba219(0x8e)],_0x2b8fe9=Math[_0x1ba219(0x7a)](teetUsed/0x5),_0x389b28=0x0;for(let _0x285914=0x0;_0x285914<teetUsed;_0x285914++){_0x389b28++;_0x389b28%_0x2b8fe9==0x0&&(_0x389b28=_0x389b28-_0x2b8fe9);beat_teeth=_0x288800[teethRatio*_0x389b28];let _0xc74c5b=_0x285914,_0x51c04f=0x64+beat_teeth/1.5,_0x4fc9e0=0x0+beat_teeth/0xff*0.7;$('#spectrumeBeat\x20li')['eq'](_0xc74c5b)[_0x1ba219(0x83)](_0x1ba219(0x80),_0x51c04f+'px'),$(_0x1ba219(0x92))['eq'](_0xc74c5b)[_0x1ba219(0x83)](_0x1ba219(0x77),''+_0x4fc9e0);}let _0x5aa95a=_0x523a8e,_0x1a3582=0x0,_0x409eb8=_0x5aa95a[_0x1ba219(0x8e)];for(let _0x2157b7=0x0;_0x2157b7<_0x409eb8;_0x2157b7++){_0x1a3582+=_0x5aa95a[_0x2157b7]/0xff;}_0x1a3582=_0x1a3582/_0x409eb8*0.1;let _0x263d6e=0x0;for(let _0xb00ce2=0x0;_0xb00ce2<_0x1bb5ac['length'];_0xb00ce2++){_0x263d6e+=_0x1bb5ac[_0xb00ce2]/0xff;}_0x263d6e=_0x263d6e/_0x1bb5ac['length']*0.1;let _0x4104cb=_0x263d6e+_0x1a3582;$(_0x1ba219(0x71))[_0x1ba219(0x83)](_0x1ba219(0x82),'scale('+(1.02-_0x4104cb)+')'),$(_0x1ba219(0x94))[_0x1ba219(0x83)](_0x1ba219(0x82),_0x1ba219(0x74)+(0.98+_0x4104cb)+')');if(count_delay>0x3c){if(_0x1ba219(0x76)===_0x1ba219(0x8d)){let _0x3c3380=0x168/_0x8c71f3*_0x54afe8;_0x429319(_0x1ba219(0x78))[_0x1ba219(0x7f)](_0x1ba219(0x75)+_0x2e785b+_0x1ba219(0x72)+_0x3c3380+_0x1ba219(0x81));}else count_delay=0x0;}else _0x1ba219(0x7e)===_0x1ba219(0x93)?_0x3d33d3+=_0x15e518[_0xe815f8]/0xff:count_delay++;}function _0x4a12(_0x5f34ff,_0x2affea){const _0x13fc71=_0x13fc();return _0x4a12=function(_0x4a1276,_0x21098f){_0x4a1276=_0x4a1276-0x71;let _0x2e9cc0=_0x13fc71[_0x4a1276];return _0x2e9cc0;},_0x4a12(_0x5f34ff,_0x2affea);}function _0x13fc(){const _0x5e30db=['#spectrumeBassOverlay','5994824LJaChP','5436655YsakIQ','createMediaElementSource','#spectrumeBass','\x22\x20style=\x22transform:rotate(','2386896ShdvvV','scale(','<li\x20class=\x22teeth-','TXMjY','opacity','.spectrume','soundOut','round','6SfXWnd','connect','waveform','ksFBY','append','height','deg);\x22></li>','transform','css','8278825SsuchV','resume','elt','1682107eBJutQ','style','669327zYGaru','45296520TBPCGC','analyze','none','lmfew','length','position','pointer-events','FFT','#spectrumeBeat\x20li','RSJAN'];_0x13fc=function(){return _0x5e30db;};return _0x13fc();}
+    (function(_0x4b3e7b,_0x1dd135){const _0x5431e7=_0x5106,_0x445832=_0x4b3e7b();while(!![]){try{const _0x2c20db=-parseInt(_0x5431e7(0xa8))/0x1+-parseInt(_0x5431e7(0x99))/0x2+-parseInt(_0x5431e7(0xc2))/0x3*(parseInt(_0x5431e7(0x9a))/0x4)+parseInt(_0x5431e7(0xc0))/0x5+parseInt(_0x5431e7(0xb4))/0x6+parseInt(_0x5431e7(0xc3))/0x7+parseInt(_0x5431e7(0xa2))/0x8;if(_0x2c20db===_0x1dd135)break;else _0x445832['push'](_0x445832['shift']());}catch(_0x352ffa){_0x445832['push'](_0x445832['shift']());}}}(_0x52a4,0x78c25));function _0x52a4(){const _0x55b3f1=['\x22\x20style=\x22transform:rotate(','soundOut','append','PeakDetect','463577llNymj','FFT','elt','bass','scale(','transform','rLrqR','waveform','#mediaPlayerAudioProgressTextCurrent','--progress','highMid','treble','1873422kcLcyt','<li\x20class=\x22teeth-','getElementById','createMediaElementSource','gsLwB','style','connect','#spectrumeBassOverlay','pointer-events','lowMid','#spectrumeBeat\x20li','round','1672310lJCLuI','mediaPlayerAudio','252TzmGxa','297269pkbjuw','position','deg);\x22></li>','html','opacity','.spectrume','css','GdxME','1880558qPETgt','5112BkSVMC','getEnergy','#spectrumeBass','currentTime','height','analyze','resume','none','10533368FGeAGS','audio'];_0x52a4=function(){return _0x55b3f1;};return _0x52a4();}let canvas,fft,audioElement,teethRatio=0x8,teethMax=0x400,teetUsed=teethMax/teethRatio;function setup(){const _0x148ce0=_0x5106;canvas=createCanvas(0xa,0xa),canvas['position'](0x0,0x0),canvas[_0x148ce0(0xb9)]('pointer-events','none'),fft=new p5[(_0x148ce0(0xa9))](0.78);let _0xaa2be5=getAudioContext();for(let _0x56492f of selectAll(_0x148ce0(0xa3))){if(_0x148ce0(0x98)===_0x148ce0(0x98)){let _0x17dda4=_0xaa2be5['createMediaElementSource'](_0x56492f[_0x148ce0(0xaa)]);_0x17dda4[_0x148ce0(0xba)](p5[_0x148ce0(0xa5)]);}else{_0x30872d++;_0x57cbb5%_0x172d7b==0x0&&(_0x58394f=_0x3458f6-_0x11d6a2);_0x2daa5c=_0x5f2dfc[_0x293345*_0x37eaf8];let _0x2b5083=_0x5c175e,_0x40f09e=0x64+_0x297c02/0x2*(_0x4f3aec/0x96),_0xd717e=0x0+_0x390466/0xff*(_0x397b08/0xff)*0.7;_0x8efef6(_0x148ce0(0xbe))['eq'](_0x2b5083)[_0x148ce0(0x97)](_0x148ce0(0x9e),_0x40f09e+'px'),_0x2d28fe(_0x148ce0(0xbe))['eq'](_0x2b5083)[_0x148ce0(0x97)](_0x148ce0(0xc7),''+_0xd717e);}}peakDetect=new p5['PeakDetect'](),audioElement=document[_0x148ce0(0xb6)](_0x148ce0(0xc1));for(let _0x42c2e5=0x0;_0x42c2e5<teetUsed;_0x42c2e5++){let _0x5a16e7=0x168/teetUsed*_0x42c2e5;$('.spectrume')[_0x148ce0(0xa6)](_0x148ce0(0xb5)+_0x42c2e5+_0x148ce0(0xa4)+_0x5a16e7+_0x148ce0(0xc5));}}function touchStarted(){const _0x30599c=_0x5106;getAudioContext()[_0x30599c(0xa0)]();}function _0x5106(_0x40a331,_0x3f9b4e){const _0x52a452=_0x52a4();return _0x5106=function(_0x5106ed,_0x4e3183){_0x5106ed=_0x5106ed-0x97;let _0x132822=_0x52a452[_0x5106ed];return _0x132822;},_0x5106(_0x40a331,_0x3f9b4e);}let count_delay=0x0;function draw(){const _0x541897=_0x5106;let _0x3cf5ac=fft[_0x541897(0x9f)](),_0x18aedd=fft[_0x541897(0xaf)](),_0x4f5f01=audioElement[_0x541897(0x9d)],_0x3eb345=audioElement['duration'],_0x1d11f3=_0x4f5f01/_0x3eb345*0x64;$('#mediaPlayerAudioProgress')[_0x541897(0x97)](_0x541897(0xb1),_0x1d11f3+'%'),$(_0x541897(0xb0))[_0x541897(0xc6)](''+_0x1d11f3['toFixed'](0x2));let _0x27d1ed=_0x3cf5ac,_0x4aaf77=0x0,_0x3c12b1=_0x27d1ed['length'],_0x111c63=Math[_0x541897(0xbf)](teetUsed/0x5),_0x3622da=0x0;for(let _0xf930cc=0x0;_0xf930cc<teetUsed;_0xf930cc++){_0x3622da++;_0x3622da%_0x111c63==0x0&&(_0x541897(0xb8)===_0x541897(0xae)?_0x18169b=_0xee2f04-_0x2b7384:_0x3622da=_0x3622da-_0x111c63);beat_teeth=_0x27d1ed[teethRatio*_0x3622da];let _0x4997b9=_0xf930cc,_0x34adf2=0x64+beat_teeth/0x2*(beat_teeth/0x96),_0x509ca0=0x0+beat_teeth/0xff*(beat_teeth/0xff)*0.7;$(_0x541897(0xbe))['eq'](_0x4997b9)['css'](_0x541897(0x9e),_0x34adf2+'px'),$(_0x541897(0xbe))['eq'](_0x4997b9)[_0x541897(0x97)](_0x541897(0xc7),''+_0x509ca0);}bassEnergy=fft['getEnergy'](_0x541897(0xab)),lowMidEnergy=fft[_0x541897(0x9b)](_0x541897(0xbd)),midEnergy=fft['getEnergy']('mid'),highMidEnergy=fft[_0x541897(0x9b)](_0x541897(0xb2)),trebleEnergy=fft[_0x541897(0x9b)](_0x541897(0xb3)),bass_e=bassEnergy/0x200*0.2,gitar_e=lowMidEnergy/0x200*0.1,snare_e=midEnergy/0x200*0.1,simbal_e=highMidEnergy/0x200*0.15,treble_e=trebleEnergy/0x200*0.15;let _0xf3be1b=bass_e+treble_e+gitar_e+snare_e+simbal_e,_0x34a5f8=_0xf3be1b*0x3;$(_0x541897(0x9c))[_0x541897(0x97)](_0x541897(0xad),_0x541897(0xac)+(1.2-_0xf3be1b)+')'),$(_0x541897(0xbb))[_0x541897(0x97)](_0x541897(0xad),_0x541897(0xac)+(1.2-_0xf3be1b/1.3)+')'),$('#flash')['css']('background','radial-gradient(circle,\x20rgba(255,255,255,'+_0x34a5f8+')\x200%,\x20rgba(255,255,255,0)\x20100%)');if(count_delay>0x3c){if('tgZRd'==='tgZRd')count_delay=0x0;else{_0x3a9673=_0x3d8eaa(0xa,0xa),_0x1a4afd[_0x541897(0xc4)](0x0,0x0),_0x4d3fb1['style'](_0x541897(0xbc),_0x541897(0xa1)),_0x57eb4b=new _0x766dcf[(_0x541897(0xa9))](0.78);let _0x2e6d35=_0x144159();for(let _0x408315 of _0x437154(_0x541897(0xa3))){let _0x35b51f=_0x2e6d35[_0x541897(0xb7)](_0x408315[_0x541897(0xaa)]);_0x35b51f['connect'](_0x317794['soundOut']);}_0x4a767b=new _0x5c7169[(_0x541897(0xa7))](),_0xb32c17=_0x3a7400[_0x541897(0xb6)](_0x541897(0xc1));for(let _0x2bd6ac=0x0;_0x2bd6ac<_0x4568dc;_0x2bd6ac++){let _0x2424cd=0x168/_0x572f3f*_0x2bd6ac;_0x5ba0e5(_0x541897(0xc8))[_0x541897(0xa6)](_0x541897(0xb5)+_0x2bd6ac+_0x541897(0xa4)+_0x2424cd+'deg);\x22></li>');}}}else count_delay++;}
 </script>
 </html>
