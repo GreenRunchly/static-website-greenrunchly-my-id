@@ -28,6 +28,9 @@
 
 	<!-- DB Framework -->
 	<script src="assets/js/localforage/dist/localforage.js"></script>
+
+	<!-- JSMedia -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jsmediatags/3.9.5/jsmediatags.min.js"></script>
 </head>
 <style>
 	body{
@@ -103,12 +106,59 @@
 		transform-origin: 0% 100% 0;
 		border-radius: 3px;
 	}
+
+	.video{
+		background-color: black;
+	}
+	.video video{
+		--vid-opacity: 50%;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		filter: blur(3px) opacity(var(--vid-opacity));
+	}
+	video::-webkit-media-controls {
+		display: none !important;
+	}
+	video::-webkit-media-controls-enclosure {
+		display: none !important;
+	}
+	video::-webkit-media-controls-panel {
+		display: none !important;
+	}
+	video::-webkit-media-controls-play-button {
+		display: none !important;
+	}
+
+	.bgm{
+		background-color: black;
+	}
+	.bgm img{
+		--vid-opacity: 50%;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		filter: blur(3px) opacity(var(--vid-opacity));
+	}
+
 </style>
 <body class="overflow-hidden">	
+	<div class="d-block position-fixed w-100 overflow-hidden d-none">
+		<div class="main video video-wallpaper" >
+			<video autoplay="" muted="" loop="" playsinline="">
+				<source src="assets/sora-kasugano-yosuga-no-sora-desktop-wallpaperwaifu.com.mp4" type="video/mp4">
+			</video>
+		</div>
+	</div>
+	<div class="d-block position-fixed w-100 overflow-hidden d-none">
+		<div class="main bgm bgm-wallpaper">
+			<img src="assets/Anime-Girl-with-Summer-Vibe.png" style="--vid-opacity: 75%;">
+		</div>
+	</div>
+
 	<div class="d-block position-relative overflow-hidden">
 		<div class="main" id="flash">
 			<ul style="transform: rotate(45deg);" class="spectrume" id="spectrumeBeat"></ul>
-			<!-- <ul style="transform: rotate(90deg);" class="spectrume" id="spectrumeBeatOverlay"></ul> -->
 			<a class="logo" id="spectrumeBass">
 				<img src="assets/me.png" draggable="false">
 			</a>
@@ -119,27 +169,34 @@
 	</div>
 	<div class="container-fluid py-2 px-2 fixed-top">
 		<div class="row">
-			<div class="col-12 col-sm-6 col-lg-3 visibilitas hide" id="mediaList">
+			<div class="col-12 visibilitas mediaList">
 				<div class="row g-1 lh-sm">
 					<div class="col-12">
-						<a class="btn text-white text-end">
-							<p class="m-0" id="mediaPlayerMusicImporterStatus">Perpustakaan Lagu</p>
-						</a>
-					</div>
-				</div>
-				<div class="row g-1 lh-sm overflow-hidden overflow-y-scroll my-1 rounded-3" style="max-height: 40vh;">
-					
-				</div>
-				<div class="row">
-					<div class="col-12">
 						<div class="row g-1">
+							<div class="col-auto d-block">
+								<button class="btn btn-success mediaListLibraryToggle"><i class="bi bi-music-note-list"></i></button>
+							</div>
 							<div class="col-auto">
-								<button class="btn btn-danger removeAllMusic"><i class="bi bi-recycle"></i></button>
+								<label class="btn btn-success importMusic" for="mediaPlayerMusicImporter"><i class="bi bi-plus-circle-fill"></i></label>
+							</div>
+							<div class="col-auto d-none confirmRemoveAllMusicToggle">
+								<button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmRemoveAllMusic"><i class="bi bi-radioactive"></i></button>
 							</div>
 							<div class="col">
-								<label for="mediaPlayerMusicImporter" class="btn btn-success w-100 text-start importMusic">
-									<small class="m-0">Klik untuk import lagu...</small>
-								</label>
+								<a class="btn btn-success text-white text-end reloadMusic">
+									<p class="m-0" id="mediaPlayerMusicImporterStatus">Muat Perpustakaan Musik</p>
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row g-1 my-1">
+					<div class="col-12 col-sm-6 col-md-5 col-lg-4 col-xl-3 overflow-hidden overflow-y-scroll rounded-3 lh-sm visibilitas mediaListLibrary" style="max-height: 40vh;">
+						<div class="row g-1">
+							<div class="col-12">
+								<a class="btn btn-success text-white text-start w-100">
+									<small class="m-0">Klik muat perpustakaan untuk memuat lagu yang tersimpan sebelumnya.</small>
+								</a>
 							</div>
 						</div>
 					</div>
@@ -151,35 +208,24 @@
 		<div class="row g-2 py-2" id="mediaPlayerControl">
 			<div class="col-auto">
 				<button class="btn btn-success mediaPlayerStarter" id="mediaPlayerStarter"><i class="bi bi-play-fill"></i></button>
-			</div>
-			<div class="col-auto">
-				<audio class="d-none" id="mediaPlayerAudio" controls loop>
-					<source src="assets/audio/the drum.webm" type="audio/mpeg">
+				<audio class="d-none" id="mediaPlayerAudio" controls>
+					<source src="assets/audio/REOL - ChiruChiru.mp3" type="audio/mpeg">
 				</audio>
-				<input class="form-control d-none" id="mediaPlayerSelector" type="file" accept="audio/*" />
-				<label for="mediaPlayerSelector" class="btn btn-success"><i class="bi bi-upload"></i></label>
-			</div>
-			<div class="col-auto d-none d-sm-block">
 				<input class="form-control d-none" type="file" id="mediaPlayerMusicImporter" accept="audio/*" webkitdirectory directory multiple />
-				<button class="btn btn-success" id="mediaListToggle"><i class="bi bi-music-note-list"></i></button>
 			</div>
-			<div class="col-auto d-none d-sm-block">
-				<div class="btn text-white text-end">
-					<p class="m-0"><span id="mediaPlayerAudioProgressTextCurrent">0.00</span>%</p>
-				</div>
+			<div class="col-auto d-block">
+				<button class="btn btn-success mediaPlayerToggle"><i class="bi bi-eye-fill"></i></button>
 			</div>
-			<div class="col-auto d-none">
-				<div class="btn text-white">
-					<p class="m-0">Gi <span id="gitarEnergy"></span>&nbsp;Ba <span id="bassEnergy"></span>&nbsp;Sn <span id="snareEnergy"></span>&nbsp;Si <span id="simbalEnergy"></span>&nbsp;Tr <span id="trebleEnergy"></span></p>
+			<div class="col-auto d-none d-sm-flex flex-column justify-content-center">
+				<div class="btn text-white text-start p-0 m-0 lh-1">
+					<p class="m-0 p-0"><small id="mediaPlayerAudioTitle">REOL - ChiruChiru</small></p>
+					<small class="m-0 p-0"><small class="m-0 p-0"><small id="mediaPlayerAudioProgressTextCurrent">0.00</small>%</small></small>
 				</div>
 			</div>
 			<div class="col d-flex justify-content-end justify-content-lg-end align-items-end">
 				<a class="btn text-white text-end" href="https://ieu.link/tentang" target="_blank">
 					<p class="m-0">&copy2024 GreenRunchly</p>
 				</a>
-			</div>
-			<div class="col-auto d-none d-sm-block">
-				<button class="btn btn-success" id="mediaPlayerToggle"><i class="bi bi-eye-slash-fill"></i></button>
 			</div>
 		</div>
 		<div class="row">
@@ -190,101 +236,169 @@
 			</div>
 		</div>
 	</div>
+	<div class="modal fade" id="confirmRemoveAllMusic" tabindex="-1" aria-hidden="true" data-bs-backdrop="false">
+		<div class="modal-dialog modal-sm">
+			<div class="modal-content">
+				<div class="modal-header text-danger">
+					<h1 class="modal-title fs-5">Hapus Data Perpustakaan?</h1>
+				</div>
+				<div class="modal-body">
+					<p class="m-0">Seluruh data perpustakaan musik akan dihapus keseluruhan, yakin?</p>
+				</div>
+				<div class="modal-footer row g-1">
+					<div class="col">
+						<button type="button" class="btn btn-secondary w-100" data-bs-dismiss="modal">Tidak Jadi</button>
+					</div>
+					<div class="col">
+						<button type="button" class="btn btn-danger w-100 removeAllMusic" data-bs-dismiss="modal">Kosongkan</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </body>
 <script src="assets/js/p5.js"></script>
 <script src="assets/js/p5.sound.js"></script>
 <script>
+	// Setel Koneksi Database
 	let importedSongs = localforage.createInstance({
-        name: "Songs"
+        name: "LaguTest"
+    });
+	let importedSongsMeta = localforage.createInstance({
+        name: "LaguTestMeta"
     });
 
-	// Mengonversi file ke Base64
-    function fileToBase64(file) {
-		return new Promise((resolve, reject) => {
-			const reader = new FileReader();
-			reader.readAsDataURL(file);
-			reader.onload = () => resolve(reader.result);
-			reader.onerror = error => reject(error);
-		});
-    }
-
-	loadMusicLists();
-
-	// Import Listing Baru
-    $('#mediaPlayerMusicImporter').on('change', function(event) {
-        const files = event.target.files; 
-		let importedFile = {}; let importedCount = 0; let importingCount = 0;
-		
-		$.each(files, function(index, file) {
-			const fileExtension = file.name.split('.').pop().toLowerCase();
-			if ((['mp3', 'wav', 'ogg', 'flac', 'webm'].includes(fileExtension)) && (file.size > (2 * 1024 * 1024))){
-				new Promise((resolve, reject) => {
-					let folderPath = file.webkitRelativePath.split('/').slice(0, -1);
-					let lagu = fileToBase64(file);
-					$('.importMusic').html(`<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> <small class="m-0">Mengimpor Lagu... (${importedCount}/${importingCount}) ${folderPath[1]} </small>`);
-					importedSongs.setItem(folderPath[1], lagu, function (err) {} ).then(function () {
-						$('.importMusic').html(`<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> <small class="m-0">Menyimpan Lagu... (${importedCount}/${importingCount}) ${folderPath[1]} </small>`);
-						resolve();
-					}).catch(function (err) {
-						console.log(err);
-						reject(err);
-					});
-				}).then(() => {
-					importedCount ++;
-				}).catch((error) => {
-					console.error(error);
-				});
-				importingCount ++;
+	// Preload Music Listing
+	function loadMusicListing() {
+		$(".mediaList").children('div').eq(1).children('div').children('div').empty();
+		// Membaca Database
+		importedSongsMeta.iterate(function(musicMeta, key, iterationNumber) {
+			let title = `${key}`;
+			if (musicMeta.title){
+				title = `${musicMeta.artist} - ${musicMeta.title}`;
 			}
-		});
-
-		let waitImporting = setInterval(() => {
-			if (importingCount == importedCount){
-				console.log('Done!', importingCount, importedCount);
-				loadMusicLists();
-				clearInterval(waitImporting);
-			}
-		}, 1000);
-    });
-
-	// Load Listing
-	function loadMusicLists() {
-		$('#mediaList').children('div').eq(1).html();
-		$('.importMusic').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> <small class="m-0">Memuat Lagu...</small>');
-		let html = ``;
-
-		importedSongs.keys().then(function(keys) {
-			keys.forEach(function(key, iterationNumber) {
-				html += `
+			$(".mediaList").children('div').eq(1).children('div').children('div').prepend(`
 				<div class="col-12">
-					<div class="row g-1">
-						<div class="col-auto">
-							<button class="btn btn-danger removeMusic" music-number="${key}"><i class="bi bi-trash-fill"></i></button>
-						</div>
-						<div class="col">
-							<button class="btn btn-success w-100 text-start selectMusic" music-number="${key}">
-								<small><small class="m-0">${key}</small></small>
-							</button>
-						</div>
-					</div>
+					<a class="btn btn-success text-white text-start w-100 selectMusic" music-number="${key}">
+						<small class="m-0">${title}</small>
+					</a>
 				</div>
-				`;
-			});
-			$('#mediaList').children('div').eq(1).html(html);
-			$("#mediaPlayerMusicImporterStatus").html('Perpustakaan Lagu');
-			console.log('Selesai!');
-			$('.importMusic').html('<small class="m-0">Klik untuk import lagu...</small>');
+			`); 
+			if (iterationNumber > 0){
+				$(".confirmRemoveAllMusicToggle").removeClass('d-none');
+			}
+		}).then(function() {
+			$("#mediaPlayerMusicImporterStatus").html('Perpustakaan Musik');
 		}).catch(function(err) {
+			$("#mediaPlayerMusicImporterStatus").html('<i class="bi bi-exclamation-triangle-fill"></i> Gagal Membuka Data!');
 			console.error("Error during iteration", err);
 		});
-	}
+
+		// Status Alerting
+		$("#mediaPlayerMusicImporterStatus").html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Memuat Data...');
+	} 
+	
+	// loadMusicListing();
+
+	// Music Importer
+    $('#mediaPlayerMusicImporter').on('change', function(event) {
+        const files = event.target.files; 
+		let scanTotal = 0; let scanned = 0; let imported = 0; let counted = 0;
+
+		// Function untuk konversi file ke base64
+		function file2Base64(file) {
+			return new Promise((resolve, reject) => {
+				const reader = new FileReader();
+				reader.readAsDataURL(file);
+				reader.onload = () => resolve(reader.result);
+				reader.onerror = error => reject(error);
+			});
+		}
+		
+		$("#mediaPlayerMusicImporterStatus").html(`<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Menyiapkan...`);
+
+		// Iteration file (melakukan scan)
+		$.each(files, function(index, file) {
+			if ((file.size > (2 * 1024 * 1024))) { // Hanya menerima file berukuran 2MB lebih
+				new Promise((resolve, reject) => {
+					// Detail File
+					let fileName = file.name;
+					let fileExt = file.name.split('.').pop().toLowerCase();
+					let fileSize = file.size;
+					let fileUniqueID = fileSize.toString();
+					let fileMetadata = {};
+					jsmediatags.read(file, {
+						onSuccess: function(tag) {
+							fileMetadata = tag.tags;
+							// Menyimpan Metadata Ke Database
+							importedSongsMeta.setItem(fileUniqueID, fileMetadata).then(function () {
+								// Konversi File ke Base64
+								let tempFileBuffer = file2Base64(file);
+
+								// Menyimpan Ke Database
+								importedSongs.setItem(fileUniqueID, tempFileBuffer).then(function () {
+									resolve();
+									$("#mediaPlayerMusicImporterStatus").html(`<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Scanning... (${scanned}/${scanTotal}) (${imported}/${counted} OK)`);
+								}).catch(function (err) {
+									reject(err);
+								});
+							}).catch(function (err) {
+								reject(err);
+							});
+						},
+						onError: function(error) {
+							console.log(error);
+							reject(error);
+						}
+					});
+				}).then(() => {
+					imported ++;
+					scanned ++;
+				}).catch(() => {
+					imported ++;
+					scanned ++;
+				})
+				counted ++;
+			}else{
+				scanned ++;
+			}
+			scanTotal ++;
+		});
+
+		let waitingScanner = setInterval(() => {
+			console.log('Scanning...', scanned, scanTotal, imported);
+			if (scanned == scanTotal) {
+				loadMusicListing();
+				clearInterval(waitingScanner);
+				console.log('Scan Done!', imported);
+			}
+		}, 100);
+    });
+
+	// Reload Listing Music
+	$(document).on("click", ".reloadMusic", function(e) {
+		loadMusicListing();
+	});
 
 	// Play Selected Music
 	$(document).on("click", ".selectMusic", function(e) {
 		let musicID = $(this).attr('music-number');
+		
+		importedSongsMeta.getItem(musicID).then(function (musicMeta) {
+			let title = `${musicID}`;
+			if (musicMeta.title){
+				title = `${musicMeta.artist} - ${musicMeta.title}`;
+			}
+			$("#mediaPlayerAudioTitle").html(title);
+			$(`.selectMusic`).removeClass('btn-danger');
+			$(`.selectMusic[music-number=${musicID}]`).addClass('btn-danger');
+		}).catch(function (err) {
+			console.log(err);
+		});
 
-		importedSongs.getItem(musicID).then(function (lagu) {
-			$("#mediaPlayerAudio").attr("src", lagu);
+		importedSongs.getItem(musicID).then(function (music) {
+			$("#mediaPlayerAudio").attr("current-media", musicID);
+			$("#mediaPlayerAudio").attr("src", music);
 			$("#mediaPlayerAudio")[0].play();
 		}).catch(function (err) {
 			console.log(err);
@@ -296,7 +410,11 @@
 		let musicID = $(this).attr('music-number');
 		$(this).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>');
 		importedSongs.removeItem(musicID).then(function() {
-			loadMusicLists();
+			importedSongsMeta.removeItem(musicID).then(function() {
+				loadMusicListing();
+			}).catch(function(err) {
+				alert("Gagal Menghapus Meta!");
+			});
 		}).catch(function(err) {
 			alert("Gagal Menghapus!");
 		});
@@ -305,10 +423,13 @@
 	// Hapus Semua Music
 	$(document).on("click", ".removeAllMusic", function(e) {
 		let me = this;
-		$(this).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>');
 		importedSongs.clear().then(function() {
-			$(me).html('<i class="bi bi-recycle"></i>');
-			loadMusicLists();
+			importedSongsMeta.clear().then(function() {
+				$(".confirmRemoveAllMusicToggle").addClass('d-none');
+				loadMusicListing();
+			}).catch(function(err) {
+				alert("Gagal Menghapus Library Meta!");
+			});
 		}).catch(function(err) {
 			alert("Gagal Menghapus Library!");
 		});
@@ -316,42 +437,35 @@
 
 </script>
 <script>
-	$(document).on("click", "#mediaPlayerToggle", function(e) {
-		isit = $("#mediaPlayer").hasClass('hide');
+	$(document).on("click", ".mediaPlayerToggle", function(e) {
+		isit = $(".visibilitas").hasClass('hide');
         if (isit == true){
-            $("#mediaPlayer").removeClass('hide');
-			$("#mediaPlayerToggle").html('<i class="bi bi-eye-slash-fill"></i>');
+            $(".visibilitas").removeClass('hide');
         }else{
-            $("#mediaPlayer").addClass('hide');
-			$("#mediaPlayerToggle").html('<i class="bi bi-eye-fill"></i>');
+            $(".visibilitas").addClass('hide');
         }
     });
-	$(document).on("click", "#mediaListToggle", function(e) {
-		isit = $("#mediaList").hasClass('hide');
+	$(document).on("click", ".mediaListLibraryToggle", function(e) {
+		isit = $(".mediaListLibrary").hasClass('hide');
         if (isit == true){
-            $("#mediaList").removeClass('hide');
-			$("#mediaListToggle").html('<i class="bi bi-music-note"></i>');
+            $(".mediaListLibrary").removeClass('hide');
         }else{
-            $("#mediaList").addClass('hide');
-			$("#mediaListToggle").html('<i class="bi bi-music-note-list"></i>');
+            $(".mediaListLibrary").addClass('hide');
         }
     });
-	$(document).on("change", "#mediaPlayerSelector", function(e) {
-        var files = this.files;
-        $("#mediaPlayerAudio").attr("src", URL.createObjectURL(files[0]));
-        $("#mediaPlayerAudio")[0].play();
-    });
+	
     $(document).on("click", ".mediaPlayerStarter", function(e) {
-        if ($('#mediaPlayerAudio').prop("paused") == true){
-            $("#mediaPlayerAudio")[0].play();
-			$("#mediaPlayerStarter").html('<i class="bi bi-pause-fill"></i>');
+		$('#mediaPlayerAudio').prop("paused") ? $("#mediaPlayerAudio")[0].play() : $("#mediaPlayerAudio")[0].pause();
+		
+		// Pause Button DOM
+		if ($('#mediaPlayerAudio').prop("paused") == true){
+			$("#mediaPlayerStarter").html('<i class="bi bi-play-fill"></i>');
 			$("#spectrumeBass").removeClass('paused');
         }else{
-            $("#mediaPlayerAudio")[0].pause();
-			$("#mediaPlayerStarter").html('<i class="bi bi-play-fill"></i>');
+			$("#mediaPlayerStarter").html('<i class="bi bi-pause-fill"></i>');
 			$("#spectrumeBass").addClass('paused');
         }
-    });
+	});
 </script>
 <script type="text/javascript">
     let canvas; let fft; let audioElement
@@ -382,7 +496,7 @@
         getAudioContext().resume();
     }
 
-	let count_delay = 0; let tick = 0;
+	let count_delay = 0;
     function draw() {
         let spectrum = fft.analyze();
         let waveform = fft.waveform();
@@ -406,28 +520,10 @@
 			
 			let teethPos = i;
 			let teethHeight = (100 + ( (beat_teeth/2) * (beat_teeth/150) ));
-			let teethOpaque = 0 + ((beat_teeth/255) * 0.6);
+			let teethOpaque = 0 + (( (beat_teeth/255) * (beat_teeth/255)) * 0.7);
 			$("#spectrumeBeat li").eq((teethPos)).css("height",`${teethHeight}px`);
 			$("#spectrumeBeat li").eq(teethPos).css("opacity",`${(teethOpaque)}`);
-
-			// Overlay Spectrum (Heavy)
-			// $("#spectrumeBeatOverlay li").eq((teethPos)).css("height",`${teethHeight/1.1}px`);
-			// $("#spectrumeBeatOverlay li").eq(teethPos).css("opacity",`${(teethOpaque/3)}`);
 		}
-		
-		// Bass dari spectrum
-		let bass_base = spectrum; let bass_temp = 0; let bass_length = bass_base.length;
-		for (let i = 0; i < (bass_length); i++) {
-            bass_temp += (bass_base[i] / 600);
-        }
-		bass_temp = (bass_temp / bass_length)*0.1;
-
-		// Bass dari WaveForm
-		let wave_temp = 0;
-		for (let i = 0; i < (waveform.length); i++) {
-            wave_temp += (waveform[i] / 600);
-        }
-		wave_temp = (wave_temp / waveform.length)*0.1;
 
 		// Bass dari beberapa Frekuensi
 		bassEnergy = fft.getEnergy("bass");
@@ -435,34 +531,26 @@
 		midEnergy = fft.getEnergy("mid");
 		highMidEnergy = fft.getEnergy("highMid");
 		trebleEnergy = fft.getEnergy("treble");
-
 		bass_e = (bassEnergy/512) * 0.2;
 		gitar_e = (lowMidEnergy/512) * 0.1;
 		snare_e = (midEnergy/512) * 0.1;
 		simbal_e = (highMidEnergy/512) * 0.15;
 		treble_e = (trebleEnergy/512) * 0.15;
 
-		$("#bassEnergy").html((bass_e*1516).toFixed(0));
-		$("#gitarEnergy").html((gitar_e*1516).toFixed(0));
-		$("#snareEnergy").html((snare_e*1516).toFixed(0));
-		$("#simbalEnergy").html((simbal_e*1516).toFixed(0));
-		$("#trebleEnergy").html((treble_e*1516).toFixed(0));
-
 		// DOM Manipulate spectrum bar secara langsung
-		let bassStrength = bass_e + treble_e + gitar_e + snare_e + simbal_e;
+		let bassStrength = (bass_e + treble_e + gitar_e + snare_e + simbal_e);
+		let bassAmplifier = bassStrength*3;
 		$("#spectrumeBass").css("transform", `scale(${(1.2-(bassStrength))})`);
 		$("#spectrumeBassOverlay").css("transform", `scale(${(1.2-bassStrength/1.3)})`);
-
-		// LR Flash
-		// $("#flash").css("background", `linear-gradient(90deg, rgba(255,255,255,${(bass_e * 15)}) 0%, rgba(255,255,255,0) 30%, rgba(255,255,255,0) 70%, rgba(255,255,255,${(bass_e * 15)}) 100%)`);
-		// Bottom Flash
-		// $("#flash").css("background", `linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(255,255,255,${(bass_e * 30)}) 100%)`);
-		// Center Flash
-		$("#flash").css("background", `radial-gradient(circle, rgba(255,255,255,${(bassStrength * 3)}) 0%, rgba(255,255,255,0) 100%)`);
+		$("#flash").css("background", `radial-gradient(circle, rgba(255,255,255,${(bassAmplifier)}) 0%, rgba(255,255,255,0) 100%)`);
 		
+		// $(".video-wallpaper").css("background", `radial-gradient(circle, rgba(255,255,255,${(bassAmplifier)}) 0%, rgba(255,255,255,0) 100%)`);
+		// $(".bgm-wallpaper").css("background", `radial-gradient(circle, rgba(255,255,255,${(bassAmplifier)}) 0%, rgba(255,255,255,0) 100%)`);
+		// $(".bgm-wallpaper").css("transform", `scale(${(1+(bassStrength/8))})`);
+
 		// Debugging
 		if (count_delay > 60){
-			tick ++;
+			// Do something :v
 			count_delay = 0;
 		}else{
 			count_delay ++;
