@@ -325,10 +325,7 @@
 		$(".mediaList").children('div').eq(1).children('div').children('div').empty();
 		// Membaca Database
 		importedSongsMeta.iterate(function(musicMeta, key, iterationNumber) {
-			let title = `${key}`;
-			if (musicMeta.title){
-				title = `${musicMeta.artist} - ${musicMeta.title}`;
-			}
+			let title = musicMeta.fullTitle;
 			$(".mediaList").children('div').eq(1).children('div').children('div').prepend(`
 				<div class="col-12">
 					<div class="row g-1">
@@ -346,22 +343,23 @@
 			if (iterationNumber > 0){
 				$(".confirmRemoveAllMusicToggle").removeClass('d-none');
 			}
+			// Status Alerting
+			$("#mediaPlayerMusicImporterStatus").html(`<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Memuat Data... ${title}`);
 		}).then(function() {
 			$("#mediaPlayerMusicImporterStatus").html('Perpustakaan Musik');
 		}).catch(function(err) {
 			$("#mediaPlayerMusicImporterStatus").html('<i class="bi bi-exclamation-triangle-fill"></i> Gagal Membuka Data!');
 			console.error("Error during iteration", err);
 		});
-
-		// Status Alerting
-		$("#mediaPlayerMusicImporterStatus").html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Memuat Data...');
 	} 
 
 	// Music Importer
     $('#mediaPlayerMusicImporter').on('change', function(event) {
         const files = event.target.files; 
-		let scanTotal = 0; let scanned = 0; let imported = 0; let counted = 0;
 
+		// Alert Init
+		$("#mediaPlayerMusicImporterStatus").html(`<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Menyiapkan...`);
+	
 		// Function untuk konversi file ke base64
 		function file2Base64(file) {
 			return new Promise((resolve, reject) => {
@@ -372,77 +370,124 @@
 			});
 		}
 
-		function tambahMusik(file, fileUniqueID, fileMetadata) {
-			// Menyimpan Metadata Ke Database
-			importedSongsMeta.setItem(fileUniqueID, fileMetadata).then(function () {
-				// Konversi File ke Base64
-				let tempFileBuffer = file2Base64(file);
+		// Cek audio atau bukan
+		function isAudioFile(file) {
+			// Check MIME type
+			const audioMimeTypes = [
+				'audio/mpeg', // mp3
+				'audio/wav',  // wav
+				'audio/ogg',  // ogg
+				'audio/mp4',  // mp4
+				'audio/x-aiff', // aiff
+				'audio/x-wav',  // wav
+				'audio/webm', // webm
+				'audio/flac', // flac
+			];
 
-				// Menyimpan Ke Database
-				importedSongs.setItem(fileUniqueID, tempFileBuffer).then(function () {
-					return true;
-					$("#mediaPlayerMusicImporterStatus").html(`<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Scanning... (${scanned}/${scanTotal}) (${imported}/${counted} OK)`);
+			if (audioMimeTypes.includes(file.type)) {
+				return true;
+			}
+
+			// Check file extension as a fallback
+			const audioExtensions = ['mp3', 'wav', 'ogg', 'mp4', 'aiff', 'wav', 'webm', 'flac'];
+			const fileExtension = file.name.split('.').pop().toLowerCase();
+
+			if (audioExtensions.includes(fileExtension)) {
+				return true;
+			}
+
+			return false;
+		}
+
+		// Function menambahkan musik ke library
+		function tambahMusik(file, fileUniqueID, fileMetadata, fullTitle) {
+			return new Promise((resolve, reject) => {
+				// Menyimpan Metadata Ke Database
+				importedSongsMeta.setItem(fileUniqueID, fileMetadata).then(async function () {
+					// Alert Sistem
+					$("#mediaPlayerMusicImporterStatus").html(`<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Scanning... (${fullTitle})`);
+					
+					// Konversi File ke Base64
+					let tempFileBuffer = await file2Base64(file);
+
+					// Menyimpan File Ke Database
+					importedSongs.setItem(fileUniqueID, tempFileBuffer).then(function () {
+						resolve(); console.log('Tersimpan!');
+					}).catch(function (err) {
+						reject(); console.log(err);
+					});
 				}).catch(function (err) {
-					return false;
-					console.log(err);
+					reject(); console.log(err);
 				});
-			}).catch(function (err) {
-				return false;
-				console.log(err);
 			});
 		}
-		
-		$("#mediaPlayerMusicImporterStatus").html(`<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Menyiapkan...`);
 
-		// Iteration file (melakukan scan)
-		$.each(files, function(index, file) {
-			if ((file.size > (2 * 1024 * 1024))) { // Hanya menerima file berukuran 2MB lebih
-				new Promise((resolve, reject) => {
+		// Proses Menyimpan (Delay 2 Detik)
+		let diupload = 0; let diantrian = 0; let diimpor = 0; 
+		setTimeout(() => {
+			// Iteration file (melakukan scan)
+			$.each(files, async function(index, file) {
+				if (((file.size > (2 * 1024 * 1024))) && (isAudioFile(file))){ 
 					// Detail File
 					let fileName = file.name;
 					let fileExt = file.name.split('.').pop().toLowerCase();
 					let fileSize = file.size;
 					let fileUniqueID = fileSize.toString();
-					let fileMetadata = {};
-					jsmediatags.read(file, {
-						onSuccess: function(tag) {
-							let title, artist;
-							(tag.tags.title) ? title = tag.tags.title : title  = fileName;
-							(tag.tags.artist) ? artist = tag.tags.artist : artist = fileUniqueID;
-							fileMetadata = {title:title, artist:artist};
-							let berhasil = tambahMusik(file, fileUniqueID, fileMetadata);
-							(berhasil == true) ? resolve() : reject() ;
+
+					let title, artist; title = fileName; artist = fileUniqueID;
+					let fullTitle = `${artist} - ${title}`;
+
+					// Membaca Metadata File
+					await jsmediatags.read(file, {
+						onSuccess: async function(tag) {
+							(tag.tags.title) ? title = tag.tags.title : title  = fileName; (tag.tags.artist) ? artist = tag.tags.artist : artist = fileUniqueID;
+							let fullTitle = `${artist} - ${title}`;
+							let fileMetadata = {title:title, artist:artist, fullTitle:fullTitle};
 							
+							// Menambahkan Musik
+							try {
+								await setTimeout( async () => {
+									let result = await tambahMusik(file, fileUniqueID, fileMetadata, fullTitle);
+									diimpor ++;
+								}, 1000);
+							} catch (error) {
+								// Gagal Menambahkan
+								console.error(error);
+								diimpor ++;
+							}
 						},
-						onError: function(error) {
-							fileMetadata = {title:fileName, artist:fileUniqueID};
-							let berhasil = tambahMusik(file, fileUniqueID, fileMetadata);
-							(berhasil == true) ? resolve() : reject() ;
-							reject(error);
+						onError: async function(error) {
+							let fileMetadata = {title:title, artist:artist, fullTitle:fullTitle};
+							
+							// Menambahkan Musik
+							try {
+								await setTimeout( async () => {
+									let result = await tambahMusik(file, fileUniqueID, fileMetadata, fullTitle);
+									diimpor ++;
+								}, 1000);
+							} catch (error) {
+								// Gagal Menambahkan
+								console.error(error);
+								diimpor ++;
+							}
 						}
 					});
-				}).then(() => {
-					imported ++;
-					scanned ++;
-				}).catch(() => {
-					imported ++;
-					scanned ++;
-				})
-				counted ++;
-			}else{
-				scanned ++;
-			}
-			scanTotal ++;
-		});
+					diantrian ++;
+				}
+				diupload ++;
+			});
 
-		let waitingScanner = setInterval(() => {
-			console.log('Scanning...', scanned, scanTotal, imported);
-			if (scanned == scanTotal) {
-				loadMusicListing();
-				clearInterval(waitingScanner);
-				console.log('Scan Done!', imported);
-			}
-		}, 100);
+			let waitingScanner = setInterval(() => {
+				console.log('Scanning...', diupload, diantrian, diimpor);
+				if (diantrian == diimpor) {
+					// Alert Import End
+					$("#mediaPlayerMusicImporterStatus").html(`<i class="bi bi-check-circle"></i> Impor Selesai!`);
+					// loadMusicListing();
+					clearInterval(waitingScanner);
+					console.log('Scan Done!', diimpor);
+				}
+			}, 100);
+		}, 2000);
     });
 
 	// Reload Listing Music
