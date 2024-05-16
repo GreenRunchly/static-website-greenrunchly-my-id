@@ -141,6 +141,18 @@
 		filter: blur(3px) opacity(var(--vid-opacity));
 	}
 
+	@media screen and (max-width: 600px), screen and (max-height: 600px) {
+		.dynamic-div {
+			transform: scale(80%);
+		}
+	}
+
+	@media screen and (max-width: 400px), screen and (max-height: 400px) {
+		.dynamic-div {
+			transform: scale(75%);
+		}
+	}
+
 </style>
 <body class="overflow-hidden">	
 	<div class="d-block position-fixed w-100 overflow-hidden d-none">
@@ -156,8 +168,8 @@
 		</div>
 	</div>
 
-	<div class="d-block position-relative overflow-hidden">
-		<div class="main" id="flash">
+	<div class="d-block position-relative overflow-hidden" id="flash">
+		<div class="main dynamic-div">
 			<ul style="transform: rotate(45deg);" class="spectrume" id="spectrumeBeat"></ul>
 			<a class="logo" id="spectrumeBass">
 				<img src="assets/me.png" draggable="false">
@@ -191,7 +203,7 @@
 					</div>
 				</div>
 				<div class="row g-1 my-1">
-					<div class="col-12 col-sm-6 col-md-5 col-lg-4 col-xl-3 overflow-hidden overflow-y-scroll rounded-3 lh-sm visibilitas mediaListLibrary" style="max-height: 40vh;">
+					<div class="col-12 col-sm-6 col-md-5 col-lg-4 col-xl-3 overflow-hidden overflow-y-scroll rounded-3 lh-sm mediaListLibrary" style="max-height: 40vh;">
 						<div class="row g-1">
 							<div class="col-12">
 								<a class="btn btn-success text-white text-start w-100">
@@ -215,6 +227,9 @@
 			</div>
 			<div class="col-auto d-block">
 				<button class="btn btn-success mediaPlayerToggle"><i class="bi bi-eye-fill"></i></button>
+			</div>
+			<div class="col-auto d-block">
+				<button class="btn btn-success fullscreen"><i class="bi bi-fullscreen"></i></button>
 			</div>
 			<div class="col-auto d-none d-sm-flex flex-column justify-content-center">
 				<div class="btn text-white text-start p-0 m-0 lh-1">
@@ -260,6 +275,43 @@
 <script src="assets/js/p5.js"></script>
 <script src="assets/js/p5.sound.js"></script>
 <script>
+	// Fungsi untuk meminta elemen masuk ke mode layar penuh
+	function requestFullscreen(element) {
+		if (element.requestFullscreen) {
+			element.requestFullscreen();
+		} else if (element.mozRequestFullScreen) { // Untuk Firefox
+			element.mozRequestFullScreen();
+		} else if (element.webkitRequestFullscreen) { // Untuk Chrome, Safari, dan Opera
+			element.webkitRequestFullscreen();
+		} else if (element.msRequestFullscreen) { // Untuk IE/Edge
+			element.msRequestFullscreen();
+		}
+	}
+	// Fungsi untuk keluar dari mode layar penuh
+	function exitFullscreen(element) {
+		if (element.exitFullscreen) {
+			element.exitFullscreen();
+		} else if (element.mozCancelFullScreen) { // Untuk Firefox
+			element.mozCancelFullScreen();
+		} else if (element.webkitExitFullscreen) { // Untuk Chrome, Safari, dan Opera
+			element.webkitExitFullscreen();
+		} else if (element.msExitFullscreen) { // Untuk IE/Edge
+			element.msExitFullscreen();
+		}
+	}
+	// Fullscreen
+	$(document).on("click", ".fullscreen", function(e) {
+		var element = document.documentElement; // Document root element
+		console.log(document.fullscreenElement);
+		if (document.fullscreenElement !== null){
+			exitFullscreen(document);
+		}else{
+			requestFullscreen(element);
+		}
+    	
+	});
+</script>
+<script>
 	// Setel Koneksi Database
 	let importedSongs = localforage.createInstance({
         name: "LaguTest"
@@ -279,9 +331,16 @@
 			}
 			$(".mediaList").children('div').eq(1).children('div').children('div').prepend(`
 				<div class="col-12">
-					<a class="btn btn-success text-white text-start w-100 selectMusic" music-number="${key}">
-						<small class="m-0">${title}</small>
-					</a>
+					<div class="row g-1">
+						<div class="col-auto">
+							<button class="btn btn-danger removeMusic" music-number="${key}"><i class="bi bi-trash-fill"></i></button>
+						</div>
+						<div class="col">
+							<a class="btn btn-success text-start w-100 selectMusic" music-number="${key}">
+								<small class="m-0">${title}</small>
+							</a>
+						</div>
+					</div>
 				</div>
 			`); 
 			if (iterationNumber > 0){
@@ -297,8 +356,6 @@
 		// Status Alerting
 		$("#mediaPlayerMusicImporterStatus").html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Memuat Data...');
 	} 
-	
-	// loadMusicListing();
 
 	// Music Importer
     $('#mediaPlayerMusicImporter').on('change', function(event) {
@@ -312,6 +369,26 @@
 				reader.readAsDataURL(file);
 				reader.onload = () => resolve(reader.result);
 				reader.onerror = error => reject(error);
+			});
+		}
+
+		function tambahMusik(file, fileUniqueID, fileMetadata) {
+			// Menyimpan Metadata Ke Database
+			importedSongsMeta.setItem(fileUniqueID, fileMetadata).then(function () {
+				// Konversi File ke Base64
+				let tempFileBuffer = file2Base64(file);
+
+				// Menyimpan Ke Database
+				importedSongs.setItem(fileUniqueID, tempFileBuffer).then(function () {
+					return true;
+					$("#mediaPlayerMusicImporterStatus").html(`<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Scanning... (${scanned}/${scanTotal}) (${imported}/${counted} OK)`);
+				}).catch(function (err) {
+					return false;
+					console.log(err);
+				});
+			}).catch(function (err) {
+				return false;
+				console.log(err);
 			});
 		}
 		
@@ -329,25 +406,18 @@
 					let fileMetadata = {};
 					jsmediatags.read(file, {
 						onSuccess: function(tag) {
-							fileMetadata = tag.tags;
-							// Menyimpan Metadata Ke Database
-							importedSongsMeta.setItem(fileUniqueID, fileMetadata).then(function () {
-								// Konversi File ke Base64
-								let tempFileBuffer = file2Base64(file);
-
-								// Menyimpan Ke Database
-								importedSongs.setItem(fileUniqueID, tempFileBuffer).then(function () {
-									resolve();
-									$("#mediaPlayerMusicImporterStatus").html(`<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Scanning... (${scanned}/${scanTotal}) (${imported}/${counted} OK)`);
-								}).catch(function (err) {
-									reject(err);
-								});
-							}).catch(function (err) {
-								reject(err);
-							});
+							let title, artist;
+							(tag.tags.title) ? title = tag.tags.title : title  = fileName;
+							(tag.tags.artist) ? artist = tag.tags.artist : artist = fileUniqueID;
+							fileMetadata = {title:title, artist:artist};
+							let berhasil = tambahMusik(file, fileUniqueID, fileMetadata);
+							(berhasil == true) ? resolve() : reject() ;
+							
 						},
 						onError: function(error) {
-							console.log(error);
+							fileMetadata = {title:fileName, artist:fileUniqueID};
+							let berhasil = tambahMusik(file, fileUniqueID, fileMetadata);
+							(berhasil == true) ? resolve() : reject() ;
 							reject(error);
 						}
 					});
@@ -390,16 +460,15 @@
 				title = `${musicMeta.artist} - ${musicMeta.title}`;
 			}
 			$("#mediaPlayerAudioTitle").html(title);
-			$(`.selectMusic`).removeClass('btn-danger');
-			$(`.selectMusic[music-number=${musicID}]`).addClass('btn-danger');
-		}).catch(function (err) {
-			console.log(err);
-		});
-
-		importedSongs.getItem(musicID).then(function (music) {
-			$("#mediaPlayerAudio").attr("current-media", musicID);
-			$("#mediaPlayerAudio").attr("src", music);
-			$("#mediaPlayerAudio")[0].play();
+			$(`.selectMusic`).removeClass('btn-light');
+			$(`.selectMusic[music-number=${musicID}]`).addClass('btn-light');
+			importedSongs.getItem(musicID).then(function (music) {
+				$("#mediaPlayerAudio").attr("current-media", musicID);
+				$("#mediaPlayerAudio").attr("src", music);
+				$("#mediaPlayerAudio")[0].play();
+			}).catch(function (err) {
+				console.log(err);
+			});
 		}).catch(function (err) {
 			console.log(err);
 		});
@@ -408,10 +477,12 @@
 	// Hapus Music
 	$(document).on("click", ".removeMusic", function(e) {
 		let musicID = $(this).attr('music-number');
+		let musicDOM = $(this);
+		console.log('removing', musicID);
 		$(this).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>');
 		importedSongs.removeItem(musicID).then(function() {
 			importedSongsMeta.removeItem(musicID).then(function() {
-				loadMusicListing();
+				musicDOM.parent().parent().parent().remove();
 			}).catch(function(err) {
 				alert("Gagal Menghapus Meta!");
 			});
@@ -446,11 +517,11 @@
         }
     });
 	$(document).on("click", ".mediaListLibraryToggle", function(e) {
-		isit = $(".mediaListLibrary").hasClass('hide');
+		isit = $(".mediaListLibrary").hasClass('d-none');
         if (isit == true){
-            $(".mediaListLibrary").removeClass('hide');
+            $(".mediaListLibrary").removeClass('d-none');
         }else{
-            $(".mediaListLibrary").addClass('hide');
+            $(".mediaListLibrary").addClass('d-none');
         }
     });
 	
