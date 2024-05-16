@@ -275,15 +275,402 @@
 <script src="assets/js/p5.js"></script>
 <script src="assets/js/p5.sound.js"></script>
 <script>
-	(function(_0x54cf3f,_0x26adcd){var _0x1b7816=_0x2383,_0x4d259a=_0x54cf3f();while(!![]){try{var _0x19cb6f=-parseInt(_0x1b7816(0x1f0))/0x1*(-parseInt(_0x1b7816(0x203))/0x2)+-parseInt(_0x1b7816(0x1f3))/0x3+parseInt(_0x1b7816(0x1fd))/0x4+-parseInt(_0x1b7816(0x1f8))/0x5+parseInt(_0x1b7816(0x1fb))/0x6*(-parseInt(_0x1b7816(0x1ef))/0x7)+parseInt(_0x1b7816(0x1f2))/0x8+parseInt(_0x1b7816(0x201))/0x9*(-parseInt(_0x1b7816(0x1fa))/0xa);if(_0x19cb6f===_0x26adcd)break;else _0x4d259a['push'](_0x4d259a['shift']());}catch(_0x3373be){_0x4d259a['push'](_0x4d259a['shift']());}}}(_0x141c,0x65819));function _0x141c(){var _0x33e66e=['1125729mYfdsK','requestFullscreen','webkitRequestFullscreen','log','exitFullscreen','1494600csEBDs','dLfcQ','4270ofIVvk','30pxLCev','mozRequestFullScreen','1225164NzRXRh','fullscreenElement','pSySU','msExitFullscreen','2286dLPVLJ','sYHUq','4azLlZW','mozCancelFullScreen','webkitExitFullscreen','kTCiU','documentElement','qylpO','78673QDgHvU','412511FDHkhH','msRequestFullscreen','986176WTtKwz'];_0x141c=function(){return _0x33e66e;};return _0x141c();}function _0x2383(_0x3b50c1,_0x515d10){var _0x141c9f=_0x141c();return _0x2383=function(_0x2383c9,_0x38d809){_0x2383c9=_0x2383c9-0x1ec;var _0xbc1ed=_0x141c9f[_0x2383c9];return _0xbc1ed;},_0x2383(_0x3b50c1,_0x515d10);}function requestFullscreen(_0x2f188c){var _0x164360=_0x2383;if(_0x2f188c[_0x164360(0x1f4)])_0x2f188c[_0x164360(0x1f4)]();else{if(_0x2f188c[_0x164360(0x1fc)])_0x2f188c[_0x164360(0x1fc)]();else{if(_0x2f188c[_0x164360(0x1f5)])_0x2f188c[_0x164360(0x1f5)]();else _0x2f188c['msRequestFullscreen']&&(_0x164360(0x1f9)===_0x164360(0x1f9)?_0x2f188c['msRequestFullscreen']():_0x474ec8[_0x164360(0x1f1)]());}}}function exitFullscreen(_0x3d8a3b){var _0x14e804=_0x2383;if(_0x3d8a3b[_0x14e804(0x1f7)])'kTCiU'===_0x14e804(0x1ec)?_0x3d8a3b[_0x14e804(0x1f7)]():_0x51f6d1[_0x14e804(0x1f7)]();else{if(_0x3d8a3b[_0x14e804(0x204)])_0x3d8a3b['mozCancelFullScreen']();else{if(_0x3d8a3b[_0x14e804(0x205)]){if(_0x14e804(0x1ee)!==_0x14e804(0x1ee)){var _0x3d243c=_0x46e6e0[_0x14e804(0x1ed)];_0x25aa05[_0x14e804(0x1f6)](_0x4ab2bb[_0x14e804(0x1fe)]),_0x1a5663[_0x14e804(0x1fe)]!==null?_0x120240(_0x8e6a37):_0xa0ac2(_0x3d243c);}else _0x3d8a3b['webkitExitFullscreen']();}else _0x3d8a3b[_0x14e804(0x200)]&&_0x3d8a3b['msExitFullscreen']();}}}$(document)['on']('click','.fullscreen',function(_0x46d2ff){var _0x44492f=_0x2383,_0x9470a4=document['documentElement'];console['log'](document[_0x44492f(0x1fe)]),document[_0x44492f(0x1fe)]!==null?'bijns'!==_0x44492f(0x202)?exitFullscreen(document):_0x51666c['msExitFullscreen']():_0x44492f(0x1ff)!==_0x44492f(0x1ff)?_0x3b1261[_0x44492f(0x1f5)]():requestFullscreen(_0x9470a4);});
+	// Fungsi untuk meminta elemen masuk ke mode layar penuh
+	function requestFullscreen(element) {
+		if (element.requestFullscreen) {
+			element.requestFullscreen();
+		} else if (element.mozRequestFullScreen) { // Untuk Firefox
+			element.mozRequestFullScreen();
+		} else if (element.webkitRequestFullscreen) { // Untuk Chrome, Safari, dan Opera
+			element.webkitRequestFullscreen();
+		} else if (element.msRequestFullscreen) { // Untuk IE/Edge
+			element.msRequestFullscreen();
+		}
+	}
+	// Fungsi untuk keluar dari mode layar penuh
+	function exitFullscreen(element) {
+		if (element.exitFullscreen) {
+			element.exitFullscreen();
+		} else if (element.mozCancelFullScreen) { // Untuk Firefox
+			element.mozCancelFullScreen();
+		} else if (element.webkitExitFullscreen) { // Untuk Chrome, Safari, dan Opera
+			element.webkitExitFullscreen();
+		} else if (element.msExitFullscreen) { // Untuk IE/Edge
+			element.msExitFullscreen();
+		}
+	}
+	// Fullscreen
+	$(document).on("click", ".fullscreen", function(e) {
+		var element = document.documentElement; // Document root element
+		console.log(document.fullscreenElement);
+		if (document.fullscreenElement !== null){
+			exitFullscreen(document);
+		}else{
+			requestFullscreen(element);
+		}
+    	
+	});
 </script>
 <script>
-	const _0x28c3b8=_0x446d;function _0x446d(_0x2197ad,_0x15846b){const _0x19064b=_0x1906();return _0x446d=function(_0x446dda,_0xd0d4fd){_0x446dda=_0x446dda-0xbe;let _0x2f2f8f=_0x19064b[_0x446dda];return _0x2f2f8f;},_0x446d(_0x2197ad,_0x15846b);}(function(_0x3349e9,_0x4b5f0d){const _0x4dccb2=_0x446d,_0x1083ce=_0x3349e9();while(!![]){try{const _0x1b6a28=-parseInt(_0x4dccb2(0x110))/0x1*(-parseInt(_0x4dccb2(0xd1))/0x2)+parseInt(_0x4dccb2(0xd4))/0x3+parseInt(_0x4dccb2(0xf8))/0x4*(parseInt(_0x4dccb2(0xc2))/0x5)+-parseInt(_0x4dccb2(0x11f))/0x6+parseInt(_0x4dccb2(0xc5))/0x7+-parseInt(_0x4dccb2(0xf6))/0x8*(parseInt(_0x4dccb2(0xcc))/0x9)+-parseInt(_0x4dccb2(0xf9))/0xa*(-parseInt(_0x4dccb2(0xf1))/0xb);if(_0x1b6a28===_0x4b5f0d)break;else _0x1083ce['push'](_0x1083ce['shift']());}catch(_0xee699b){_0x1083ce['push'](_0x1083ce['shift']());}}}(_0x1906,0x66136));function _0x1906(){const _0x20918b=['onload','7054OXhLKD','zNCoM','setItem','1972257FNNidF','d-none','#mediaPlayerAudio','#mediaPlayerAudioTitle','pop','split','\x20-\x20','current-media','btxgC','createInstance','Gagal\x20Menghapus!','prepend','fuOxg','\x22>\x0a\x09\x09\x09\x09\x09\x09\x09\x09<small\x20class=\x22m-0\x22>','onerror','children','.removeAllMusic','each','iterate','title','jBMZT','then','removeItem','#mediaPlayerMusicImporterStatus','jZRKt','<span\x20class=\x22spinner-border\x20spinner-border-sm\x22\x20role=\x22status\x22\x20aria-hidden=\x22true\x22></span>\x20Menyiapkan...','<span\x20class=\x22spinner-border\x20spinner-border-sm\x22\x20role=\x22status\x22\x20aria-hidden=\x22true\x22></span>\x20Scanning...\x20(','empty','DjOwn','3542693TtnilW','<span\x20class=\x22spinner-border\x20spinner-border-sm\x22\x20role=\x22status\x22\x20aria-hidden=\x22true\x22></span>\x20Memuat\x20Data...','toString','size','cidCW','3016ROcWKN','<span\x20class=\x22spinner-border\x20spinner-border-sm\x22\x20role=\x22status\x22\x20aria-hidden=\x22true\x22></span>','1792284kCjuXH','10OwsUSQ','clear','lddej','catch','click','readAsDataURL','read','div','removeClass','Scanning...','log','removing','\x0a\x09\x09\x09\x09<div\x20class=\x22col-12\x22>\x0a\x09\x09\x09\x09\x09<div\x20class=\x22row\x20g-1\x22>\x0a\x09\x09\x09\x09\x09\x09<div\x20class=\x22col-auto\x22>\x0a\x09\x09\x09\x09\x09\x09\x09<button\x20class=\x22btn\x20btn-danger\x20removeMusic\x22\x20music-number=\x22','change','.confirmRemoveAllMusicToggle','attr','coQye','toLowerCase','getItem','error','parent','<i\x20class=\x22bi\x20bi-exclamation-triangle-fill\x22></i>\x20Gagal\x20Membuka\x20Data!','</small>\x0a\x09\x09\x09\x09\x09\x09\x09</a>\x0a\x09\x09\x09\x09\x09\x09</div>\x0a\x09\x09\x09\x09\x09</div>\x0a\x09\x09\x09\x09</div>\x0a\x09\x09\x09','13AUYAkT','addClass','btn-light','remove','ybjnM','html','result','\x22><i\x20class=\x22bi\x20bi-trash-fill\x22></i></button>\x0a\x09\x09\x09\x09\x09\x09</div>\x0a\x09\x09\x09\x09\x09\x09<div\x20class=\x22col\x22>\x0a\x09\x09\x09\x09\x09\x09\x09<a\x20class=\x22btn\x20btn-success\x20text-start\x20w-100\x20selectMusic\x22\x20music-number=\x22','files','Gagal\x20Menghapus\x20Library\x20Meta!','.reloadMusic','#mediaPlayerMusicImporter','Gagal\x20Menghapus\x20Library!',')\x20(','play','4721202sLFrrd','name','BwAKR','target','Scan\x20Done!','5dyHLQA','music-number','dlugf','1432900dKNoiO','artist','.mediaList','.selectMusic[music-number=','LaguTest','.selectMusic','\x20OK)','11295lERXaW','tags','Gagal\x20Menghapus\x20Meta!','.removeMusic'];_0x1906=function(){return _0x20918b;};return _0x1906();}let importedSongs=localforage[_0x28c3b8(0xdd)]({'name':_0x28c3b8(0xc9)}),importedSongsMeta=localforage[_0x28c3b8(0xdd)]({'name':'LaguTestMeta'});function loadMusicListing(){const _0x8e56b7=_0x28c3b8;$(_0x8e56b7(0xc7))['children'](_0x8e56b7(0x100))['eq'](0x1)[_0x8e56b7(0xe3)](_0x8e56b7(0x100))['children'](_0x8e56b7(0x100))[_0x8e56b7(0xef)](),importedSongsMeta[_0x8e56b7(0xe6)](function(_0x172216,_0x1100e7,_0x37845e){const _0x364343=_0x8e56b7;if(_0x364343(0xbf)===_0x364343(0xbf)){let _0x2c0a74=''+_0x1100e7;_0x172216['title']&&(_0x364343(0xc4)===_0x364343(0xc4)?_0x2c0a74=_0x172216['artist']+'\x20-\x20'+_0x172216[_0x364343(0xe7)]:_0x1df9e8[_0x364343(0xfa)]()[_0x364343(0xe9)](function(){const _0x50e681=_0x364343;_0x141a79('.confirmRemoveAllMusicToggle')['addClass'](_0x50e681(0xd5)),_0x56fa3c();})['catch'](function(_0x24fff0){const _0x2ac595=_0x364343;_0x2e3f1a(_0x2ac595(0x119));})),$(_0x364343(0xc7))['children'](_0x364343(0x100))['eq'](0x1)[_0x364343(0xe3)](_0x364343(0x100))[_0x364343(0xe3)]('div')[_0x364343(0xdf)](_0x364343(0x105)+_0x1100e7+_0x364343(0x117)+_0x1100e7+_0x364343(0xe1)+_0x2c0a74+_0x364343(0x10f)),_0x37845e>0x0&&$('.confirmRemoveAllMusicToggle')['removeClass'](_0x364343(0xd5));}else _0x14ef3c(_0x364343(0x119));})['then'](function(){const _0x2b555b=_0x8e56b7;_0x2b555b(0xe0)==='nHXnE'?(_0x34f844(_0x2b555b(0xeb))[_0x2b555b(0x115)](_0x2b555b(0x10e)),_0x3534ba[_0x2b555b(0x10c)]('Error\x20during\x20iteration',_0x3e1b2a)):$(_0x2b555b(0xeb))[_0x2b555b(0x115)]('Perpustakaan\x20Musik');})[_0x8e56b7(0xfc)](function(_0x1c333a){const _0x181268=_0x8e56b7;if('lddej'!==_0x181268(0xfb)){let _0xb162e=_0x2e4baf(_0x27ae75);_0x58bc49[_0x181268(0xd3)](_0x4488bf,_0xb162e)[_0x181268(0xe9)](function(){const _0x55c35a=_0x181268;return!![];_0x31edb9(_0x55c35a(0xeb))[_0x55c35a(0x115)]('<span\x20class=\x22spinner-border\x20spinner-border-sm\x22\x20role=\x22status\x22\x20aria-hidden=\x22true\x22></span>\x20Scanning...\x20('+_0x15f83d+'/'+_0x922546+_0x55c35a(0x11d)+_0x20b2bb+'/'+_0x327bdb+'\x20OK)');})['catch'](function(_0x3ef034){const _0x33a9ea=_0x181268;return![];_0x3657a1[_0x33a9ea(0x103)](_0x3ef034);});}else $(_0x181268(0xeb))[_0x181268(0x115)](_0x181268(0x10e)),console[_0x181268(0x10c)]('Error\x20during\x20iteration',_0x1c333a);}),$(_0x8e56b7(0xeb))[_0x8e56b7(0x115)](_0x8e56b7(0xf2));}$(_0x28c3b8(0x11b))['on'](_0x28c3b8(0x106),function(_0x411a93){const _0x4a5f19=_0x28c3b8,_0x4fab64=_0x411a93[_0x4a5f19(0xc0)][_0x4a5f19(0x118)];let _0x372088=0x0,_0x543e04=0x0,_0x416d84=0x0,_0x56495f=0x0;function _0xe1b228(_0x3db928){return new Promise((_0x222cd9,_0x49cf12)=>{const _0x2c4742=_0x446d,_0x31af68=new FileReader();_0x31af68[_0x2c4742(0xfe)](_0x3db928),_0x31af68['onload']=()=>_0x222cd9(_0x31af68[_0x2c4742(0x116)]),_0x31af68[_0x2c4742(0xe2)]=_0x317971=>_0x49cf12(_0x317971);});}function _0x3df1b2(_0x4cd1c4,_0x1caee7,_0x6dfa3f){const _0xfb2317=_0x4a5f19;importedSongsMeta[_0xfb2317(0xd3)](_0x1caee7,_0x6dfa3f)['then'](function(){const _0x527b92=_0xfb2317;let _0x528463=_0xe1b228(_0x4cd1c4);importedSongs['setItem'](_0x1caee7,_0x528463)[_0x527b92(0xe9)](function(){const _0x270c07=_0x527b92;if(_0x270c07(0xd2)===_0x270c07(0xd2)){return!![];$(_0x270c07(0xeb))[_0x270c07(0x115)](_0x270c07(0xee)+_0x543e04+'/'+_0x372088+_0x270c07(0x11d)+_0x416d84+'/'+_0x56495f+_0x270c07(0xcb));}else _0x5822dd(_0x270c07(0x11c));})[_0x527b92(0xfc)](function(_0x2e25e1){return![];console['log'](_0x2e25e1);});})[_0xfb2317(0xfc)](function(_0x3a5e06){const _0x1dc22d=_0xfb2317;return![];console[_0x1dc22d(0x103)](_0x3a5e06);});}$('#mediaPlayerMusicImporterStatus')[_0x4a5f19(0x115)](_0x4a5f19(0xed)),$[_0x4a5f19(0xe5)](_0x4fab64,function(_0x4e898e,_0x2faacd){const _0x4db9d9=_0x4a5f19;_0x2faacd[_0x4db9d9(0xf4)]>0x2*0x400*0x400?(new Promise((_0x33a111,_0x2c5e91)=>{const _0x54e542=_0x4db9d9;if(_0x54e542(0xf0)==='DjOwn'){let _0xd6baa5=_0x2faacd['name'],_0x5743d2=_0x2faacd[_0x54e542(0xbe)][_0x54e542(0xd9)]('.')[_0x54e542(0xd8)]()[_0x54e542(0x10a)](),_0x6ee27c=_0x2faacd['size'],_0x17c911=_0x6ee27c[_0x54e542(0xf3)](),_0x3c320a={};jsmediatags[_0x54e542(0xff)](_0x2faacd,{'onSuccess':function(_0x28d12e){const _0x161211=_0x54e542;let _0x16f89b,_0x1e423b;_0x28d12e[_0x161211(0xcd)][_0x161211(0xe7)]?_0x16f89b=_0x28d12e['tags'][_0x161211(0xe7)]:_0x16f89b=_0xd6baa5,_0x28d12e[_0x161211(0xcd)][_0x161211(0xc6)]?_0x1e423b=_0x28d12e[_0x161211(0xcd)][_0x161211(0xc6)]:_0x1e423b=_0x17c911,_0x3c320a={'title':_0x16f89b,'artist':_0x1e423b};let _0xab74df=_0x3df1b2(_0x2faacd,_0x17c911,_0x3c320a);_0xab74df==!![]?_0x33a111():_0x2c5e91();},'onError':function(_0x58b8cc){const _0x386b3d=_0x54e542;if(_0x386b3d(0xe8)!==_0x386b3d(0xe8))_0x5d0f01++,_0x29bd21++;else{_0x3c320a={'title':_0xd6baa5,'artist':_0x17c911};let _0x9e8138=_0x3df1b2(_0x2faacd,_0x17c911,_0x3c320a);_0x9e8138==!![]?_0x33a111():_0x2c5e91(),_0x2c5e91(_0x58b8cc);}}});}else{return![];_0x541b77['log'](_0x71059);}})[_0x4db9d9(0xe9)](()=>{_0x416d84++,_0x543e04++;})[_0x4db9d9(0xfc)](()=>{_0x416d84++,_0x543e04++;}),_0x56495f++):_0x543e04++,_0x372088++;});let _0x36da87=setInterval(()=>{const _0x1cf6b4=_0x4a5f19;console[_0x1cf6b4(0x103)](_0x1cf6b4(0x102),_0x543e04,_0x372088,_0x416d84),_0x543e04==_0x372088&&(_0x1cf6b4(0x109)===_0x1cf6b4(0xf5)?_0x5a3018['parent']()[_0x1cf6b4(0x10d)]()[_0x1cf6b4(0x10d)]()[_0x1cf6b4(0x113)]():(loadMusicListing(),clearInterval(_0x36da87),console[_0x1cf6b4(0x103)](_0x1cf6b4(0xc1),_0x416d84)));},0x64);}),$(document)['on']('click',_0x28c3b8(0x11a),function(_0x467784){loadMusicListing();}),$(document)['on'](_0x28c3b8(0xfd),_0x28c3b8(0xca),function(_0x1488e9){const _0x719a47=_0x28c3b8;let _0x3df2ae=$(this)[_0x719a47(0x108)](_0x719a47(0xc3));importedSongsMeta[_0x719a47(0x10b)](_0x3df2ae)['then'](function(_0x30c438){const _0x12ae45=_0x719a47;let _0x90f53b=''+_0x3df2ae;_0x30c438[_0x12ae45(0xe7)]&&(_0x12ae45(0xec)!==_0x12ae45(0xec)?_0x1ade8a():_0x90f53b=_0x30c438['artist']+_0x12ae45(0xda)+_0x30c438[_0x12ae45(0xe7)]),$(_0x12ae45(0xd7))[_0x12ae45(0x115)](_0x90f53b),$(_0x12ae45(0xca))[_0x12ae45(0x101)](_0x12ae45(0x112)),$(_0x12ae45(0xc8)+_0x3df2ae+']')[_0x12ae45(0x111)](_0x12ae45(0x112)),importedSongs['getItem'](_0x3df2ae)[_0x12ae45(0xe9)](function(_0x27429c){const _0x5a873d=_0x12ae45;$('#mediaPlayerAudio')[_0x5a873d(0x108)](_0x5a873d(0xdb),_0x3df2ae),$(_0x5a873d(0xd6))[_0x5a873d(0x108)]('src',_0x27429c),$(_0x5a873d(0xd6))[0x0][_0x5a873d(0x11e)]();})[_0x12ae45(0xfc)](function(_0x5bb9b4){console['log'](_0x5bb9b4);});})[_0x719a47(0xfc)](function(_0x57aba9){const _0x3feadb=_0x719a47;console[_0x3feadb(0x103)](_0x57aba9);});}),$(document)['on'](_0x28c3b8(0xfd),_0x28c3b8(0xcf),function(_0x3bb41e){const _0x8b0d88=_0x28c3b8;let _0x5d68cc=$(this)['attr']('music-number'),_0x1bc5d8=$(this);console[_0x8b0d88(0x103)](_0x8b0d88(0x104),_0x5d68cc),$(this)[_0x8b0d88(0x115)](_0x8b0d88(0xf7)),importedSongs[_0x8b0d88(0xea)](_0x5d68cc)['then'](function(){const _0xea1c1d=_0x8b0d88;importedSongsMeta[_0xea1c1d(0xea)](_0x5d68cc)[_0xea1c1d(0xe9)](function(){const _0x282cb1=_0xea1c1d;_0x1bc5d8[_0x282cb1(0x10d)]()['parent']()['parent']()['remove']();})[_0xea1c1d(0xfc)](function(_0x517c34){const _0x1d6bc5=_0xea1c1d;'SDSqg'!=='SDSqg'?(_0x149cf8[_0x1d6bc5(0x103)](_0x1d6bc5(0x102),_0xb9a88a,_0x11fc9a,_0x23bc84),_0x37b36f==_0x15cad6&&(_0x537b39(),_0x1825dc(_0x475f80),_0x360991[_0x1d6bc5(0x103)](_0x1d6bc5(0xc1),_0x36e26c))):alert(_0x1d6bc5(0xce));});})[_0x8b0d88(0xfc)](function(_0x2ce8d2){const _0x6a9df7=_0x8b0d88;alert(_0x6a9df7(0xde));});}),$(document)['on'](_0x28c3b8(0xfd),_0x28c3b8(0xe4),function(_0x47d5ae){const _0x2dce5e=_0x28c3b8;let _0x589e57=this;importedSongs[_0x2dce5e(0xfa)]()[_0x2dce5e(0xe9)](function(){const _0x4ddcf2=_0x2dce5e;if(_0x4ddcf2(0x114)===_0x4ddcf2(0x114))importedSongsMeta[_0x4ddcf2(0xfa)]()['then'](function(){const _0x32ddb8=_0x4ddcf2;$(_0x32ddb8(0x107))[_0x32ddb8(0x111)](_0x32ddb8(0xd5)),loadMusicListing();})[_0x4ddcf2(0xfc)](function(_0xa9e228){const _0x3ebc21=_0x4ddcf2;alert(_0x3ebc21(0x119));});else{const _0x21677e=new _0x32f180();_0x21677e['readAsDataURL'](_0x1d270c),_0x21677e[_0x4ddcf2(0xd0)]=()=>_0x130917(_0x21677e[_0x4ddcf2(0x116)]),_0x21677e[_0x4ddcf2(0xe2)]=_0xacc17c=>_0x41e1f9(_0xacc17c);}})[_0x2dce5e(0xfc)](function(_0x11fe9d){const _0x5f55bc=_0x2dce5e;'btxgC'!==_0x5f55bc(0xdc)?_0x52c341(_0x5f55bc(0x107))[_0x5f55bc(0x101)](_0x5f55bc(0xd5)):alert('Gagal\x20Menghapus\x20Library!');});});
+	// Setel Koneksi Database
+	let importedSongs = localforage.createInstance({
+        name: "LaguTest"
+    });
+	let importedSongsMeta = localforage.createInstance({
+        name: "LaguTestMeta"
+    });
+
+	// Preload Music Listing
+	function loadMusicListing() {
+		$(".mediaList").children('div').eq(1).children('div').children('div').empty();
+		// Membaca Database
+		importedSongsMeta.iterate(function(musicMeta, key, iterationNumber) {
+			let title = musicMeta.fullTitle;
+			$(".mediaList").children('div').eq(1).children('div').children('div').prepend(`
+				<div class="col-12">
+					<div class="row g-1">
+						<div class="col-auto">
+							<button class="btn btn-danger removeMusic" music-number="${key}"><i class="bi bi-trash-fill"></i></button>
+						</div>
+						<div class="col">
+							<a class="btn btn-success text-start w-100 selectMusic" music-number="${key}">
+								<small class="m-0">${title}</small>
+							</a>
+						</div>
+					</div>
+				</div>
+			`); 
+			if (iterationNumber > 0){
+				$(".confirmRemoveAllMusicToggle").removeClass('d-none');
+			}
+			// Status Alerting
+			$("#mediaPlayerMusicImporterStatus").html(`<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Memuat Data... ${title}`);
+		}).then(function() {
+			$("#mediaPlayerMusicImporterStatus").html('Perpustakaan Musik');
+		}).catch(function(err) {
+			$("#mediaPlayerMusicImporterStatus").html('<i class="bi bi-exclamation-triangle-fill"></i> Gagal Membuka Data!');
+			console.error("Error during iteration", err);
+		});
+	} 
+
+	// Music Importer
+    $('#mediaPlayerMusicImporter').on('change', function(event) {
+        const files = event.target.files; 
+
+		// Alert Init
+		$("#mediaPlayerMusicImporterStatus").html(`<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Menyiapkan...`);
+	
+		// Function untuk konversi file ke base64
+		function file2Base64(file) {
+			return new Promise((resolve, reject) => {
+				const reader = new FileReader();
+				reader.readAsDataURL(file);
+				reader.onload = () => resolve(reader.result);
+				reader.onerror = error => reject(error);
+			});
+		}
+
+		// Cek audio atau bukan
+		function isAudioFile(file) {
+			// Check MIME type
+			const audioMimeTypes = [
+				'audio/mpeg', // mp3
+				'audio/wav',  // wav
+				'audio/ogg',  // ogg
+				'audio/mp4',  // mp4
+				'audio/x-aiff', // aiff
+				'audio/x-wav',  // wav
+				'audio/webm', // webm
+				'audio/flac', // flac
+			];
+
+			if (audioMimeTypes.includes(file.type)) {
+				return true;
+			}
+
+			// Check file extension as a fallback
+			const audioExtensions = ['mp3', 'wav', 'ogg', 'mp4', 'aiff', 'wav', 'webm', 'flac'];
+			const fileExtension = file.name.split('.').pop().toLowerCase();
+
+			if (audioExtensions.includes(fileExtension)) {
+				return true;
+			}
+
+			return false;
+		}
+
+		// Function menambahkan musik ke library
+		function tambahMusik(file, fileUniqueID, fileMetadata, fullTitle) {
+			return new Promise((resolve, reject) => {
+				// Menyimpan Metadata Ke Database
+				importedSongsMeta.setItem(fileUniqueID, fileMetadata).then(async function () {
+					// Alert Sistem
+					$("#mediaPlayerMusicImporterStatus").html(`<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Scanning... (${fullTitle})`);
+					
+					// Konversi File ke Base64
+					let tempFileBuffer = await file2Base64(file);
+
+					// Menyimpan File Ke Database
+					importedSongs.setItem(fileUniqueID, tempFileBuffer).then(function () {
+						resolve(); console.log('Tersimpan!');
+					}).catch(function (err) {
+						reject(); console.log(err);
+					});
+				}).catch(function (err) {
+					reject(); console.log(err);
+				});
+			});
+		}
+
+		// Proses Menyimpan (Delay 2 Detik)
+		let diupload = 0; let diantrian = 0; let diimpor = 0; 
+		setTimeout(() => {
+			// Iteration file (melakukan scan)
+			$.each(files, async function(index, file) {
+				if (((file.size > (2 * 1024 * 1024))) && (isAudioFile(file))){ 
+					// Detail File
+					let fileName = file.name;
+					let fileExt = file.name.split('.').pop().toLowerCase();
+					let fileSize = file.size;
+					let fileUniqueID = fileSize.toString();
+
+					let title, artist; title = fileName; artist = fileUniqueID;
+					let fullTitle = `${artist} - ${title}`;
+
+					// Membaca Metadata File
+					await jsmediatags.read(file, {
+						onSuccess: async function(tag) {
+							(tag.tags.title) ? title = tag.tags.title : title  = fileName; (tag.tags.artist) ? artist = tag.tags.artist : artist = fileUniqueID;
+							let fullTitle = `${artist} - ${title}`;
+							let fileMetadata = {title:title, artist:artist, fullTitle:fullTitle};
+							
+							// Menambahkan Musik
+							try {
+								await setTimeout( async () => {
+									let result = await tambahMusik(file, fileUniqueID, fileMetadata, fullTitle);
+									diimpor ++;
+								}, 1000);
+							} catch (error) {
+								// Gagal Menambahkan
+								console.error(error);
+								diimpor ++;
+							}
+						},
+						onError: async function(error) {
+							let fileMetadata = {title:title, artist:artist, fullTitle:fullTitle};
+							
+							// Menambahkan Musik
+							try {
+								await setTimeout( async () => {
+									let result = await tambahMusik(file, fileUniqueID, fileMetadata, fullTitle);
+									diimpor ++;
+								}, 1000);
+							} catch (error) {
+								// Gagal Menambahkan
+								console.error(error);
+								diimpor ++;
+							}
+						}
+					});
+					diantrian ++;
+				}
+				diupload ++;
+			});
+
+			let waitingScanner = setInterval(() => {
+				console.log('Scanning...', diupload, diantrian, diimpor);
+				if (diantrian == diimpor) {
+					// Alert Import End
+					$("#mediaPlayerMusicImporterStatus").html(`<i class="bi bi-check-circle"></i> Impor Selesai!`);
+					// loadMusicListing();
+					clearInterval(waitingScanner);
+					console.log('Scan Done!', diimpor);
+				}
+			}, 100);
+		}, 2000);
+    });
+
+	// Reload Listing Music
+	$(document).on("click", ".reloadMusic", function(e) {
+		loadMusicListing();
+	});
+
+	// Play Selected Music
+	$(document).on("click", ".selectMusic", function(e) {
+		let musicID = $(this).attr('music-number');
+		
+		importedSongsMeta.getItem(musicID).then(function (musicMeta) {
+			let title = `${musicID}`;
+			if (musicMeta.title){
+				title = `${musicMeta.artist} - ${musicMeta.title}`;
+			}
+			$("#mediaPlayerAudioTitle").html(title);
+			$(`.selectMusic`).removeClass('btn-light');
+			$(`.selectMusic[music-number=${musicID}]`).addClass('btn-light');
+			importedSongs.getItem(musicID).then(function (music) {
+				$("#mediaPlayerAudio").attr("current-media", musicID);
+				$("#mediaPlayerAudio").attr("src", music);
+				$("#mediaPlayerAudio")[0].play();
+			}).catch(function (err) {
+				console.log(err);
+			});
+		}).catch(function (err) {
+			console.log(err);
+		});
+	});
+
+	// Hapus Music
+	$(document).on("click", ".removeMusic", function(e) {
+		let musicID = $(this).attr('music-number');
+		let musicDOM = $(this);
+		console.log('removing', musicID);
+		$(this).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>');
+		importedSongs.removeItem(musicID).then(function() {
+			importedSongsMeta.removeItem(musicID).then(function() {
+				musicDOM.parent().parent().parent().remove();
+			}).catch(function(err) {
+				alert("Gagal Menghapus Meta!");
+			});
+		}).catch(function(err) {
+			alert("Gagal Menghapus!");
+		});
+	});
+
+	// Hapus Semua Music
+	$(document).on("click", ".removeAllMusic", function(e) {
+		let me = this;
+		importedSongs.clear().then(function() {
+			importedSongsMeta.clear().then(function() {
+				$(".confirmRemoveAllMusicToggle").addClass('d-none');
+				loadMusicListing();
+			}).catch(function(err) {
+				alert("Gagal Menghapus Library Meta!");
+			});
+		}).catch(function(err) {
+			alert("Gagal Menghapus Library!");
+		});
+	});
+
 </script>
 <script>
-	function _0x313c(_0x553fa8,_0x3ba196){var _0x28e8a6=_0x28e8();return _0x313c=function(_0x313cd2,_0x468d06){_0x313cd2=_0x313cd2-0xac;var _0x2fbb2b=_0x28e8a6[_0x313cd2];return _0x2fbb2b;},_0x313c(_0x553fa8,_0x3ba196);}function _0x28e8(){var _0x48bd44=['OvDMA','170110KPoBhF','12BxSMAR','215TOhfpD','24XUWvtK','removeClass','#mediaPlayerStarter','.visibilitas','play','fjxvH','hasClass','#mediaPlayerAudio','d-none','paused','oTiIP','.mediaPlayerStarter','prop','#spectrumeBass','.mediaListLibraryToggle','iDzve','<i\x20class=\x22bi\x20bi-pause-fill\x22></i>','56656nfIEDH','html','581384VPhhyr','28986olKPXQ','602821vxITew','.mediaPlayerToggle','26773769iFnxAT','.mediaListLibrary','2840706AFzYyV','81fEpxBW','addClass','hide','TBSaZ','28RVIWUO','<i\x20class=\x22bi\x20bi-play-fill\x22></i>','click'];_0x28e8=function(){return _0x48bd44;};return _0x28e8();}var _0x3a1253=_0x313c;(function(_0x14d664,_0x5962ce){var _0x1d4dc1=_0x313c,_0x153f6d=_0x14d664();while(!![]){try{var _0x9c88f5=-parseInt(_0x1d4dc1(0xb3))/0x1+parseInt(_0x1d4dc1(0xb2))/0x2*(parseInt(_0x1d4dc1(0xc3))/0x3)+parseInt(_0x1d4dc1(0xaf))/0x4*(-parseInt(_0x1d4dc1(0xc2))/0x5)+-parseInt(_0x1d4dc1(0xb7))/0x6+parseInt(_0x1d4dc1(0xbc))/0x7*(-parseInt(_0x1d4dc1(0xb1))/0x8)+-parseInt(_0x1d4dc1(0xb8))/0x9*(parseInt(_0x1d4dc1(0xc0))/0xa)+-parseInt(_0x1d4dc1(0xb5))/0xb*(-parseInt(_0x1d4dc1(0xc1))/0xc);if(_0x9c88f5===_0x5962ce)break;else _0x153f6d['push'](_0x153f6d['shift']());}catch(_0x5ca42e){_0x153f6d['push'](_0x153f6d['shift']());}}}(_0x28e8,0x66bc8),$(document)['on'](_0x3a1253(0xbe),_0x3a1253(0xb4),function(_0x116a04){var _0x4a199f=_0x3a1253;isit=$(_0x4a199f(0xc6))[_0x4a199f(0xc9)](_0x4a199f(0xba)),isit==!![]?_0x4a199f(0xc8)!=='eIIoD'?$(_0x4a199f(0xc6))[_0x4a199f(0xc4)](_0x4a199f(0xba)):_0x8cd285(_0x4a199f(0xb6))['removeClass'](_0x4a199f(0xcb)):$('.visibilitas')[_0x4a199f(0xb9)]('hide');}),$(document)['on']('click',_0x3a1253(0xac),function(_0x119b59){var _0x166d41=_0x3a1253;isit=$('.mediaListLibrary')[_0x166d41(0xc9)]('d-none'),isit==!![]?_0x166d41(0xbf)!==_0x166d41(0xad)?$(_0x166d41(0xb6))['removeClass'](_0x166d41(0xcb)):(_0x228f07(_0x166d41(0xc5))[_0x166d41(0xb0)]('<i\x20class=\x22bi\x20bi-pause-fill\x22></i>'),_0x3f90d3(_0x166d41(0xd0))[_0x166d41(0xb9)](_0x166d41(0xcc))):_0x166d41(0xbb)===_0x166d41(0xbb)?$(_0x166d41(0xb6))[_0x166d41(0xb9)](_0x166d41(0xcb)):(_0x5756ec(_0x166d41(0xca))[_0x166d41(0xcf)](_0x166d41(0xcc))?_0x7afcdf(_0x166d41(0xca))[0x0][_0x166d41(0xc7)]():_0x36e5e8('#mediaPlayerAudio')[0x0]['pause'](),_0xb3bfc6(_0x166d41(0xca))['prop']('paused')==!![]?(_0x572b90(_0x166d41(0xc5))[_0x166d41(0xb0)]('<i\x20class=\x22bi\x20bi-play-fill\x22></i>'),_0x4866bf(_0x166d41(0xd0))[_0x166d41(0xc4)](_0x166d41(0xcc))):(_0x1d8af4(_0x166d41(0xc5))[_0x166d41(0xb0)](_0x166d41(0xae)),_0x319e1e(_0x166d41(0xd0))[_0x166d41(0xb9)](_0x166d41(0xcc))));}),$(document)['on'](_0x3a1253(0xbe),_0x3a1253(0xce),function(_0x3656a7){var _0x4e3ae4=_0x3a1253;$(_0x4e3ae4(0xca))[_0x4e3ae4(0xcf)]('paused')?$(_0x4e3ae4(0xca))[0x0]['play']():$('#mediaPlayerAudio')[0x0]['pause'](),$(_0x4e3ae4(0xca))['prop'](_0x4e3ae4(0xcc))==!![]?_0x4e3ae4(0xcd)!=='ChXuW'?($(_0x4e3ae4(0xc5))[_0x4e3ae4(0xb0)](_0x4e3ae4(0xbd)),$(_0x4e3ae4(0xd0))[_0x4e3ae4(0xc4)](_0x4e3ae4(0xcc))):_0x3dd834(_0x4e3ae4(0xc6))[_0x4e3ae4(0xc4)]('hide'):($(_0x4e3ae4(0xc5))[_0x4e3ae4(0xb0)](_0x4e3ae4(0xae)),$(_0x4e3ae4(0xd0))[_0x4e3ae4(0xb9)](_0x4e3ae4(0xcc)));}));
+	$(document).on("click", ".mediaPlayerToggle", function(e) {
+		isit = $(".visibilitas").hasClass('hide');
+        if (isit == true){
+            $(".visibilitas").removeClass('hide');
+        }else{
+            $(".visibilitas").addClass('hide');
+        }
+    });
+	$(document).on("click", ".mediaListLibraryToggle", function(e) {
+		isit = $(".mediaListLibrary").hasClass('d-none');
+        if (isit == true){
+            $(".mediaListLibrary").removeClass('d-none');
+        }else{
+            $(".mediaListLibrary").addClass('d-none');
+        }
+    });
+	
+    $(document).on("click", ".mediaPlayerStarter", function(e) {
+		$('#mediaPlayerAudio').prop("paused") ? $("#mediaPlayerAudio")[0].play() : $("#mediaPlayerAudio")[0].pause();
+		
+		// Pause Button DOM
+		if ($('#mediaPlayerAudio').prop("paused") == true){
+			$("#mediaPlayerStarter").html('<i class="bi bi-play-fill"></i>');
+			$("#spectrumeBass").removeClass('paused');
+        }else{
+			$("#mediaPlayerStarter").html('<i class="bi bi-pause-fill"></i>');
+			$("#spectrumeBass").addClass('paused');
+        }
+	});
 </script>
 <script type="text/javascript">
-    (function(_0x319077,_0x28f30e){const _0x2739f0=_0x4440,_0x5ad9dc=_0x319077();while(!![]){try{const _0x865e8=-parseInt(_0x2739f0(0xe9))/0x1+-parseInt(_0x2739f0(0xce))/0x2+parseInt(_0x2739f0(0xe1))/0x3+parseInt(_0x2739f0(0xd1))/0x4+-parseInt(_0x2739f0(0xbc))/0x5*(parseInt(_0x2739f0(0xe0))/0x6)+-parseInt(_0x2739f0(0xbd))/0x7*(-parseInt(_0x2739f0(0xb6))/0x8)+parseInt(_0x2739f0(0xe3))/0x9;if(_0x865e8===_0x28f30e)break;else _0x5ad9dc['push'](_0x5ad9dc['shift']());}catch(_0x95204c){_0x5ad9dc['push'](_0x5ad9dc['shift']());}}}(_0x8632,0x1e4b8));function _0x4440(_0x442d9c,_0x69761d){const _0x863282=_0x8632();return _0x4440=function(_0x44402f,_0x5aefad){_0x44402f=_0x44402f-0xb6;let _0x241b8b=_0x863282[_0x44402f];return _0x241b8b;},_0x4440(_0x442d9c,_0x69761d);}let canvas,fft,audioElement,teethRatio=0x8,teethMax=0x400,teetUsed=teethMax/teethRatio;function setup(){const _0x4837c3=_0x4440;canvas=createCanvas(0xa,0xa),canvas[_0x4837c3(0xda)](0x0,0x0),canvas['style'](_0x4837c3(0xd9),_0x4837c3(0xea)),fft=new p5['FFT'](0.78);let _0x41609c=getAudioContext();for(let _0x5ea604 of selectAll('audio')){let _0x290850=_0x41609c[_0x4837c3(0xc2)](_0x5ea604[_0x4837c3(0xed)]);_0x290850[_0x4837c3(0xd0)](p5['soundOut']);}peakDetect=new p5[(_0x4837c3(0xeb))](),audioElement=document[_0x4837c3(0xcf)]('mediaPlayerAudio');for(let _0x46228a=0x0;_0x46228a<teetUsed;_0x46228a++){let _0x5d8dcc=0x168/teetUsed*_0x46228a;$(_0x4837c3(0xe7))[_0x4837c3(0xba)](_0x4837c3(0xc6)+_0x46228a+_0x4837c3(0xbb)+_0x5d8dcc+'deg);\x22></li>');}}function touchStarted(){const _0x5caef5=_0x4440;getAudioContext()[_0x5caef5(0xbe)]();}let count_delay=0x0;function draw(){const _0x19468f=_0x4440;let _0x1d6165=fft[_0x19468f(0xdc)](),_0x1c7bdd=fft[_0x19468f(0xe8)](),_0x343bbd=audioElement['currentTime'],_0x1f9d76=audioElement[_0x19468f(0xd3)],_0x486986=_0x343bbd/_0x1f9d76*0x64;$(_0x19468f(0xd4))[_0x19468f(0xc8)](_0x19468f(0xc9),_0x486986+'%'),$('#mediaPlayerAudioProgressTextCurrent')['html'](''+_0x486986[_0x19468f(0xdf)](0x2));let _0x1d2659=_0x1d6165,_0x1336a8=0x0,_0x25797c=_0x1d2659[_0x19468f(0xe5)],_0x5ace3a=Math[_0x19468f(0xec)](teetUsed/0x5),_0x4ce62a=0x0;for(let _0x37c43c=0x0;_0x37c43c<teetUsed;_0x37c43c++){if('pXEPT'===_0x19468f(0xe6)){let _0xb835c3=_0x349da1[_0x19468f(0xc2)](_0x4f69dd['elt']);_0xb835c3[_0x19468f(0xd0)](_0x295c6a[_0x19468f(0xb7)]);}else{_0x4ce62a++;_0x4ce62a%_0x5ace3a==0x0&&(_0x4ce62a=_0x4ce62a-_0x5ace3a);beat_teeth=_0x1d2659[teethRatio*_0x4ce62a];let _0x3af96c=_0x37c43c,_0x880d38=0x64+beat_teeth/0x2*(beat_teeth/0x96),_0x2be7bc=0x0+beat_teeth/0xff*(beat_teeth/0xff)*0.7;$(_0x19468f(0xde))['eq'](_0x3af96c)[_0x19468f(0xc8)](_0x19468f(0xd8),_0x880d38+'px'),$(_0x19468f(0xde))['eq'](_0x3af96c)['css'](_0x19468f(0xca),''+_0x2be7bc);}}bassEnergy=fft[_0x19468f(0xb9)](_0x19468f(0xd5)),lowMidEnergy=fft[_0x19468f(0xb9)]('lowMid'),midEnergy=fft['getEnergy'](_0x19468f(0xdd)),highMidEnergy=fft[_0x19468f(0xb9)](_0x19468f(0xe2)),trebleEnergy=fft['getEnergy'](_0x19468f(0xe4)),bass_e=bassEnergy/0x200*0.2,gitar_e=lowMidEnergy/0x200*0.1,snare_e=midEnergy/0x200*0.1,simbal_e=highMidEnergy/0x200*0.15,treble_e=trebleEnergy/0x200*0.15;let _0x13cb21=bass_e+treble_e+gitar_e+snare_e+simbal_e,_0x47f6b1=_0x13cb21*0x3;$('#spectrumeBass')[_0x19468f(0xc8)](_0x19468f(0xdb),_0x19468f(0xd7)+(1.2-_0x13cb21)+')'),$(_0x19468f(0xcb))[_0x19468f(0xc8)](_0x19468f(0xdb),_0x19468f(0xd7)+(1.2-_0x13cb21/1.3)+')'),$(_0x19468f(0xc0))['css'](_0x19468f(0xc4),_0x19468f(0xb8)+_0x47f6b1+_0x19468f(0xc7));if(count_delay>0x3c){if(_0x19468f(0xcc)===_0x19468f(0xd6)){let _0x3f6aed=0x168/_0x32e952*_0x2afddd;_0x1a5f03(_0x19468f(0xe7))[_0x19468f(0xba)](_0x19468f(0xc6)+_0x3e081d+_0x19468f(0xbb)+_0x3f6aed+_0x19468f(0xc5));}else count_delay=0x0;}else{if('WiYeG'===_0x19468f(0xcd))count_delay++;else{_0x4193ce=_0x1f0d8c(0xa,0xa),_0x15765e[_0x19468f(0xda)](0x0,0x0),_0x4ded0f[_0x19468f(0xc1)](_0x19468f(0xd9),_0x19468f(0xea)),_0x24eff8=new _0x2c4c38[(_0x19468f(0xbf))](0.78);let _0x4276b2=_0x109983();for(let _0x5c7804 of _0x3a589f(_0x19468f(0xd2))){let _0x19e1d9=_0x4276b2['createMediaElementSource'](_0x5c7804[_0x19468f(0xed)]);_0x19e1d9[_0x19468f(0xd0)](_0x176b57[_0x19468f(0xb7)]);}_0x1bf74d=new _0x15529d[(_0x19468f(0xeb))](),_0x170284=_0x4c9e46[_0x19468f(0xcf)](_0x19468f(0xc3));for(let _0x5ce730=0x0;_0x5ce730<_0x326f72;_0x5ce730++){let _0x52b110=0x168/_0xc3b23d*_0x5ce730;_0x2f9569('.spectrume')['append'](_0x19468f(0xc6)+_0x5ce730+'\x22\x20style=\x22transform:rotate('+_0x52b110+_0x19468f(0xc5));}}}}function _0x8632(){const _0x23e359=['radial-gradient(circle,\x20rgba(255,255,255,','getEnergy','append','\x22\x20style=\x22transform:rotate(','480485oJcvBU','23002WzHzlx','resume','FFT','#flash','style','createMediaElementSource','mediaPlayerAudio','background','deg);\x22></li>','<li\x20class=\x22teeth-',')\x200%,\x20rgba(255,255,255,0)\x20100%)','css','--progress','opacity','#spectrumeBassOverlay','mgqUW','WiYeG','367852ZvunMn','getElementById','connect','147876iSLzWB','audio','duration','#mediaPlayerAudioProgress','bass','CzxEs','scale(','height','pointer-events','position','transform','analyze','mid','#spectrumeBeat\x20li','toFixed','6iBuvOG','122625XnRqkl','highMid','1370952wqXnlP','treble','length','INyUX','.spectrume','waveform','10077uVrymc','none','PeakDetect','round','elt','448eThbiH','soundOut'];_0x8632=function(){return _0x23e359;};return _0x8632();}
+    let canvas; let fft; let audioElement
+	let teethRatio = 8; let teethMax = 1024; let teetUsed = (teethMax / teethRatio);  // Terdapat 64 teeth
+
+    function setup() {
+        canvas = createCanvas(10, 10);
+        canvas.position(0, 0);
+        canvas.style('pointer-events', 'none');
+
+        fft = new p5.FFT(0.78);
+        let context = getAudioContext();
+        for (let elem of selectAll('audio')) {
+            let mediaSource = context.createMediaElementSource(elem.elt);
+            mediaSource.connect(p5.soundOut);
+        }
+		peakDetect = new p5.PeakDetect();
+		audioElement = document.getElementById('mediaPlayerAudio');
+		// Init DOM untuk spectrume sebanyak teeth yang dipakai
+		for (let index = 0; index < teetUsed; index++) {
+			let rot = ((360)/teetUsed)*index;
+			$(".spectrume").append(`<li class="teeth-${index}" style="transform:rotate(${rot}deg);"></li>`);
+		}
+		
+    }
+
+    function touchStarted() {
+        getAudioContext().resume();
+    }
+
+	let count_delay = 0;
+    function draw() {
+        let spectrum = fft.analyze();
+        let waveform = fft.waveform();
+
+		// Audio Progress Bar, biar lengkap
+		let musicCurrentTime = audioElement.currentTime;
+		let musicDuration = audioElement.duration;
+		let musicProgress = (musicCurrentTime/musicDuration) * 100;
+		$("#mediaPlayerAudioProgress").css('--progress', `${musicProgress}%`);
+		$("#mediaPlayerAudioProgressTextCurrent").html(`${musicProgress.toFixed(2)}`);
+
+		// Spectrume Bars
+		let beat_base = spectrum; let beat_temp = 0; let beat_length = beat_base.length;
+		let beat_repeat = Math.round(teetUsed / 5); // teetUsed/{bebas}
+
+		// Teeth
+		let teethSelected = 0;
+		for (let i = 0; i < (teetUsed); i++) { teethSelected ++;
+			if (teethSelected % beat_repeat == 0) { teethSelected = teethSelected - beat_repeat; }
+			beat_teeth = beat_base[ teethRatio * (teethSelected) ];
+			
+			let teethPos = i;
+			let teethHeight = (100 + ( (beat_teeth/2) * (beat_teeth/150) ));
+			let teethOpaque = 0 + (( (beat_teeth/255) * (beat_teeth/255)) * 0.7);
+			$("#spectrumeBeat li").eq((teethPos)).css("height",`${teethHeight}px`);
+			$("#spectrumeBeat li").eq(teethPos).css("opacity",`${(teethOpaque)}`);
+		}
+
+		// Bass dari beberapa Frekuensi
+		bassEnergy = fft.getEnergy("bass");
+		lowMidEnergy = fft.getEnergy("lowMid");
+		midEnergy = fft.getEnergy("mid");
+		highMidEnergy = fft.getEnergy("highMid");
+		trebleEnergy = fft.getEnergy("treble");
+		bass_e = (bassEnergy/512) * 0.2;
+		gitar_e = (lowMidEnergy/512) * 0.1;
+		snare_e = (midEnergy/512) * 0.1;
+		simbal_e = (highMidEnergy/512) * 0.15;
+		treble_e = (trebleEnergy/512) * 0.15;
+
+		// DOM Manipulate spectrum bar secara langsung
+		let bassStrength = (bass_e + treble_e + gitar_e + snare_e + simbal_e);
+		let bassAmplifier = bassStrength*3;
+		$("#spectrumeBass").css("transform", `scale(${(1.2-(bassStrength))})`);
+		$("#spectrumeBassOverlay").css("transform", `scale(${(1.2-bassStrength/1.3)})`);
+		$("#flash").css("background", `radial-gradient(circle, rgba(255,255,255,${(bassAmplifier)}) 0%, rgba(255,255,255,0) 100%)`);
+		
+		// $(".video-wallpaper").css("background", `radial-gradient(circle, rgba(255,255,255,${(bassAmplifier)}) 0%, rgba(255,255,255,0) 100%)`);
+		// $(".bgm-wallpaper").css("background", `radial-gradient(circle, rgba(255,255,255,${(bassAmplifier)}) 0%, rgba(255,255,255,0) 100%)`);
+		// $(".bgm-wallpaper").css("transform", `scale(${(1+(bassStrength/8))})`);
+
+		// Debugging
+		if (count_delay > 60){
+			// Do something :v
+			count_delay = 0;
+		}else{
+			count_delay ++;
+		}
+    }
 </script>
 </html>
