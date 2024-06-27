@@ -61,7 +61,7 @@
 	}
 	.logo.bass-overlay{
 		position: absolute;
-		opacity: 0.1;
+		opacity: 0.2;
 		z-index: 990;
 	}
 	.logo img{
@@ -101,10 +101,9 @@
 	}
 	.spectrume li{
 		position: absolute;
-		width: 7px;
+		width: 5px;
 		background-color: white;
-		transform-origin: 0% 100% 0;
-		border-radius: 3px;
+		border-radius: 10px;
 	}
 
 	.video{
@@ -155,22 +154,10 @@
 
 </style>
 <body class="overflow-hidden">	
-	<div class="d-block position-fixed w-100 overflow-hidden d-none">
-		<div class="main video video-wallpaper" >
-			<video autoplay="" muted="" loop="" playsinline="">
-				<source src="assets/sora-kasugano-yosuga-no-sora-desktop-wallpaperwaifu.com.mp4" type="video/mp4">
-			</video>
-		</div>
-	</div>
-	<div class="d-block position-fixed w-100 overflow-hidden d-none">
-		<div class="main bgm bgm-wallpaper">
-			<img src="assets/Anime-Girl-with-Summer-Vibe.png" style="--vid-opacity: 75%;">
-		</div>
-	</div>
-
 	<div class="d-block position-relative overflow-hidden" id="flash">
 		<div class="main dynamic-div">
-			<ul style="transform: rotate(45deg);" class="spectrume" id="spectrumeBeat"></ul>
+			<ul style="transform: rotate(45deg);" class="spectrume" id="spectrumeBeat">
+			</ul>
 			<a class="logo" id="spectrumeBass">
 				<img src="assets/me.png" draggable="false">
 			</a>
@@ -221,7 +208,7 @@
 			<div class="col-auto">
 				<button class="btn btn-success mediaPlayerStarter" id="mediaPlayerStarter"><i class="bi bi-play-fill"></i></button>
 				<audio class="d-none" id="mediaPlayerAudio" controls>
-					<source src="assets/audio/REOL - ChiruChiru.mp3" type="audio/mpeg">
+					<source src="assets/audio/Nightcore - Dame Dame & Britt Lari - La La La.weba" type="audio/mpeg">
 				</audio>
 				<input class="form-control d-none" type="file" id="mediaPlayerMusicImporter" accept="audio/*" webkitdirectory directory multiple />
 			</div>
@@ -233,12 +220,12 @@
 			</div>
 			<div class="col-auto d-none d-sm-flex flex-column justify-content-center">
 				<div class="btn text-white text-start p-0 m-0 lh-1">
-					<p class="m-0 p-0"><small id="mediaPlayerAudioTitle">REOL - ChiruChiru</small></p>
+					<p class="m-0 p-0"><small id="mediaPlayerAudioTitle">Nightcore - Dame Dame & Britt Lari - La La La</small></p>
 					<small class="m-0 p-0"><small class="m-0 p-0"><small id="mediaPlayerAudioProgressTextCurrent">0.00</small>%</small></small>
 				</div>
 			</div>
 			<div class="col d-flex justify-content-end justify-content-lg-end align-items-end">
-				<a class="btn text-white text-end" href="https://ieu.link/tentang" target="_blank">
+				<a class="btn text-white text-end" href="https://greenrunchly.my.id">
 					<p class="m-0">&copy2024 GreenRunchly</p>
 				</a>
 			</div>
@@ -427,7 +414,7 @@
 		setTimeout(() => {
 			// Iteration file (melakukan scan)
 			$.each(files, async function(index, file) {
-				if (((file.size > (2 * 1024 * 1024))) && (isAudioFile(file))){ 
+				if (((file.size > (1 * 1024 * 1024))) && (isAudioFile(file))){ 
 					// Detail File
 					let fileName = file.name;
 					let fileExt = file.name.split('.').pop().toLowerCase();
@@ -603,7 +590,7 @@
 		// Init DOM untuk spectrume sebanyak teeth yang dipakai
 		for (let index = 0; index < teetUsed; index++) {
 			let rot = ((360)/teetUsed)*index;
-			$(".spectrume").append(`<li class="teeth-${index}" style="transform:rotate(${rot}deg);"></li>`);
+			$(".spectrume").append(`<li class="teeth-${index}" style="transform:rotate(${rot}deg) translateY(-140px); transform-origin: 0% 100%;"></li>`);
 		}
 		
     }
@@ -635,8 +622,8 @@
 			beat_teeth = beat_base[ teethRatio * (teethSelected) ];
 			
 			let teethPos = i;
-			let teethHeight = (100 + ( (beat_teeth/2) * (beat_teeth/150) ));
-			let teethOpaque = 0 + (( (beat_teeth/255) * (beat_teeth/255)) * 0.7);
+			let teethHeight = (( (beat_teeth/300) * (beat_teeth/300) * (beat_teeth/300) ) * beat_teeth * 1.5);
+			let teethOpaque = 0.1 + (( (beat_teeth/255) * (beat_teeth/255) * (beat_teeth/200) ) * 0.4);
 			$("#spectrumeBeat li").eq((teethPos)).css("height",`${teethHeight}px`);
 			$("#spectrumeBeat li").eq(teethPos).css("opacity",`${(teethOpaque)}`);
 		}
@@ -647,17 +634,18 @@
 		midEnergy = fft.getEnergy("mid");
 		highMidEnergy = fft.getEnergy("highMid");
 		trebleEnergy = fft.getEnergy("treble");
-		bass_e = (bassEnergy/512) * 0.2;
-		gitar_e = (lowMidEnergy/512) * 0.1;
-		snare_e = (midEnergy/512) * 0.1;
-		simbal_e = (highMidEnergy/512) * 0.15;
-		treble_e = (trebleEnergy/512) * 0.15;
+		bass_e = (bassEnergy/512) * 0.8;
+		gitar_e = (lowMidEnergy/512) * 0.5;
+		snare_e = (midEnergy/512) * 0.3;
+		simbal_e = (highMidEnergy/512) * 0.05;
+		treble_e = (trebleEnergy/512) * 0.05;
 
 		// DOM Manipulate spectrum bar secara langsung
-		let bassStrength = (bass_e + treble_e + gitar_e + snare_e + simbal_e);
-		let bassAmplifier = bassStrength*3;
-		$("#spectrumeBass").css("transform", `scale(${(1.2-(bassStrength))})`);
-		$("#spectrumeBassOverlay").css("transform", `scale(${(1.2-bassStrength/1.3)})`);
+		let combine = (bass_e + gitar_e + treble_e + snare_e + simbal_e) * 100;
+		let bassStrength = ( (combine / 500) * (combine / 400) * (combine / 300) * (combine / 200) * (combine / 100) ) * combine;
+		let bassAmplifier = bassStrength*6;
+		$("#spectrumeBass").css("transform", `scale(${(1-(bassStrength))})`);
+		$("#spectrumeBassOverlay").css("transform", `scale(${(1-bassStrength/2)})`);
 		$("#flash").css("background", `radial-gradient(circle, rgba(255,255,255,${(bassAmplifier)}) 0%, rgba(255,255,255,0) 100%)`);
 		
 		// $(".video-wallpaper").css("background", `radial-gradient(circle, rgba(255,255,255,${(bassAmplifier)}) 0%, rgba(255,255,255,0) 100%)`);
