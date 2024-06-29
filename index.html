@@ -643,7 +643,7 @@
 		// DOM Manipulate spectrum bar secara langsung
 		let combine = (bass_e + gitar_e + treble_e + snare_e + simbal_e) * 100;
 		let bassStrength = ( (combine / 500) * (combine / 400) * (combine / 300) * (combine / 200) * (combine / 100) ) * combine;
-		let bassAmplifier = bassStrength*6;
+		let bassAmplifier = bassStrength*10;
 		$("#spectrumeBass").css("transform", `scale(${(1-(bassStrength))})`);
 		$("#spectrumeBassOverlay").css("transform", `scale(${(1-bassStrength/2)})`);
 		$("#flash").css("background", `radial-gradient(circle, rgba(255,255,255,${(bassAmplifier)}) 0%, rgba(255,255,255,0) 100%)`);
