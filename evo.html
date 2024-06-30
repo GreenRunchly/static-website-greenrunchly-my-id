@@ -196,7 +196,7 @@
 				<img src="assets/me.png" draggable="false">
 			</a> -->
 			<a class="logo-char paused mediaPlayerStarter" id="spectrumeBass">
-				<img src="assets/rivin/Rivin.png" class="char" draggable="false">
+				<img src="assets/chino/631-6314545_anime-sweat-png.png" class="char" draggable="false">
 			</a>
 			<script>
 				$('.char').each(function(){
@@ -211,19 +211,33 @@
 					var imgData = context.getImageData(0, 0, imgWidth, imgHeight);
 					var data = imgData.data;
 					var r = 0, g = 0, b = 0, count = 0;
+					var threshold = 30; // Adjust this threshold to suit your needs
 					
 					for (var i = 0; i < data.length; i += 4) {
-						r += data[i];
-						g += data[i + 1];
-						b += data[i + 2];
-						count++;
+						var pixelR = data[i];
+						var pixelG = data[i + 1];
+						var pixelB = data[i + 2];
+						
+						// Exclude dark pixels based on the threshold
+						if (pixelR > threshold || pixelG > threshold || pixelB > threshold) {
+							r += pixelR;
+							g += pixelG;
+							b += pixelB;
+							count++;
+						}
 					}
 
-					r = Math.floor(r / count);
-					g = Math.floor(g / count);
-					b = Math.floor(b / count);
-					$('body').css('background-color', `rgba(${r}, ${g}, ${b}, 0.5)`);
+					if (count > 0) {
+						r = Math.floor(r / count);
+						g = Math.floor(g / count);
+						b = Math.floor(b / count);
+					} else {
+						// If all pixels were dark, set a default value
+						r = g = b = 0;
+					}
+
 					console.log(`Average color of image ${img.src}: rgb(${r}, ${g}, ${b})`);
+					$('body').css('background-color', `rgb(${r}, ${g}, ${b})`);
 				});
 			</script>
 		</div>
