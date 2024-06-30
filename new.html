@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="google" content="notranslate" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+	<meta name="title" content="GreenRunchly">
+	<meta name="author" content="GreenRunchly">
+	<link rel="icon" href="assets/characters/greenrunchly/me.png">
+
+	<title>GreenRunchly</title>
+
+	<meta property="og:site_name" content="GreenRunchly">
+    <meta property="og:title" content="GreenRunchly" />
+    <meta property="og:description" content="Rizki's Personal Audio Visualizer Site" />
+    <meta property="og:image" itemprop="image" content="assets/me.png">
+    <meta property="og:type" content="website" />
+
+	<!-- Bootstrap Style -->
+    <link href="assets/css/bootstrap-5.3.2-dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="assets/css/bootstrap-5.3.2-dist/js/bootstrap.bundle.min.js"></script>
+	<link rel="stylesheet" href="assets/css/bootstrap-icons-1.11.3/font/bootstrap-icons.min.css">
+	
+	<!-- JQuery -->
+	<script src="assets/js/jquery-3.5.1.min.js"></script>
+    <script src="assets/js/jquery.countdown.js"></script>
+
+	<!-- DB Framework -->
+	<script src="assets/js/localforage/dist/localforage.js"></script>
+
+	<!-- JSMedia -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jsmediatags/3.9.5/jsmediatags.min.js"></script>
+
+    <!-- P5 -->
+    <script src="assets/js/p5.js"></script>
+    <script src="assets/js/p5.sound.js"></script>   
+</head>
+<style>
+    :root{
+        --bs-border-radius: 1rem;
+
+        --music-theme-color: #a792e1;
+
+        --music-progress:100%;
+        --music-progress-bar-color: #ffffff;
+
+        --music-obj-pos-left: 0px;
+        --music-obj-pos-top: 0px;
+        --music-obj-rotate: 120deg;
+        --music-obj-size: 100px;
+
+        --music-obj-width: 3px;
+        --music-obj-height: 10px;        
+        --music-obj-color: #ffffff8a;
+        --music-obj-outline-color: #ffffff;
+        --music-obj-outline-size: 0px;
+        --music-obj-shadow-size: 50px;
+        --music-obj-shadow-strength: 1;
+    }
+    #defaultCanvas0{
+        display: none;
+    }
+    .custom-range::-webkit-slider-runnable-track{
+        background-color: #ffffff00;
+        width: 100%;
+        border-radius: 7px;
+        border:1px solid var(--music-progress-bar-color);
+		height: 9px;
+    }
+    .custom-range::-webkit-slider-thumb {
+        background: var(--bs-light);
+        width:15px;
+        height: 20px;
+    }
+
+    .custom-range::-ms-fill-lower {
+      background: #ddd;
+      border-radius: 5px;
+    }
+
+    .custom-range::-ms-fill-upper {
+      background: #ddd;
+      border-radius: 5px;
+    }
+
+    ::-webkit-scrollbar {
+        width: 7px;
+    }
+
+    ::-webkit-scrollbar-track {
+        background-color: #ffffff00;
+        width: 100%;
+        border-radius: 7px;
+        border:1px solid var(--music-progress-bar-color);
+		height: 9px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        border-radius: 10px;
+        background-color: var(--bs-light);
+    }
+    html{
+        height: 100vh;
+    }
+	body{
+		margin: 0px;
+		padding: 0px;
+        height: 100vh;
+		background-color: var(--music-theme-color);
+	}
+	.main{
+        --main-layout-scale: 1;
+        --main-layout-rotate: 1;
+        --main-layout-color: #ffffff00;
+
+        display: block;
+        min-width: 600px;
+		width: 600px;
+        height: 100%;
+		max-height: 400px;
+        border: 1px solid #ffffff00;
+        background-color: var(--main-layout-color);
+        transition: 0.3s;
+        transform: rotate(var(--main-layout-rotate)) scale(var(--main-layout-scale));
+	}
+    .main:hover{
+        border: 1px solid #ffffff79;
+    }
+
+	.music.progress-bar{
+        display: block;
+        width: 100%;
+        border-radius: 7px;
+        border:1px solid var(--music-progress-bar-color);
+		height: 9px;
+	}
+	.music.progress-bar .bar{
+        display: flex;
+		width: calc(var(--music-progress));
+		min-width: 0px;
+        height: 100%;
+		transition: 1s;
+        background-color: var(--music-progress-bar-color);
+	}
+
+	.music.spectrume{
+        position: relative;
+        --music-obj-rotate: 0deg;
+        --music-obj-scale: 1;
+        --music-obj-pos-left: 0px;
+        --music-obj-pos-top: 0px;
+
+        left: var(--music-obj-pos-left);
+        top: var(--music-obj-pos-top);
+		display: flex;
+		align-items: flex-end;
+		list-style-type: none;
+		margin: 0rem;
+		padding: 0rem;
+        transform: rotate(var(--music-obj-rotate)) scale(var(--music-obj-scale));
+        transform-origin: 0%;
+	}
+	.music.spectrume li{
+        --music-obj-rotate: 0deg;
+        --music-obj-distance: 120px;
+        --music-obj-height: 12px;
+        --music-obj-width: 4px;
+        --music-obj-color: #ffffff; 
+        --music-obj-outline-width: 1px;
+        --music-obj-outline-color: #ffffff;
+        --music-obj-shadow-spread: 0px;
+        --music-obj-shadow-color: #ffffff;
+        --music-obj-opacity: 0; 
+        --music-obj-shape-radius: 1rem;
+
+		position: absolute;
+        padding-bottom: var(--music-obj-height);
+		width: var(--music-obj-width);
+		background-color: var(--music-obj-color);
+        border: var(--music-obj-outline-width) solid var(--music-obj-outline-color);
+        box-shadow: 0 0 var(--music-obj-shadow-spread) var(--music-obj-shadow-color), 0 0 var(--music-obj-shadow-spread) var(--music-obj-shadow-color), 0 0 var(--music-obj-shadow-spread) var(--music-obj-shadow-color);
+        transform: rotate(var(--music-obj-rotate)) translateY(var(--music-obj-distance));
+        transform-origin: 0% 100%;
+        border-radius: var(--music-obj-shape-radius);
+
+        --music-obj-active-height: 0px;
+        --music-obj-active-opacity: 1;
+        opacity: var(--music-obj-active-opacity);
+        padding-top: var(--music-obj-active-height);
+    }
+
+    .music.image{
+        --music-obj-width: 250px;
+        --music-obj-height: 250px;
+        --music-obj-scale: 1;
+        --music-obj-rotate: 0deg;
+        --music-obj-opacity: 1; 
+        --music-obj-pos-left: 0px;
+        --music-obj-pos-top: 0px;
+
+        position: relative;
+        left: var(--music-obj-pos-left);
+        top: var(--music-obj-pos-top);
+        width: calc(var(--music-obj-width));
+        height:var(--music-obj-height);
+        transform: rotate(var(--music-obj-rotate)) scale(var(--music-obj-scale));
+        transform-origin: 50%;
+        opacity: var(--music-obj-opacity);
+    }
+    
+</style>
+<body class="overflow-hidden">
+	<main class="container-fluid"  style="height: 100vh;">
+		<div class="container" style="height: 100dvh; max-height: 100dvh; max-width: 500px;">
+            <div class="row g-2 d-flex flex-column h-100">
+                <div class="col-12">
+                    <div class="container collapse main-panel show">
+                        <div class="row g-2">
+                            <div class="col-12 d-flex">
+                                <!-- Filler saja -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col py-4 d-flex justify-content-center align-items-center">
+                    <div class="main rounded-5" data-bs-toggle="collapse" data-bs-target=".main-panel" role="button" >
+
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="container collapse main-panel show">
+                        <div class="row g-2">
+                            <div class="col-12 d-flex">
+                                <div id="mediaControlPanel" class="collapse show mx-auto z-3">
+                                    <button class="btn btn-md rounded-5 btn-light me-4 ms-auto" data-bs-toggle="collapse" href="#musicControlPanel" role="button">
+                                        <i class="bi bi-music-note-list"></i>
+                                    </button>
+                                    <button class="btn btn-lg rounded-5 btn-light action-mediaplayer fs-2"  data-bs-toggle="collapse" data-bs-target=".main-panel" role="button">
+                                        <i class="bi bi-play-fill"></i>
+                                    </button>
+                                    <button class="btn btn-md rounded-5 btn-light ms-4 me-auto" data-bs-toggle="collapse" href="#designerControlPanel" role="button">
+                                        <i class="bi bi-sliders2-vertical"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div id="mediaPlayerMeta" class="collapse show">
+                                    <audio class="d-none" id="mediaPlayerAudio" controls>
+                                        <source src="assets/audio/Nightcore Ruth - Dendalions.weba" type="audio/mpeg">
+                                    </audio>
+                                    <a class="btn btn-sm text-white text-center w-100">
+                                        <p class="m-0 text-truncate fs-6">
+                                            <span>Ruth - Dendalions [Nightcore]</span>
+                                        </p>
+                                    </a>
+                                    <div class="music progress-bar rounded-5 my-2">
+                                        <div class="bar rounded-5"></div>
+                                    </div>
+                                    <a class="btn btn-sm text-white text-center w-100" href="https://greenrunchly.my.id">
+                                        <p class="m-0 text-truncate">
+                                            <small>&copy2024 GreenRunchly</small>
+                                        </p>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="col-12 text-white">
+                                <div id="musicControlPanel" class="collapse">
+                                    <div class="container overflow-y-scroll" style="max-height: 120px;">
+                                        <div class="row g-2">
+                                            <div class="col-12">
+                                                <label for="musicDesignImage" class="btn btn-sm btn-light text-center w-100 rounded-4">
+                                                    <p class="m-0 text-truncate">
+                                                        <i class="bi bi-plus"></i> <span>Import Music</span>
+                                                    </p>
+                                                </label>
+                                                <input class="form-control d-none" type="file" id="mediaPlayerAudioImporter" accept="audio/*" webkitdirectory directory multiple />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 text-white">
+                                <div id="designerControlPanel" class="collapse">
+                                    <div class="container overflow-y-scroll" style="max-height: 120px;">
+                                        <div class="row g-2">
+                                            <!-- <div class="col-6">
+                                                <label for="mainLayoutScale" class="form-label m-0">Layout Scale</label>
+                                                <input type="range" class="form-range custom-range" id="mainLayoutScale" step="0.1" min="0.5" max="2">
+                                            </div>
+                                            <div class="col-6">
+                                                <label for="mainLayoutRotation" class="form-label m-0">Layout Rotation</label>
+                                                <input type="range" class="form-range custom-range" id="mainLayoutRotation" step="15" min="0" max="360">
+                                            </div> -->
+                                            <div class="col-6">
+                                                <label for="mainLayoutColor" class="form-label m-0">Layout Color</label>
+                                                <input type="color" class="form-control form-control-color btn btn-sm btn-light w-100 rounded-4" style="height: 31px;" id="mainLayoutColor" title="Set Background Color">
+                                            </div>
+                                            <div class="col-6">
+                                                <label for="musicDesignImage" class="form-label m-0">Character Image</label>
+                                                <label for="musicDesignImage" class="btn btn-sm btn-light text-center w-100 rounded-4">
+                                                    <p class="m-0 text-truncate">
+                                                        <i class="bi bi-plus"></i> <span>Select Image</span>
+                                                    </p>
+                                                </label>
+                                                <input class="form-control d-none" type="file" id="musicDesignImage" accept="image/*" />
+                                            </div>
+                                            <!-- <div class="col-6">
+                                                <label for="musicSpectrumBar" class="form-label">Bar</label>
+                                                <input type="range" class="form-range custom-range" id="musicSpectrumBar" step="8" min="8" max="128">
+                                            </div>
+                                            <div class="col-6">
+                                                <label for="musicSpectrumThickness" class="form-label">Bar Thickness</label>
+                                                <input type="range" class="form-range custom-range" id="musicSpectrumThickness" step="1" min="1" max="32">
+                                            </div>
+                                            <div class="col-6">
+                                                <label for="musicSpectrumDistance" class="form-label">Distance</label>
+                                                <input type="range" class="form-range custom-range" id="musicSpectrumDistance" step="10" min="50" max="300">
+                                            </div>
+                                            <div class="col-6">
+                                                <label for="musicSpectrumDynamicDistance" class="form-label">Dynamic Distance</label>
+                                                <input type="range" class="form-range custom-range" id="musicSpectrumDynamicDistance" step="1" min="0" max="100">
+                                            </div>
+                                            <div class="col-6">
+                                                <label for="musicSpectrumRotation" class="form-label">Rotation</label>
+                                                <input type="range" class="form-range custom-range" id="musicSpectrumRotation" step="1" min="0" max="360">
+                                            </div>
+                                            <div class="col-6">
+                                                <label for="musicSpectrumRepetition" class="form-label">Repetition</label>
+                                                <input type="range" class="form-range custom-range" id="musicSpectrumRepetition" step="1" min="1" max="8">
+                                            </div>
+                                            <div class="col-6">
+                                                <label for="musicSpectrumStrength" class="form-label">Strength</label>
+                                                <input type="range" class="form-range custom-range" id="musicSpectrumStrength" step="1" min="1" max="1000">
+                                            </div>
+                                            <div class="col-6">
+                                                <label for="musicSpectrumSensitivity" class="form-label">Sensitivity</label>
+                                                <input type="range" class="form-range custom-range" id="musicSpectrumSensitivity" step="1" min="1" max="1000">
+                                            </div>
+                                            <div class="col-6">
+                                                <label for="musicSpectrumOpacity" class="form-label">Opacity</label>
+                                                <input type="range" class="form-range custom-range" id="musicSpectrumOpacity" step="1" min="1" max="1000">
+                                            </div>
+                                            <div class="col-6">
+                                                <label for="musicSpectrumDynamicOpacity" class="form-label">Dynamic Opacity</label>
+                                                <input type="range" class="form-range custom-range" id="musicSpectrumDynamicOpacity" step="1" min="1" max="1000">
+                                            </div> -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> 
+                        </div> 
+                    </div> 
+                </div>     
+            </div>
+        </div>
+	</main>
+</body>
+<script>
+    function initObject() {
+        
+        mainLayoutSet({
+            scale: 1,
+            rotate: 0,
+            color: '#ffffff00',
+        });
+
+        objImageAdd({
+            image: 'assets/characters/rivin/Rivin.png',
+            width: 300,
+            height: 300,
+            posX: 150,
+            posY: 50,
+            scale: 1,
+            scaleDynamic: 0.1, 
+            rotate: 0,
+            opacity: 1,
+        })
+
+        objSpectrumAdd({
+            bars: 128, // 0-1024
+            barsColor: '#ffffff',
+            barsRadius: 1, // 0.1-2
+            outlineWidth: 0, // 0-8
+            outlineColor: '#ffffff',
+            shadowSpread: 0, // 0-50
+            shadowColor: '#ffd3ee',
+            repeat: 2, // 0-8
+            width: 4, // 0-100
+            thick: 20, // 0-100
+            posX: 300, // 0-600
+            posY: 200, // 0-400
+            opacity: 200, // 0 - 1000
+            opacityDynamic: 1000, // 0 - 1000
+            scale: 1, // 0.1-1
+            rotate: -55, // 0-360
+            distance: 120, // 0-100
+            distanceDynamic: -10, // 0-100
+            strength: 1200, // 0-1000
+            sensitivity: 300, // 0-1000
+        });
+    }
+</script>
+<script type="text/javascript">
+    let canvas; let fft; let audioElement; let mediaSpectrume = 1024;
+    let count_delay = 0; let objectMemory = [];
+
+    function setup() {
+        // Memulai listener spectrum audio pada base
+        fft = new p5.FFT(0.78);
+        let context = getAudioContext();
+        for (let elem of selectAll('audio')) {
+            let mediaSource = context.createMediaElementSource(elem.elt);
+            mediaSource.connect(p5.soundOut);
+        }
+		audioElement = document.getElementById('mediaPlayerAudio');
+
+        // Load Objects
+		initObject();
+    } function touchStarted() {
+        getAudioContext().resume();
+    }
+
+    function mainLayoutSet(objConfig=[]) {
+        // Read Data
+        let objId                   = Math.floor(Math.random() * 1000);
+
+        // Config
+        let objConfScale            = objConfig.scale;
+        let objConfRotate           = objConfig.rotate;
+        let objConfColor            = objConfig.color;
+
+        $(`.main`).css('--main-layout-scale', `${objConfScale}`);
+        $(`.main`).css('--main-layout-rotate', `${objConfRotate}deg`);
+        $(`.main`).css('--main-layout-color', `${objConfColor}`);
+
+        // obj buffer
+        objectMemory[objId] = {id: objId, tipe: 100, config : objConfig};
+
+        console.log(objConfig);
+    }
+
+    function objImageAdd(objConfig=[], location='') {
+        // Read Data
+        let objId                   = Math.floor(Math.random() * 1000);
+
+        // Config
+        let objConfImage            = objConfig.image;
+        let objConfWidth            = objConfig.width + 'px';
+        let objConfHeight           = objConfig.height + 'px';
+        let objConfPosX             = objConfig.posX + 'px';
+        let objConfPosY             = objConfig.posY + 'px';
+        let objConfScale            = objConfig.scale;
+        let objConfScaleDynamic     = objConfig.scaleDynamic;
+        let objConfRotate           = objConfig.rotate + 'deg';
+        let objConfOpacity          = objConfig.opacity;
+
+        // Add base object
+        $(`.main ${location}`).prepend(`
+            <img src="${objConfImage}" class="music image p-0 m-0" id="objectId${objId}" draggable="false"
+            style="
+            --music-obj-width:${objConfWidth};
+            --music-obj-height:${objConfHeight};
+            --music-obj-pos-left:${objConfPosX};
+            --music-obj-pos-top:${objConfPosY};
+            --music-obj-scale:${objConfScale};
+            --music-obj-rotate:${objConfRotate};
+            --music-obj-opacity:${objConfOpacity};
+            ">
+        `);
+
+        // obj buffer
+        objectMemory[objId] = {id: objId, tipe: 2, config : objConfig};
+
+        console.log(objConfig);
+    }
+
+    function objSpectrumAdd(objConfig=[], location='') {
+        // Read Data
+        let objId                   = Math.floor(Math.random() * 1000);
+
+        // Config
+        let objConfScale            = objConfig.scale;
+        let objConfBars             = objConfig.bars;
+        let objConfBarsColor        = objConfig.barsColor;
+        let objConfBarsRadius       = objConfig.barsRadius + 'rem';
+        let objConfOutlineWidth     = objConfig.outlineWidth + 'px';
+        let objConfOutlineColor     = objConfig.outlineColor;
+        let objConfShadowSpread     = objConfig.shadowSpread + 'px';
+        let objConfShadowColor      = objConfig.shadowColor;
+        let objConfWidth            = objConfig.width + 'px';
+        let objConfThick            = objConfig.thick + 'px';
+        let objConfDistance         = objConfig.distance + 'px';
+        let objConfDistanceDynamic  = objConfig.distanceDynamic + 'px';
+        let objConfPosX             = objConfig.posX + 'px';
+        let objConfPosY             = objConfig.posY + 'px';
+        let objConfRotate           = objConfig.rotate + 'deg';
+        let objConfRepeat           = objConfig.repeat;
+        let objConfStrength         = objConfig.strength;
+        let objConfSensitivity      = objConfig.sensitivity;
+        let objConfOpacity          = objConfig.opacity;
+        let objConfOpacityDynamic   = objConfig.opacityDynamic;
+
+        // Add base object
+        $(`.main ${location}`).prepend(`
+            <ul id="objectId${objId}" class="music spectrume p-0 m-0" style="
+            --music-obj-pos-left:${objConfPosX};
+            --music-obj-pos-top:${objConfPosY};
+            --music-obj-scale:${objConfScale};
+            --music-obj-rotate:${objConfRotate};
+            "></ul>
+        `);
+        
+        // Add sub object dalam base
+		for (let i = 0; i < objConfBars; i++) {
+			let iTeethRotate = ( (360)/objConfBars ) * i;
+			$(`.main ${location} #objectId${objId}`).append(`
+                <li style="
+                --music-obj-rotate:${iTeethRotate}deg;
+                --music-obj-height:${objConfThick};
+                --music-obj-width:${objConfWidth};
+                --music-obj-distance:-${(objConfDistance)};
+                --music-obj-color:${objConfBarsColor}; 
+                --music-obj-outline-width:${objConfOutlineWidth};
+                --music-obj-outline-color:${objConfOutlineColor};
+                --music-obj-shadow-spread:${objConfShadowSpread};
+                --music-obj-shadow-color:${objConfShadowColor};
+                --music-obj-shape-radius:${objConfBarsRadius};
+                "></li>
+            `);
+		}
+
+        // obj buffer
+        objectMemory[objId] = {id: objId, tipe: 1, config : objConfig};
+        console.log(objConfig);
+    }
+
+    function draw() {
+        // Spectrum Data
+        let spectrum = fft.analyze();
+        let waveform = fft.waveform();
+
+	    // Spectrume Energy
+		let bassEnergy = fft.getEnergy("bass"); let bass_e = (bassEnergy/512) * 1; 
+		let lowMidEnergy = fft.getEnergy("lowMid"); let gitar_e = (lowMidEnergy/512) * 0.8; 
+		let midEnergy = fft.getEnergy("mid"); let snare_e = (midEnergy/512) * 0.2;
+        let energyCombine = (bass_e + gitar_e + snare_e );
+        let energyStrength = ( Math.pow((energyCombine), 5) * energyCombine ) * 3;
+
+        // Media Progress Bar
+		let musicCurrentTime = audioElement.currentTime;
+		let musicDuration = audioElement.duration;
+		let musicProgress = (musicCurrentTime/musicDuration) * 100;
+		$(".music.progress-bar .bar").css('--music-progress', `${musicProgress}%`);
+
+        // Object placement
+		objectMemory.forEach(element => {
+            switch (element.tipe) {
+                case 1:
+                    objSpectrumUpdate(element);
+                    break;
+                case 2:
+                    objImageUpdate(element);
+                    break;
+            }
+        });
+
+        // Fungsi Update Object
+        function objSpectrumUpdate(element) {
+            // Read Data
+            let objId                   = element.id;
+            let objConfig               = element.config;
+            
+            // Config
+            let objConfScale            = objConfig.scale;
+            let objConfBars             = objConfig.bars;
+            let objConfBarsColor        = objConfig.barsColor;
+            let objConfBarsRadius       = objConfig.barsRadius + 'rem';
+            let objConfOutlineWidth     = objConfig.outlineWidth + 'px';
+            let objConfOutlineColor     = objConfig.outlineColor;
+            let objConfShadowSpread     = objConfig.shadowSpread + 'px';
+            let objConfShadowColor      = objConfig.shadowColor;
+            let objConfWidth            = objConfig.width + 'px';
+            let objConfThick            = objConfig.thick + 'px';
+            let objConfDistance         = objConfig.distance + 'px';
+            let objConfDistanceDynamic  = objConfig.distanceDynamic + 'px';
+            let objConfPosX             = objConfig.posX + 'px';
+            let objConfPosY             = objConfig.posY + 'px';
+            let objConfRotate           = objConfig.rotate + 'deg';
+            let objConfRepeat           = objConfig.repeat;
+            let objConfStrength         = objConfig.strength;
+            let objConfSensitivity      = objConfig.sensitivity;
+            let objConfOpacity          = objConfig.opacity;
+            let objConfOpacityDynamic   = objConfig.opacityDynamic;
+        
+            // Draw Spectrume (Flow Data)
+            let spectrumBarBase = spectrum;
+            let spectrumBarRepeatThreshold = Math.round(objConfBars / objConfRepeat); 
+            let spectrumBarBufferActive = 0;
+            for (let i = 0; i < (objConfBars); i++) {  spectrumBarBufferActive ++;
+                if (spectrumBarBufferActive % spectrumBarRepeatThreshold == 0) { 
+                    spectrumBarBufferActive = spectrumBarBufferActive - spectrumBarRepeatThreshold; 
+                }
+                let spectrumeBarBufferAudio = spectrumBarBase[ (mediaSpectrume / objConfBars) * spectrumBarBufferActive ];
+                let objBufferBarPos = i;
+                
+                let spectrumMultiplier = ( Math.pow(spectrumeBarBufferAudio/255, (1000/objConfSensitivity) )) * (objConfStrength/1000);
+                let spectrumMultiplierMax = ( Math.pow(1, (1000/objConfSensitivity) )) * (objConfStrength/1000);
+
+                let objBufferBarHeight = (spectrumeBarBufferAudio) * spectrumMultiplier;
+                $(`#objectId${objId} li`).eq((objBufferBarPos)).css("--music-obj-active-height",`${objBufferBarHeight}px`);
+
+                let objBufferBarOpacity = (objConfOpacity/1000) + ((spectrumMultiplier / spectrumMultiplierMax) * (objConfOpacityDynamic/1000));
+                $(`#objectId${objId} li`).eq((objBufferBarPos)).css("--music-obj-active-opacity",`${objBufferBarOpacity}`);
+
+                let objBufferBarDistanceDynamic = (parseInt(objConfDistance, 10)/parseInt(objConfDistance, 10)) + ((energyStrength * parseInt(objConfDistanceDynamic, 10)) / parseInt(objConfDistance, 10));
+                $(`#objectId${objId}`).css(`--music-obj-scale`,`${objBufferBarDistanceDynamic}`);
+                
+            }
+        }
+
+        // Fungsi Update Object
+        function objImageUpdate(element) {
+            // Read Data
+            let objId                   = element.id;
+            let objConfig               = element.config;
+            
+            // Config
+            let objConfImage            = objConfig.image;
+            let objConfWidth            = objConfig.width + 'px';
+            let objConfHeight           = objConfig.height + 'px';
+            let objConfPosX             = objConfig.posX + 'px';
+            let objConfPosY             = objConfig.posY + 'px';
+            let objConfScale            = objConfig.scale;
+            let objConfScaleDynamic     = objConfig.scaleDynamic;
+            let objConfRotate           = objConfig.rotate + 'deg';
+            let objConfOpacity          = objConfig.opacity;
+        
+            // Draw (Flow Data)
+            let objBufferScaleDynamic = (objConfScale/objConfScale) + ((energyStrength * objConfScaleDynamic / objConfScale));
+            $(`#objectId${objId}`).css(`--music-obj-scale`,`${objBufferScaleDynamic}`);
+        }
+
+        // Debugging
+		if (count_delay > 60){
+			// Do something :v
+			count_delay = 0;
+		}else{
+			count_delay ++;
+		}
+    }
+</script>
+<script>
+   
+	$(document).ready(function() {
+
+        // Tombol Aksi Play/Pause
+        $(document).on("click", ".action-mediaplayer", function(e) {
+            $('#mediaPlayerAudio').prop("paused") ? $("#mediaPlayerAudio")[0].play() : $("#mediaPlayerAudio")[0].pause();
+        });
+
+        // Cek setiap saat untuk perubahaan sesuai kondisi
+        setInterval(() => {
+            // Perubahan tombol action-mediaplayer disebabkan mediaPlayerAudio
+            if ($('#mediaPlayerAudio').prop("paused") == true){
+                $(".action-mediaplayer").html('<i class="bi bi-play-fill"></i>');
+            }else{
+                $(".action-mediaplayer").html('<i class="bi bi-pause-fill"></i>');
+            }
+        }, 1000);
+        
+    });
+    
+</script>
+</html>
