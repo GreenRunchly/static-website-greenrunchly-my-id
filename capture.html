@@ -1,55 +1,36 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>p5.js Audio Capture</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/addons/p5.sound.min.js"></script>
-</head>
-<body>
-    <audio class="d-none" id="mediaPlayerAudio" controls>
-        <source src="assets/audio/Nightcore Ruth - Dendalions.weba" type="audio/mpeg">
-    </audio>
-</body>
-<script>
-    // Create a new p5.js sketch
-    let mic;
-    let fft;
-
-    function setup() {
-    createCanvas(400, 400);
-
-    // Get audio from the current tab
-    navigator.mediaDevices.getDisplayMedia({ audio: true, video: false })
-        .then(stream => {
-        mic = new p5.AudioIn();
-        mic.setSource(stream);
-        mic.start();
-
-        fft = new p5.FFT();
-        fft.setInput(mic);
-        })
-        .catch(error => {
-        console.error('Error accessing audio stream:', error);
-        });
+<audio id="audioPlayer" controls>
+    Your browser does not support the audio element.
+  </audio>
+  
+  <script>
+    let mediaRecorder;
+    let mediaChunks = [];
+  
+    async function startCapture() {
+      try {
+        const stream = await navigator.mediaDevices.getDisplayMedia({ audio: true, video: true});
+        
+        mediaRecorder = new MediaRecorder(stream);
+  
+        mediaRecorder.ondataavailable = function(e) {
+          if (e.data.size > 0) {
+            mediaChunks.push(e.data);
+          }
+        };
+  
+        mediaRecorder.start(); // Start recording immediately
+  
+        mediaRecorder.onstop = function() {
+          let blob = new Blob(mediaChunks, { 'type' : 'audio/ogg; codecs=opus' });
+          let audioURL = URL.createObjectURL(blob);
+          document.getElementById('audioPlayer').src = audioURL;
+        };
+  
+      } catch (err) {
+        console.error('Error accessing display media:', err);
+      }
     }
-
-    function draw() {
-    background(200);
-
-    if (mic && fft) {
-        let spectrum = fft.analyze();
-
-        noStroke();
-        fill(0, 255, 0);
-        for (let i = 0; i < spectrum.length; i++) {
-        let x = map(i, 0, spectrum.length, 0, width);
-        let h = -height + map(spectrum[i], 0, 255, height, 0);
-        rect(x, height, width / spectrum.length, h);
-        }
-    }
-    }
-
-</script>
-</html>
+  </script>
+  
+  <button onclick="startCapture()">Start Audio Capture</button>
+  
