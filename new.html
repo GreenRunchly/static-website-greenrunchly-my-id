@@ -73,21 +73,17 @@
         width:15px;
         height: 20px;
     }
-
     .custom-range::-ms-fill-lower {
       background: #ddd;
       border-radius: 5px;
     }
-
     .custom-range::-ms-fill-upper {
       background: #ddd;
       border-radius: 5px;
     }
-
     ::-webkit-scrollbar {
         width: 7px;
     }
-
     ::-webkit-scrollbar-track {
         background-color: #ffffff00;
         width: 100%;
@@ -95,10 +91,12 @@
         border:1px solid var(--music-progress-bar-color);
 		height: 9px;
     }
-
     ::-webkit-scrollbar-thumb {
         border-radius: 10px;
         background-color: var(--bs-light);
+    }
+    .bi{
+        -webkit-text-stroke: 1px;
     }
     html{
         height: 100vh;
@@ -226,132 +224,190 @@
                 </div>
                 <div class="col py-4 d-flex justify-content-center align-items-center">
                     <div class="main rounded-5" data-bs-toggle="collapse" data-bs-target=".main-panel" role="button" >
-
+                        <!-- <iframe width="420" height="345" src="http://www.youtube.com/embed/BJuoqqlVr1U?autoplay=1" frameborder="0" allowfullscreen></iframe> -->
                     </div>
                 </div>
                 <div class="col-12">
-                    <div class="container collapse main-panel show">
-                        <div class="row g-2">
-                            <div class="col-12 d-flex">
-                                <div id="mediaControlPanel" class="collapse show mx-auto z-3">
-                                    <button class="btn btn-md rounded-5 btn-light me-4 ms-auto" data-bs-toggle="collapse" href="#musicControlPanel" role="button">
-                                        <i class="bi bi-music-note-list"></i>
-                                    </button>
-                                    <button class="btn btn-lg rounded-5 btn-light action-mediaplayer fs-2"  data-bs-toggle="collapse" data-bs-target=".main-panel" role="button">
-                                        <i class="bi bi-play-fill"></i>
-                                    </button>
-                                    <button class="btn btn-md rounded-5 btn-light ms-4 me-auto" data-bs-toggle="collapse" href="#designerControlPanel" role="button">
-                                        <i class="bi bi-sliders2-vertical"></i>
-                                    </button>
+                    <div class="collapse main-panel show">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="collapse control-panel design-panel library-panel show">
+                                    <div class="row">
+                                        <div class="col-12 d-flex ">
+                                            <div id="mediaControlPanelPartAction" class="collapse show mx-auto z-3">
+                                                <button class="btn btn-md rounded-5 btn-light me-4 ms-auto" data-bs-toggle="collapse" data-bs-target=".library-panel" role="button">
+                                                    <p class="m-0 text-truncate">
+                                                        <i class="bi bi-music-note-beamed"></i>
+                                                    </p>
+                                                </button>
+                                                <button class="btn btn-lg rounded-5 btn-light action-mediaplayer fs-2" data-bs-toggle="collapse" data-bs-target=".main-panel" role="button">
+                                                    <p class="m-0 text-truncate">
+                                                        <i class="bi bi-play-fill"></i>
+                                                    </p>
+                                                </button>
+                                                <button class="btn btn-md rounded-5 btn-light ms-4 me-auto" data-bs-toggle="collapse" data-bs-target=".design-panel" role="button">
+                                                    <p class="m-0 text-truncate">
+                                                        <i class="bi bi-sliders2-vertical"></i>
+                                                    </p>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 mt-2">
+                                            <div id="mediaControlPanelPartMeta" class="collapse show">
+                                                <audio class="d-none" id="mediaPlayerAudio" controls>
+                                                    <source src="assets/audio/Nightcore Ruth - Dendalions.weba" type="audio/mpeg">
+                                                </audio>
+                                                <a class="btn btn-sm text-white text-center w-100">
+                                                    <p class="m-0 text-truncate fs-6">
+                                                        <span>Ruth - Dendalions [Nightcore]</span>
+                                                    </p>
+                                                </a>
+                                                <div class="music progress-bar rounded-5 my-2">
+                                                    <div class="bar rounded-5"></div>
+                                                </div>
+                                                <a class="btn btn-sm text-white text-center w-100" href="https://greenrunchly.my.id">
+                                                    <p class="m-0 text-truncate">
+                                                        <small>&copy2024 GreenRunchly</small>
+                                                    </p>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-12">
-                                <div id="mediaPlayerMeta" class="collapse show">
-                                    <audio class="d-none" id="mediaPlayerAudio" controls>
-                                        <source src="assets/audio/Nightcore Ruth - Dendalions.weba" type="audio/mpeg">
-                                    </audio>
-                                    <a class="btn btn-sm text-white text-center w-100">
-                                        <p class="m-0 text-truncate fs-6">
-                                            <span>Ruth - Dendalions [Nightcore]</span>
-                                        </p>
-                                    </a>
-                                    <div class="music progress-bar rounded-5 my-2">
-                                        <div class="bar rounded-5"></div>
-                                    </div>
-                                    <a class="btn btn-sm text-white text-center w-100" href="https://greenrunchly.my.id">
-                                        <p class="m-0 text-truncate">
-                                            <small>&copy2024 GreenRunchly</small>
-                                        </p>
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="col-12 text-white">
-                                <div id="musicControlPanel" class="collapse">
-                                    <div class="container overflow-y-scroll" style="max-height: 120px;">
-                                        <div class="row g-2">
-                                            <div class="col-12">
-                                                <label for="musicDesignImage" class="btn btn-sm btn-light text-center w-100 rounded-4">
-                                                    <p class="m-0 text-truncate">
-                                                        <i class="bi bi-plus"></i> <span>Import Music</span>
+                                <div class="collapse library-panel">
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="container d-flex justify-content-start">
+                                                <a class="btn rounded-5 text-white text-left">
+                                                    <p class="m-0 text-truncate fw-bold">
+                                                        <span>Music Library</span>
                                                     </p>
-                                                </label>
-                                                <input class="form-control d-none" type="file" id="mediaPlayerAudioImporter" accept="audio/*" webkitdirectory directory multiple />
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <div class="container overflow-y-scroll d-flex justify-content-end">
+                                                <button class="btn rounded-5 btn-light ms-auto" data-bs-toggle="collapse" data-bs-target=".library-panel" role="button">
+                                                    <p class="m-0 text-truncate">
+                                                        <i class="bi bi-chevron-left"></i> <span class="pe-2">Kembali</span>
+                                                    </p>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 mt-2 text-white">
+                                            <div id="librayControlPanelPartImporter" class="collapse show">
+                                                <div class="container overflow-y-scroll" style="max-height: 120px;">
+                                                    <div class="row g-2">
+                                                        <div class="col-12">
+                                                            <label for="musicDesignImage" class="btn btn-light text-center w-100 rounded-5">
+                                                                <p class="m-0 text-truncate">
+                                                                    <i class="bi bi-plus"></i> <span>Import Music</span>
+                                                                </p>
+                                                            </label>
+                                                            <input class="form-control d-none" type="file" id="mediaPlayerAudioImporter" accept="audio/*" webkitdirectory directory multiple />
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-12 text-white">
-                                <div id="designerControlPanel" class="collapse">
-                                    <div class="container overflow-y-scroll" style="max-height: 120px;">
-                                        <div class="row g-2">
-                                            <!-- <div class="col-6">
-                                                <label for="mainLayoutScale" class="form-label m-0">Layout Scale</label>
-                                                <input type="range" class="form-range custom-range" id="mainLayoutScale" step="0.1" min="0.5" max="2">
-                                            </div>
-                                            <div class="col-6">
-                                                <label for="mainLayoutRotation" class="form-label m-0">Layout Rotation</label>
-                                                <input type="range" class="form-range custom-range" id="mainLayoutRotation" step="15" min="0" max="360">
-                                            </div> -->
-                                            <div class="col-6">
-                                                <label for="mainLayoutColor" class="form-label m-0">Layout Color</label>
-                                                <input type="color" class="form-control form-control-color btn btn-sm btn-light w-100 rounded-4" style="height: 31px;" id="mainLayoutColor" title="Set Background Color">
-                                            </div>
-                                            <div class="col-6">
-                                                <label for="musicDesignImage" class="form-label m-0">Character Image</label>
-                                                <label for="musicDesignImage" class="btn btn-sm btn-light text-center w-100 rounded-4">
-                                                    <p class="m-0 text-truncate">
-                                                        <i class="bi bi-plus"></i> <span>Select Image</span>
+                                <div class="collapse design-panel">
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="container d-flex justify-content-start">
+                                                <a class="btn rounded-5 text-white text-left">
+                                                    <p class="m-0 text-truncate fw-bold">
+                                                        <span>Object Layer</span>
                                                     </p>
-                                                </label>
-                                                <input class="form-control d-none" type="file" id="musicDesignImage" accept="image/*" />
+                                                </a>
                                             </div>
-                                            <!-- <div class="col-6">
-                                                <label for="musicSpectrumBar" class="form-label">Bar</label>
-                                                <input type="range" class="form-range custom-range" id="musicSpectrumBar" step="8" min="8" max="128">
-                                            </div>
-                                            <div class="col-6">
-                                                <label for="musicSpectrumThickness" class="form-label">Bar Thickness</label>
-                                                <input type="range" class="form-range custom-range" id="musicSpectrumThickness" step="1" min="1" max="32">
-                                            </div>
-                                            <div class="col-6">
-                                                <label for="musicSpectrumDistance" class="form-label">Distance</label>
-                                                <input type="range" class="form-range custom-range" id="musicSpectrumDistance" step="10" min="50" max="300">
-                                            </div>
-                                            <div class="col-6">
-                                                <label for="musicSpectrumDynamicDistance" class="form-label">Dynamic Distance</label>
-                                                <input type="range" class="form-range custom-range" id="musicSpectrumDynamicDistance" step="1" min="0" max="100">
-                                            </div>
-                                            <div class="col-6">
-                                                <label for="musicSpectrumRotation" class="form-label">Rotation</label>
-                                                <input type="range" class="form-range custom-range" id="musicSpectrumRotation" step="1" min="0" max="360">
-                                            </div>
-                                            <div class="col-6">
-                                                <label for="musicSpectrumRepetition" class="form-label">Repetition</label>
-                                                <input type="range" class="form-range custom-range" id="musicSpectrumRepetition" step="1" min="1" max="8">
-                                            </div>
-                                            <div class="col-6">
-                                                <label for="musicSpectrumStrength" class="form-label">Strength</label>
-                                                <input type="range" class="form-range custom-range" id="musicSpectrumStrength" step="1" min="1" max="1000">
-                                            </div>
-                                            <div class="col-6">
-                                                <label for="musicSpectrumSensitivity" class="form-label">Sensitivity</label>
-                                                <input type="range" class="form-range custom-range" id="musicSpectrumSensitivity" step="1" min="1" max="1000">
-                                            </div>
-                                            <div class="col-6">
-                                                <label for="musicSpectrumOpacity" class="form-label">Opacity</label>
-                                                <input type="range" class="form-range custom-range" id="musicSpectrumOpacity" step="1" min="1" max="1000">
-                                            </div>
-                                            <div class="col-6">
-                                                <label for="musicSpectrumDynamicOpacity" class="form-label">Dynamic Opacity</label>
-                                                <input type="range" class="form-range custom-range" id="musicSpectrumDynamicOpacity" step="1" min="1" max="1000">
-                                            </div> -->
                                         </div>
-                                    </div>
-                                </div>
-                            </div> 
-                        </div> 
-                    </div> 
+                                        <div class="col-auto">
+                                            <div class="container overflow-y-scroll d-flex justify-content-end">
+                                                <button class="btn rounded-5 btn-light ms-auto" data-bs-toggle="collapse" data-bs-target=".design-panel" role="button">
+                                                    <p class="m-0 text-truncate">
+                                                        <i class="bi bi-chevron-left"></i> <span class="pe-2">Kembali</span>
+                                                    </p>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 mt-2 text-white">
+                                            <div id="designControlPanelPartLayout" class="collapse show">
+                                                <div class="container overflow-y-scroll" style="max-height: 120px;">
+                                                    <div class="row g-2">
+                                                        <!-- <div class="col-6">
+                                                            <label for="mainLayoutScale" class="form-label ms-3">Layout Scale</label>
+                                                            <input type="range" class="form-range custom-range" id="mainLayoutScale" step="0.1" min="0.5" max="2">
+                                                        </div>
+                                                        <div class="col-6">
+                                                            <label for="mainLayoutRotation" class="form-label ms-3">Layout Rotation</label>
+                                                            <input type="range" class="form-range custom-range" id="mainLayoutRotation" step="15" min="0" max="360">
+                                                        </div> -->
+                                                        <div class="col-12 col-sm-6">
+                                                            <label for="mainLayoutColor" class="form-label ms-3">Layout Color</label>
+                                                            <input type="color" class="form-control form-control-color btn btn-md btn-light w-100 rounded-5" id="mainLayoutColor" title="Set Background Color">
+                                                        </div>
+                                                        <div class="col-12 col-sm-6">
+                                                            <label for="musicDesignImage" class="form-label ms-3">Character Image</label>
+                                                            <label for="musicDesignImage" class="btn btn-light text-center w-100 rounded-5">
+                                                                <p class="m-0 text-truncate">
+                                                                    <i class="bi bi-plus"></i> <span>Select Image</span>
+                                                                </p>
+                                                            </label>
+                                                            <input class="form-control d-none" type="file" id="musicDesignImage" accept="image/*" />
+                                                        </div>
+                                                        <!-- <div class="col-6">
+                                                            <label for="musicSpectrumBar" class="form-label ms-3">Bar</label>
+                                                            <input type="range" class="form-range custom-range" id="musicSpectrumBar" step="8" min="8" max="128">
+                                                        </div>
+                                                        <div class="col-6">
+                                                            <label for="musicSpectrumThickness" class="form-label ms-3">Bar Thickness</label>
+                                                            <input type="range" class="form-range custom-range" id="musicSpectrumThickness" step="1" min="1" max="32">
+                                                        </div>
+                                                        <div class="col-6">
+                                                            <label for="musicSpectrumDistance" class="form-label ms-3">Distance</label>
+                                                            <input type="range" class="form-range custom-range" id="musicSpectrumDistance" step="10" min="50" max="300">
+                                                        </div>
+                                                        <div class="col-6">
+                                                            <label for="musicSpectrumDynamicDistance" class="form-label ms-3">Dynamic Distance</label>
+                                                            <input type="range" class="form-range custom-range" id="musicSpectrumDynamicDistance" step="1" min="0" max="100">
+                                                        </div>
+                                                        <div class="col-6">
+                                                            <label for="musicSpectrumRotation" class="form-label ms-3">Rotation</label>
+                                                            <input type="range" class="form-range custom-range" id="musicSpectrumRotation" step="1" min="0" max="360">
+                                                        </div>
+                                                        <div class="col-6">
+                                                            <label for="musicSpectrumRepetition" class="form-label ms-3">Repetition</label>
+                                                            <input type="range" class="form-range custom-range" id="musicSpectrumRepetition" step="1" min="1" max="8">
+                                                        </div>
+                                                        <div class="col-6">
+                                                            <label for="musicSpectrumStrength" class="form-label ms-3">Strength</label>
+                                                            <input type="range" class="form-range custom-range" id="musicSpectrumStrength" step="1" min="1" max="1000">
+                                                        </div>
+                                                        <div class="col-6">
+                                                            <label for="musicSpectrumSensitivity" class="form-label ms-3">Sensitivity</label>
+                                                            <input type="range" class="form-range custom-range" id="musicSpectrumSensitivity" step="1" min="1" max="1000">
+                                                        </div>
+                                                        <div class="col-6">
+                                                            <label for="musicSpectrumOpacity" class="form-label ms-3">Opacity</label>
+                                                            <input type="range" class="form-range custom-range" id="musicSpectrumOpacity" step="1" min="1" max="1000">
+                                                        </div>
+                                                        <div class="col-6">
+                                                            <label for="musicSpectrumDynamicOpacity" class="form-label ms-3">Dynamic Opacity</label>
+                                                            <input type="range" class="form-range custom-range" id="musicSpectrumDynamicOpacity" step="1" min="1" max="1000">
+                                                        </div> -->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div> 
+                                    </div> 
+                                </div> 
+                            </div>
+                        </div>
+                    </div>
                 </div>     
             </div>
         </div>
@@ -379,15 +435,15 @@
         })
 
         objSpectrumAdd({
-            bars: 128, // 0-1024
-            barsColor: '#ffffff',
+            bars: 64, // 0-1024
+            barsColor: '#ffffff75',
             barsRadius: 1, // 0.1-2
-            outlineWidth: 0, // 0-8
+            outlineWidth: 2, // 0-8
             outlineColor: '#ffffff',
             shadowSpread: 0, // 0-50
             shadowColor: '#ffd3ee',
             repeat: 2, // 0-8
-            width: 4, // 0-100
+            width: 7, // 0-100
             thick: 20, // 0-100
             posX: 300, // 0-600
             posY: 200, // 0-400
