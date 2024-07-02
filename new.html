@@ -112,23 +112,26 @@
     }
 	.main{
         position: absolute;
+        --main-layout-width: 600px;
+        --main-layout-height: 400px;
         --main-layout-scale: 1;
         --main-layout-rotate: 1;
         --main-layout-color: #ffffff00;
+        --main-layout-outline-color: #ffffff;
         --main-layout-opacity: 1;
 
         display: block;
-        min-width: 600px;
-		width: 600px;
+        min-width: var(--main-layout-width);
+		width: var(--main-layout-width);
         height: 100%;
-		max-height: 400px;
-        border: 1px solid #ffffff00;
+		max-height: var(--main-layout-height);
+        border: 1px solid var(--main-layout-outline-color);
         background-color: var(--main-layout-color);
         transform: rotate(var(--main-layout-rotate)) scale(var(--main-layout-scale));
         opacity: var(--main-layout-opacity);
 	}
     .main:hover{
-        border: 1px solid #ffffff79;
+        border: 1px solid #ffffff;
     }
 
 	.music.progress-bar{
@@ -259,7 +262,7 @@
                                         <div class="col-12 mt-2">
                                             <div id="mediaControlPanelPartMeta" class="collapse show">
                                                 <audio class="d-none" id="mediaPlayerAudio" controls>
-                                                    <source src="assets/audio/Nightcore - Someone To You .weba" type="audio/mpeg">
+                                                    <source src="assets/audio/cupid.webm" type="audio/mpeg">
                                                 </audio>
                                                 <a class="btn btn-sm text-white text-center w-100">
                                                     <p class="m-0 text-truncate fs-6">
@@ -280,8 +283,8 @@
                                 </div>
                             </div>
                             <div class="col-12">
-                                <div class="collapse library-panel">
-                                    <div class="row">
+                                <div class="collapse library-panel border border-ligth rounded-4">
+                                    <div class="row px-2 py-3">
                                         <div class="col-12 text-white">
                                             <div id="librayControlPanelPartImporter" class="collapse show">
                                                 <div class="container overflow-y-scroll" style="max-height: 200px;">
@@ -300,7 +303,7 @@
                                         <div class="col py-3">
                                             <div class="border-bottom w-75 mx-auto"></div>
                                         </div>
-                                        <div class="col-12 pb-3">
+                                        <div class="col-12">
                                             <div class="container pe-3">
                                                 <div class="row g-2">
                                                     <div class="col-12 col-sm d-flex justify-content-start">
@@ -330,8 +333,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="collapse design-panel">
-                                    <div class="row">                                        
+                                <div class="collapse design-panel border border-ligth rounded-4">
+                                    <div class="row px-2 py-3">                                        
                                         <div class="col-12 text-white">
                                             <div id="designControlPanelPartLayout" class="collapse show">
                                                 <div class="container overflow-y-scroll" style="max-height: 300px;">
@@ -363,10 +366,22 @@
                                                                                 title="Set Background Color">
                                                                             </div>
                                                                             <div class="col-12 col-sm-6">
-                                                                                <label for="mainLayoutColor" class="form-label ms-3">Effect Color</label>
-                                                                                <input type="color" class="form-control form-control-color btn btn-md btn-light w-100 rounded-5 action-designer-object-config" id="mainLayoutColor" 
-                                                                                designer-object-id="layoutGlobal" designer-object-param="colorFlash"
-                                                                                title="Set Background Color">
+                                                                                <label for="mainLayoutOutlineColor" class="form-label ms-3">Outline Color</label>
+                                                                                <input type="color" class="form-control form-control-color btn btn-md btn-light w-100 rounded-5 action-designer-object-config" id="mainLayoutOutlineColor" 
+                                                                                designer-object-id="layoutGlobal" designer-object-param="outlineColor"
+                                                                                title="Set Outline Color">
+                                                                            </div>
+                                                                            <div class="col-12 col-sm-6">
+                                                                                <label for="mainLayoutWidth" class="form-label ms-3">Width</label>
+                                                                                <input type="range" class="form-range custom-range action-designer-object-config" id="mainLayoutWidth"
+                                                                                designer-object-id="layoutGlobal" designer-object-param="width"
+                                                                                step="1" min="300" max="1500">
+                                                                            </div>
+                                                                            <div class="col-12 col-sm-6">
+                                                                                <label for="mainLayoutHeight" class="form-label ms-3">Height</label>
+                                                                                <input type="range" class="form-range custom-range action-designer-object-config" id="mainLayoutHeight"
+                                                                                designer-object-id="layoutGlobal" designer-object-param="height"
+                                                                                step="1" min="150" max="1000">
                                                                             </div>
                                                                             <div class="col-12 col-sm-6">
                                                                                 <label for="mainLayoutScale" class="form-label ms-3">Scale</label>
@@ -381,16 +396,22 @@
                                                                                 step="0.01" min="-1" max="1">
                                                                             </div>
                                                                             <div class="col-12 col-sm-6">
-                                                                                <label for="mainLayoutRotation" class="form-label ms-3">Rotation</label>
-                                                                                <input type="range" class="form-range custom-range action-designer-object-config" id="mainLayoutRotation" 
-                                                                                designer-object-id="layoutGlobal" designer-object-param="rotate"
-                                                                                step="15" min="0" max="360">
-                                                                            </div>
-                                                                            <div class="col-12 col-sm-6">
                                                                                 <label for="mainLayoutOpacity" class="form-label ms-3">Opacity</label>
                                                                                 <input type="range" class="form-range custom-range action-designer-object-config" id="mainLayoutOpacity"
                                                                                 designer-object-id="layoutGlobal" designer-object-param="opacity"
                                                                                 step="0.1" min="0" max="1">
+                                                                            </div>
+                                                                            <div class="col-12 col-sm-6">
+                                                                                <label for="mainLayoutOpacityDynamic" class="form-label ms-3">Opacity Dynamic</label>
+                                                                                <input type="range" class="form-range custom-range action-designer-object-config" id="mainLayoutOpacityDynamic"
+                                                                                designer-object-id="layoutGlobal" designer-object-param="opacityDynamic"
+                                                                                step="1" min="0" max="2000">
+                                                                            </div>
+                                                                            <div class="col-12 col-sm-6">
+                                                                                <label for="mainLayoutRotation" class="form-label ms-3">Rotation</label>
+                                                                                <input type="range" class="form-range custom-range action-designer-object-config" id="mainLayoutRotation" 
+                                                                                designer-object-id="layoutGlobal" designer-object-param="rotate"
+                                                                                step="15" min="0" max="360">
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -428,10 +449,22 @@
                                                                                 <input class="form-control d-none" type="file" id="musicDesignImage" accept="image/*" />
                                                                             </div>
                                                                             <div class="col-12 col-sm-6">
+                                                                                <label for="mainImageRotation" class="form-label ms-3">Rotation</label>
+                                                                                <input type="range" class="form-range custom-range action-designer-object-config" id="mainImageRotation" 
+                                                                                designer-object-id="imageGlobal" designer-object-param="rotate"
+                                                                                step="15" min="0" max="360">
+                                                                            </div>
+                                                                            <div class="col-12 col-sm-6">
                                                                                 <label for="mainImageOpacity" class="form-label ms-3">Opacity</label>
                                                                                 <input type="range" class="form-range custom-range action-designer-object-config" id="mainImageOpacity"
                                                                                 designer-object-id="imageGlobal" designer-object-param="opacity"
                                                                                 step="0.1" min="0" max="1">
+                                                                            </div>
+                                                                            <div class="col-12 col-sm-6">
+                                                                                <label for="mainImageOpacityDynamic" class="form-label ms-3">Opacity Dynamic</label>
+                                                                                <input type="range" class="form-range custom-range action-designer-object-config" id="mainImageOpacityDynamic"
+                                                                                designer-object-id="imageGlobal" designer-object-param="opacityDynamic"
+                                                                                step="0.1" min="0" max="2">
                                                                             </div>
                                                                             <div class="col-12 col-sm-6">
                                                                                 <label for="mainImageWidth" class="form-label ms-3">Width</label>
@@ -469,12 +502,6 @@
                                                                                 designer-object-id="imageGlobal" designer-object-param="scaleDynamic"
                                                                                 step="0.01" min="-1" max="1">
                                                                             </div>
-                                                                            <div class="col-12 col-sm-6">
-                                                                                <label for="mainImageRotation" class="form-label ms-3">Rotation</label>
-                                                                                <input type="range" class="form-range custom-range action-designer-object-config" id="mainImageRotation" 
-                                                                                designer-object-id="imageGlobal" designer-object-param="rotate"
-                                                                                step="15" min="0" max="360">
-                                                                            </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -501,11 +528,23 @@
                                                                     <div class="design-obj-spectrum container collapse border border-light rounded-4">
                                                                         <div class="row py-2">
                                                                             <div class="col-12 col-sm-6">
+                                                                                <label for="mainSpectrumBarsColor" class="form-label ms-3">Bars Color</label>
+                                                                                <input type="color" class="form-control form-control-color btn btn-md btn-light w-100 rounded-5 action-designer-object-config" id="mainSpectrumBarsColor" 
+                                                                                designer-object-id="spectrumGlobal" designer-object-param="barsColor"
+                                                                                title="Set Spectrum Bars Color">
+                                                                            </div>
+                                                                            <div class="col-12 col-sm-6">
                                                                                 <label for="mainSpectrumBars" class="form-label ms-3">Bars</label>
                                                                                 <input type="range" class="form-range custom-range action-designer-object-config" id="mainSpectrumBars"
                                                                                 designer-object-id="spectrumGlobal" designer-object-param="bars"
                                                                                 step="8" min="8" max="128">
                                                                             </div>
+                                                                            <div class="col-12 col-sm-6">
+                                                                                <label for="mainSpectrumRepeat" class="form-label ms-3">Bars Repeat</label>
+                                                                                <input type="range" class="form-range custom-range action-designer-object-config" id="mainSpectrumRepeat"
+                                                                                designer-object-id="spectrumGlobal" designer-object-param="repeat"
+                                                                                step="1" min="1" max="8">
+                                                                            </div>  
                                                                             <div class="col-12 col-sm-6">
                                                                                 <label for="mainSpectrumBarsRadius" class="form-label ms-3">Bars Radius</label>
                                                                                 <input type="range" class="form-range custom-range action-designer-object-config" id="mainSpectrumBarsRadius"
@@ -513,10 +552,16 @@
                                                                                 step="0.1" min="0" max="2">
                                                                             </div>
                                                                             <div class="col-12 col-sm-6">
-                                                                                <label for="mainSpectrumRepeat" class="form-label ms-3">Bars Repeat</label>
-                                                                                <input type="range" class="form-range custom-range action-designer-object-config" id="mainSpectrumRepeat"
-                                                                                designer-object-id="spectrumGlobal" designer-object-param="repeat"
-                                                                                step="1" min="1" max="8">
+                                                                                <label for="mainSpectrumOutlineColor" class="form-label ms-3">Bars Outline Color</label>
+                                                                                <input type="color" class="form-control form-control-color btn btn-md btn-light w-100 rounded-5 action-designer-object-config" id="mainSpectrumOutlineColor" 
+                                                                                designer-object-id="spectrumGlobal" designer-object-param="outlineColor"
+                                                                                title="Set Spectrum Outline Bars Color">
+                                                                            </div>
+                                                                            <div class="col-12 col-sm-6">
+                                                                                <label for="mainSpectrumOutlineWidth" class="form-label ms-3">Bars Outline Width</label>
+                                                                                <input type="range" class="form-range custom-range action-designer-object-config" id="mainSpectrumOutlineWidth"
+                                                                                designer-object-id="spectrumGlobal" designer-object-param="outlineWidth"
+                                                                                step="1" min="0" max="10">
                                                                             </div>
                                                                             <div class="col-12 col-sm-6">
                                                                                 <label for="mainSpectrumStrength" class="form-label ms-3">Strength</label>
@@ -540,7 +585,7 @@
                                                                                 <label for="mainSpectrumDistanceDynamic" class="form-label ms-3">Distance Dynamic</label>
                                                                                 <input type="range" class="form-range custom-range action-designer-object-config" id="mainSpectrumDistanceDynamic"
                                                                                 designer-object-id="spectrumGlobal" designer-object-param="distanceDynamic"
-                                                                                step="1" min="-400" max="400">
+                                                                                step="1" min="-100" max="100">
                                                                             </div>
                                                                             <div class="col-12 col-sm-6">
                                                                                 <label for="mainSpectrumWidth" class="form-label ms-3">Width</label>
@@ -579,12 +624,6 @@
                                                                                 step="0.01" min="-1" max="1">
                                                                             </div>
                                                                             <div class="col-12 col-sm-6">
-                                                                                <label for="mainSpectrumRotation" class="form-label ms-3">Rotation</label>
-                                                                                <input type="range" class="form-range custom-range action-designer-object-config" id="mainSpectrumRotation" 
-                                                                                designer-object-id="spectrumGlobal" designer-object-param="rotate"
-                                                                                step="15" min="0" max="360">
-                                                                            </div>
-                                                                            <div class="col-12 col-sm-6">
                                                                                 <label for="mainSpectrumOpacity" class="form-label ms-3">Opacity</label>
                                                                                 <input type="range" class="form-range custom-range action-designer-object-config" id="mainSpectrumOpacity"
                                                                                 designer-object-id="spectrumGlobal" designer-object-param="opacity"
@@ -595,6 +634,12 @@
                                                                                 <input type="range" class="form-range custom-range action-designer-object-config" id="mainSpectrumOpacityDynamic"
                                                                                 designer-object-id="spectrumGlobal" designer-object-param="opacityDynamic"
                                                                                 step="1" min="0" max="2000">
+                                                                            </div>
+                                                                            <div class="col-12 col-sm-6">
+                                                                                <label for="mainSpectrumRotation" class="form-label ms-3">Rotation</label>
+                                                                                <input type="range" class="form-range custom-range action-designer-object-config" id="mainSpectrumRotation" 
+                                                                                designer-object-id="spectrumGlobal" designer-object-param="rotate"
+                                                                                step="15" min="0" max="360">
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -609,7 +654,7 @@
                                         <div class="col py-3">
                                             <div class="border-bottom w-75 mx-auto"></div>
                                         </div>
-                                        <div class="col-12 pb-3">
+                                        <div class="col-12">
                                             <div class="container pe-3">
                                                 <div class="row g-2">
                                                     <div class="col-12 col-sm d-flex justify-content-start">
@@ -651,12 +696,15 @@
     let objectMemoryDefault = {};
     objectMemory['layoutGlobal'] =      { id: 'layoutGlobal', tipe: 100, params : 
                                             {
+                                                width: 600,
+                                                height: 400,
                                                 scale: 1,
                                                 scaleDynamic: 0,
                                                 rotate: 0,
                                                 color: '#a792e1',
-                                                colorEffect: '#ffffff',
+                                                outlineColor: '#ffffff00',
                                                 opacity: 1,
+                                                opacityDynamic: 0,
                                             }
                                         };
     objectMemory['imageGlobal'] =       { id: 'imageGlobal', tipe: 2, params : 
@@ -667,15 +715,30 @@
                                                 posX: 150,
                                                 posY: 50,
                                                 scale: 1,
-                                                scaleDynamic: 0.2, 
+                                                scaleDynamic: 0.1, 
                                                 rotate: 0,
                                                 opacity: 1,
+                                                opacityDynamic: 0,
                                             }
                                         };
+    // objectMemory['imageGlobalFlash'] =  { id: 'imageGlobalFlash', tipe: 2, params : 
+    //                                         {
+    //                                             image: 'assets/flash.png',
+    //                                             width: 1000,
+    //                                             height: 1000,
+    //                                             posX: 500,
+    //                                             posY: 500,
+    //                                             scale: 1,
+    //                                             scaleDynamic: 0.2, 
+    //                                             rotate: 0,
+    //                                             opacity: 0,
+    //                                             opacityDynamic: 1,
+    //                                         }
+    //                                     };
     objectMemory['spectrumGlobal'] =    { id: 'spectrumGlobal', tipe: 1, params : 
                                             {
                                                 bars: 64, // 0-1024
-                                                barsColor: '#ffffff75',
+                                                barsColor: '#ffffff',
                                                 barsRadius: 1, // 0.1-2
                                                 outlineWidth: 2, // 0-8
                                                 outlineColor: '#ffffff',
@@ -740,23 +803,33 @@
         }
     }
 
-    function mainLayoutSet(objConfig=[]) {
+    function mainLayoutSet(objConfig=[], location='') {
         // Read Data
         let objId                   = objConfig.id;
         let objParams               = objConfig.params;
 
         // Set Parameters
+        let objParamWidth           = float(objParams.width);
+        let objParamHeight          = float(objParams.height);
         let objParamScale           = float(objParams.scale);
         let objParamScaleDynamic    = float(objParams.scaleDynamic);
         let objParamRotate          = float(objParams.rotate);
         let objParamColor           = objParams.color;
+        let objParamOutlineColor    = objParams.outlineColor;
         let objParamOpacity         = float(objParams.opacity);
+        let objParamOpacityDynamic  = float(objParams.opacityDynamic);
 
-        $(`.main`).css('--main-layout-scale', `${objParamScale}`);
-        $(`.main`).css('--main-layout-rotate', `${objParamRotate}deg`);
-        $(`.main`).css('--main-layout-opacity', `${objParamOpacity}`);
+        $(`.main`).attr('id', `objectId${objId}`);
         $(`body`).css('--music-theme-color', `${objParamColor}`);
+
+        $(`#objectId${objId}`).css('--main-layout-width', `${objParamWidth}px`);
+        $(`#objectId${objId}`).css('--main-layout-height', `${objParamHeight}px`);
+        $(`#objectId${objId}`).css('--main-layout-scale', `${objParamScale}`);
+        $(`#objectId${objId}`).css('--main-layout-rotate', `${objParamRotate}deg`);
+        $(`#objectId${objId}`).css('--main-layout-opacity', `${objParamOpacity}`);
+        $(`#objectId${objId}`).css('--main-layout-outline-color', `${objParamOutlineColor}`);
         
+		
         rebuildObjectConfig(objConfig);
     }
 
@@ -767,18 +840,26 @@
         let objFlowEnergy           = objFlow.energy;
 
         // Set Parameters
+        let objParamWidth           = float(objParams.width);
+        let objParamHeight          = float(objParams.height);
         let objParamScale           = float(objParams.scale);
         let objParamScaleDynamic    = float(objParams.scaleDynamic);
         let objParamRotate          = float(objParams.rotate);
         let objParamColor           = objParams.color;
+        let objParamOutlineColor    = objParams.outlineColor;
         let objParamOpacity         = float(objParams.opacity);
+        let objParamOpacityDynamic  = float(objParams.opacityDynamic);
         
         // Data Flow
         let dataScale = objParamScale + (objFlowEnergy * objParamScaleDynamic);
-        $(`.main`).css('--main-layout-scale', `${dataScale}`);
+        $(`#objectId${objId}`).css('--main-layout-scale', `${dataScale}`);
 
-        $(`.main`).css('--main-layout-rotate', `${objParamRotate}deg`);
-        $(`.main`).css('--main-layout-opacity', `${objParamOpacity}`);
+        let dataOpacity = objParamOpacity + (objFlowEnergy * (objParamOpacityDynamic/1000));
+        $(`#objectId${objId}`).css('--main-layout-opacity', `${dataOpacity}`);
+
+        $(`#objectId${objId}`).css('--main-layout-rotate', `${objParamRotate}deg`);
+        $(`#objectId${objId}`).css('--main-layout-outline-color', `${objParamOutlineColor}`);
+
         $(`body`).css('--music-theme-color', `${objParamColor}`);
     }
 
@@ -797,6 +878,7 @@
         let objParamScaleDynamic    = float(objParams.scaleDynamic);
         let objParamRotate          = float(objParams.rotate);
         let objParamOpacity         = float(objParams.opacity);
+        let objParamOpacityDynamic  = float(objParams.opacityDynamic);
 
         // Add base object
         $(`.main ${location}`).prepend(`
@@ -831,15 +913,18 @@
         let objParamScaleDynamic    = float(objParams.scaleDynamic);
         let objParamRotate          = float(objParams.rotate);
         let objParamOpacity         = float(objParams.opacity);
+        let objParamOpacityDynamic  = float(objParams.opacityDynamic);
         
         // Data Flow
         let dataScale = objParamScale + (objFlowEnergy * objParamScaleDynamic);
         $(`#objectId${objId}`).css(`--music-obj-scale`,`${dataScale}`);
 
+        let dataOpacity = objParamOpacity + (objFlowEnergy * (objParamOpacityDynamic/1000));
+        $(`#objectId${objId}`).css(`--music-obj-opacity`,`${dataOpacity}`);
+
         $(`#objectId${objId}`).css(`--music-obj-width`,`${objParamWidth}px`);
         $(`#objectId${objId}`).css(`--music-obj-height`,`${objParamHeight}px`);
         $(`#objectId${objId}`).css(`--music-obj-rotate`,`${objParamRotate}deg`);
-        $(`#objectId${objId}`).css(`--music-obj-opacity`,`${objParamOpacity}`);
         $(`#objectId${objId}`).css(`--music-obj-pos-left`,`${objParamPosX}px`);
         $(`#objectId${objId}`).css(`--music-obj-pos-top`,`${objParamPosY}px`);
     }
@@ -949,7 +1034,7 @@
             if (dataSpectrumBarBufferActive % dataSpectrumBarRepeatThreshold == 0) { 
                 dataSpectrumBarBufferActive = dataSpectrumBarBufferActive - dataSpectrumBarRepeatThreshold; 
             }
-            let dataSpectrumeBarBufferAudio = dataSpectrum[ (mediaSpectrume / objParamBars) * dataSpectrumBarBufferActive ];
+            let dataSpectrumeBarBufferAudio = dataSpectrum[ Math.round(mediaSpectrume / objParamBars) * dataSpectrumBarBufferActive ];
             let objBufferBarPos = i;
             
             let dataSpectrumMultiplier = ( Math.pow(dataSpectrumeBarBufferAudio/255, (1000/objParamSensitivity) )) * (objParamStrength/1000);
