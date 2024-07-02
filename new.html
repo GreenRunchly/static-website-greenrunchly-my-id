@@ -107,11 +107,15 @@
         height: 100vh;
 		background-color: var(--music-theme-color);
 	}
+    .form-label{
+        margin-bottom: 0px;
+    }
 	.main{
         position: absolute;
         --main-layout-scale: 1;
         --main-layout-rotate: 1;
         --main-layout-color: #ffffff00;
+        --main-layout-opacity: 1;
 
         display: block;
         min-width: 600px;
@@ -120,8 +124,8 @@
 		max-height: 400px;
         border: 1px solid #ffffff00;
         background-color: var(--main-layout-color);
-        transition: 0.3s;
         transform: rotate(var(--main-layout-rotate)) scale(var(--main-layout-scale));
+        opacity: var(--main-layout-opacity);
 	}
     .main:hover{
         border: 1px solid #ffffff79;
@@ -255,7 +259,7 @@
                                         <div class="col-12 mt-2">
                                             <div id="mediaControlPanelPartMeta" class="collapse show">
                                                 <audio class="d-none" id="mediaPlayerAudio" controls>
-                                                    <source src="assets/audio/Nightcore - Dame Dame & Britt Lari - La La La.weba" type="audio/mpeg">
+                                                    <source src="assets/audio/Nightcore - Sits Still Pretty.weba" type="audio/mpeg">
                                                 </audio>
                                                 <a class="btn btn-sm text-white text-center w-100">
                                                     <p class="m-0 text-truncate fs-6">
@@ -296,7 +300,7 @@
                                         <div class="col py-3">
                                             <div class="border-bottom w-75 mx-auto"></div>
                                         </div>
-                                        <div class="col-12">
+                                        <div class="col-12 pb-3">
                                             <div class="container pe-3">
                                                 <div class="row g-2">
                                                     <div class="col-12 col-sm d-flex justify-content-start">
@@ -332,11 +336,62 @@
                                             <div id="designControlPanelPartLayout" class="collapse show">
                                                 <div class="container overflow-y-scroll" style="max-height: 200px;">
                                                     <div class="row g-2">
+                                                        <div class="col-12 d-flex justify-content-start">
+                                                            <a class="btn btn-light px-3 rounded-5 w-100 text-start">
+                                                                <p class="m-0 text-truncate fw-bold">
+                                                                    <i class="bi bi-box me-2"></i> <span>Global</span>
+                                                                </p>
+                                                            </a>
+                                                        </div>
                                                         <div class="col-12 col-sm-6">
-                                                            <label for="mainLayoutColor" class="form-label ms-3">Layout Color</label>
+                                                            <label for="mainLayoutColor" class="form-label ms-3">Global Background Color</label>
                                                             <input type="color" class="form-control form-control-color btn btn-md btn-light w-100 rounded-5 action-designer-object-config" id="mainLayoutColor" 
                                                             designer-object-id="layoutGlobal" designer-object-param="color"
                                                             title="Set Background Color">
+                                                        </div>
+                                                        <div class="col-12 py-3">
+                                                            <div class="border-bottom w-75 mx-auto"></div>
+                                                        </div>
+                                                        <div class="col-12 d-flex justify-content-start">
+                                                            <a class="btn btn-light px-3 rounded-5 w-100 text-start">
+                                                                <p class="m-0 text-truncate fw-bold">
+                                                                    <i class="bi bi-box me-2"></i> <span>Layout</span>
+                                                                </p>
+                                                            </a>
+                                                        </div>
+                                                        <div class="col-12 col-sm-6">
+                                                            <label for="mainLayoutScale" class="form-label ms-3">Layout Scale</label>
+                                                            <input type="range" class="form-range custom-range action-designer-object-config" id="mainLayoutScale"
+                                                            designer-object-id="layoutGlobal" designer-object-param="scale"
+                                                            step="0.1" min="-2" max="2">
+                                                        </div>
+                                                        <div class="col-12 col-sm-6">
+                                                            <label for="mainLayoutScaleDynamic" class="form-label ms-3">Layout Scale Dynamic</label>
+                                                            <input type="range" class="form-range custom-range action-designer-object-config" id="mainLayoutScaleDynamic"
+                                                            designer-object-id="layoutGlobal" designer-object-param="scaleDynamic"
+                                                            step="0.01" min="-1" max="1">
+                                                        </div>
+                                                        <div class="col-12 col-sm-6">
+                                                            <label for="mainLayoutRotation" class="form-label ms-3">Layout Rotation</label>
+                                                            <input type="range" class="form-range custom-range action-designer-object-config" id="mainLayoutRotation" 
+                                                            designer-object-id="layoutGlobal" designer-object-param="rotate"
+                                                            step="15" min="0" max="360">
+                                                        </div>
+                                                        <div class="col-12 col-sm-6">
+                                                            <label for="mainLayoutOpacity" class="form-label ms-3">Layout Opacity</label>
+                                                            <input type="range" class="form-range custom-range action-designer-object-config" id="mainLayoutOpacity"
+                                                            designer-object-id="layoutGlobal" designer-object-param="opacity"
+                                                            step="0.1" min="0" max="1">
+                                                        </div>
+                                                        <div class="col-12 py-3">
+                                                            <div class="border-bottom w-75 mx-auto"></div>
+                                                        </div>
+                                                        <div class="col-12 d-flex justify-content-start">
+                                                            <a class="btn btn-light px-3 rounded-5 w-100 text-start">
+                                                                <p class="m-0 text-truncate fw-bold">
+                                                                    <i class="bi bi-box me-2"></i> <span>Image</span>
+                                                                </p>
+                                                            </a>
                                                         </div>
                                                         <div class="col-12 col-sm-6">
                                                             <label for="musicDesignImage" class="form-label ms-3">Character/Image</label>
@@ -348,15 +403,51 @@
                                                             <input class="form-control d-none" type="file" id="musicDesignImage" accept="image/*" />
                                                         </div>
                                                         <div class="col-12 col-sm-6">
-                                                            <label for="mainLayoutScale" class="form-label ms-3">Layout Scale</label>
-                                                            <input type="range" class="form-range custom-range action-designer-object-config" id="mainLayoutScale"
-                                                            designer-object-id="layoutGlobal" designer-object-param="scale"
+                                                            <label for="mainImageOpacity" class="form-label ms-3">Image Opacity</label>
+                                                            <input type="range" class="form-range custom-range action-designer-object-config" id="mainImageOpacity"
+                                                            designer-object-id="imageGlobal" designer-object-param="opacity"
+                                                            step="0.1" min="0" max="1">
+                                                        </div>
+                                                        <div class="col-12 col-sm-6">
+                                                            <label for="mainImageWidth" class="form-label ms-3">Image Width</label>
+                                                            <input type="range" class="form-range custom-range action-designer-object-config" id="mainImageWidth"
+                                                            designer-object-id="imageGlobal" designer-object-param="width"
+                                                            step="1" min="-600" max="600">
+                                                        </div>
+                                                        <div class="col-12 col-sm-6">
+                                                            <label for="mainImageHeight" class="form-label ms-3">Image Height</label>
+                                                            <input type="range" class="form-range custom-range action-designer-object-config" id="mainImageHeight"
+                                                            designer-object-id="imageGlobal" designer-object-param="height"
+                                                            step="1" min="-600" max="600">
+                                                        </div>
+                                                        <div class="col-12 col-sm-6">
+                                                            <label for="mainImagePosX" class="form-label ms-3">Image Pos X</label>
+                                                            <input type="range" class="form-range custom-range action-designer-object-config" id="mainImagePosX"
+                                                            designer-object-id="imageGlobal" designer-object-param="posX"
+                                                            step="1" min="-600" max="600">
+                                                        </div>
+                                                        <div class="col-12 col-sm-6">
+                                                            <label for="mainImagePosY" class="form-label ms-3">Image Pos Y</label>
+                                                            <input type="range" class="form-range custom-range action-designer-object-config" id="mainImagePosY"
+                                                            designer-object-id="imageGlobal" designer-object-param="posY"
+                                                            step="1" min="-300" max="300">
+                                                        </div>
+                                                        <div class="col-12 col-sm-6">
+                                                            <label for="mainImageScale" class="form-label ms-3">Image Scale</label>
+                                                            <input type="range" class="form-range custom-range action-designer-object-config" id="mainImageScale"
+                                                            designer-object-id="imageGlobal" designer-object-param="scale"
                                                             step="0.1" min="-2" max="2">
                                                         </div>
                                                         <div class="col-12 col-sm-6">
-                                                            <label for="mainLayoutRotation" class="form-label ms-3">Layout Rotation</label>
-                                                            <input type="range" class="form-range custom-range action-designer-object-config" id="mainLayoutRotation" 
-                                                            designer-object-id="layoutGlobal" designer-object-param="rotate"
+                                                            <label for="mainImageScaleDynamic" class="form-label ms-3">Image Scale Dynamic</label>
+                                                            <input type="range" class="form-range custom-range action-designer-object-config" id="mainImageScaleDynamic"
+                                                            designer-object-id="imageGlobal" designer-object-param="scaleDynamic"
+                                                            step="0.01" min="-1" max="1">
+                                                        </div>
+                                                        <div class="col-12 col-sm-6">
+                                                            <label for="mainImageRotation" class="form-label ms-3">Image Rotation</label>
+                                                            <input type="range" class="form-range custom-range action-designer-object-config" id="mainImageRotation" 
+                                                            designer-object-id="imageGlobal" designer-object-param="rotate"
                                                             step="15" min="0" max="360">
                                                         </div>
                                                         <!-- <div class="col-6">
@@ -406,7 +497,7 @@
                                         <div class="col py-3">
                                             <div class="border-bottom w-75 mx-auto"></div>
                                         </div>
-                                        <div class="col-12">
+                                        <div class="col-12 pb-3">
                                             <div class="container pe-3">
                                                 <div class="row g-2">
                                                     <div class="col-12 col-sm d-flex justify-content-start">
@@ -449,8 +540,10 @@
     objectMemory['layoutGlobal'] =      { id: 'layoutGlobal', tipe: 100, params : 
                                             {
                                                 scale: 1,
+                                                scaleDynamic: 0,
                                                 rotate: 0,
                                                 color: '#a792e1',
+                                                opacity: 1,
                                             }
                                         };
     objectMemory['imageGlobal'] =       { id: 'imageGlobal', tipe: 2, params : 
@@ -461,7 +554,7 @@
                                                 posX: 150,
                                                 posY: 50,
                                                 scale: 1,
-                                                scaleDynamic: 0.1, 
+                                                scaleDynamic: 0.2, 
                                                 rotate: 0,
                                                 opacity: 1,
                                             }
@@ -483,9 +576,10 @@
                                                 opacity: 200, // 0 - 1000
                                                 opacityDynamic: 1000, // 0 - 1000
                                                 scale: 1, // 0.1-1
+                                                scaleDynamic: 0.1, // 0.1-1
                                                 rotate: -55, // 0-360
                                                 distance: 120, // 0-100
-                                                distanceDynamic: -10, // 0-100
+                                                distanceDynamic: -30, // 0-100
                                                 strength: 800, // 0-1000
                                                 sensitivity: 300, // 0-1000
                                             }
@@ -539,33 +633,40 @@
         let objParams               = objConfig.params;
 
         // Set Parameters
-        let objParamScale           = objParams.scale;
-        let objParamRotate          = objParams.rotate;
+        let objParamScale           = float(objParams.scale);
+        let objParamScaleDynamic    = float(objParams.scaleDynamic);
+        let objParamRotate          = float(objParams.rotate);
         let objParamColor           = objParams.color;
-
-        
+        let objParamOpacity         = float(objParams.opacity);
 
         $(`.main`).css('--main-layout-scale', `${objParamScale}`);
         $(`.main`).css('--main-layout-rotate', `${objParamRotate}deg`);
+        $(`.main`).css('--main-layout-opacity', `${objParamOpacity}`);
         $(`body`).css('--music-theme-color', `${objParamColor}`);
-        // $(`.main`).css('--main-layout-color', `${objParamColor}`);
         
         rebuildObjectConfig(objConfig);
     }
 
-    function mainLayoutUpdate(objConfig=[]) {
+    function mainLayoutUpdate(objConfig=[], objFlow) {
         // Read Data
         let objId                   = objConfig.id;
         let objParams               = objConfig.params;
+        let objFlowEnergy           = objFlow.energy;
 
         // Set Parameters
-        let objParamScale           = objParams.scale;
-        let objParamRotate          = objParams.rotate;
+        let objParamScale           = float(objParams.scale);
+        let objParamScaleDynamic    = float(objParams.scaleDynamic);
+        let objParamRotate          = float(objParams.rotate);
         let objParamColor           = objParams.color;
+        let objParamOpacity         = float(objParams.opacity);
+        
+        // Data Flow
+        let dataScale = objParamScale + (objFlowEnergy * objParamScaleDynamic);
+        $(`.main`).css('--main-layout-scale', `${dataScale}`);
 
-        $(`.main`).css('--main-layout-scale', `${objParamScale}`);
         $(`.main`).css('--main-layout-rotate', `${objParamRotate}deg`);
-        $(`.main`).css('--main-layout-color', `${objParamColor}`);
+        $(`.main`).css('--main-layout-opacity', `${objParamOpacity}`);
+        $(`body`).css('--music-theme-color', `${objParamColor}`);
     }
 
     function objImageAdd(objConfig=[], location='') {
@@ -573,16 +674,16 @@
         let objId                   = objConfig.id;
         let objParams               = objConfig.params;
 
-        // Config
-        let objParamImage            = objParams.image;
-        let objParamWidth            = objParams.width;
-        let objParamHeight           = objParams.height;
-        let objParamPosX             = objParams.posX;
-        let objParamPosY             = objParams.posY;
-        let objParamScale            = objParams.scale;
-        let objParamScaleDynamic     = objParams.scaleDynamic;
-        let objParamRotate           = objParams.rotate;
-        let objParamOpacity          = objParams.opacity;
+        // Set Parameters
+        let objParamImage           = objParams.image;
+        let objParamWidth           = float(objParams.width);
+        let objParamHeight          = float(objParams.height);
+        let objParamPosX            = float(objParams.posX);
+        let objParamPosY            = float(objParams.posY);
+        let objParamScale           = float(objParams.scale);
+        let objParamScaleDynamic    = float(objParams.scaleDynamic);
+        let objParamRotate          = float(objParams.rotate);
+        let objParamOpacity         = float(objParams.opacity);
 
         // Add base object
         $(`.main ${location}`).prepend(`
@@ -597,6 +698,37 @@
             --music-obj-opacity:${objParamOpacity};
             ">
         `);
+
+        rebuildObjectConfig(objConfig);
+    }
+
+    function objImageUpdate(objConfig=[], objFlow) {
+        // Read Data
+        let objId                   = objConfig.id;
+        let objParams               = objConfig.params;
+        let objFlowEnergy           = objFlow.energy;
+
+        // Set Parameters
+        let objParamImage           = objParams.image;
+        let objParamWidth           = float(objParams.width);
+        let objParamHeight          = float(objParams.height);
+        let objParamPosX            = float(objParams.posX);
+        let objParamPosY            = float(objParams.posY);
+        let objParamScale           = float(objParams.scale);
+        let objParamScaleDynamic    = float(objParams.scaleDynamic);
+        let objParamRotate          = float(objParams.rotate);
+        let objParamOpacity         = float(objParams.opacity);
+        
+        // Data Flow
+        let dataScale = objParamScale + (objFlowEnergy * objParamScaleDynamic);
+        $(`#objectId${objId}`).css(`--music-obj-scale`,`${dataScale}`);
+
+        $(`#objectId${objId}`).css(`--music-obj-width`,`${objParamWidth}px`);
+        $(`#objectId${objId}`).css(`--music-obj-height`,`${objParamHeight}px`);
+        $(`#objectId${objId}`).css(`--music-obj-rotate`,`${objParamRotate}deg`);
+        $(`#objectId${objId}`).css(`--music-obj-opacity`,`${objParamOpacity}`);
+        $(`#objectId${objId}`).css(`--music-obj-pos-left`,`${objParamPosX}px`);
+        $(`#objectId${objId}`).css(`--music-obj-pos-top`,`${objParamPosY}px`);
     }
 
     function objSpectrumAdd(objConfig=[], location='') {
@@ -604,27 +736,28 @@
         let objId                   = objConfig.id;
         let objParams               = objConfig.params;
 
-        // Config
-        let objParamScale            = objParams.scale;
-        let objParamBars             = objParams.bars;
-        let objParamBarsColor        = objParams.barsColor;
-        let objParamBarsRadius       = objParams.barsRadius;
-        let objParamOutlineWidth     = objParams.outlineWidth;
-        let objParamOutlineColor     = objParams.outlineColor;
-        let objParamShadowSpread     = objParams.shadowSpread;
-        let objParamShadowColor      = objParams.shadowColor;
-        let objParamWidth            = objParams.width;
-        let objParamThick            = objParams.thick;
-        let objParamDistance         = objParams.distance;
-        let objParamDistanceDynamic  = objParams.distanceDynamic;
-        let objParamPosX             = objParams.posX;
-        let objParamPosY             = objParams.posY;
-        let objParamRotate           = objParams.rotate;
-        let objParamRepeat           = objParams.repeat;
-        let objParamStrength         = objParams.strength;
-        let objParamSensitivity      = objParams.sensitivity;
-        let objParamOpacity          = objParams.opacity;
-        let objParamOpacityDynamic   = objParams.opacityDynamic;
+        // Set Parameters
+        let objParamScale           = float(objParams.scale);
+        let objParamScaleDynamic    = float(objParams.scaleDynamic);
+        let objParamBars            = float(objParams.bars);
+        let objParamBarsColor       = objParams.barsColor;
+        let objParamBarsRadius      = float(objParams.barsRadius);
+        let objParamOutlineWidth    = float(objParams.outlineWidth);
+        let objParamOutlineColor    = objParams.outlineColor;
+        let objParamShadowSpread    = float(objParams.shadowSpread);
+        let objParamShadowColor     = objParams.shadowColor;
+        let objParamWidth           = float(objParams.width);
+        let objParamThick           = float(objParams.thick);
+        let objParamDistance        = float(objParams.distance);
+        let objParamDistanceDynamic = float(objParams.distanceDynamic);
+        let objParamPosX            = float(objParams.posX);
+        let objParamPosY            = float(objParams.posY);
+        let objParamRotate          = float(objParams.rotate);
+        let objParamRepeat          = float(objParams.repeat);
+        let objParamStrength        = float(objParams.strength);
+        let objParamSensitivity     = float(objParams.sensitivity);
+        let objParamOpacity         = float(objParams.opacity);
+        let objParamOpacityDynamic  = float(objParams.opacityDynamic);
 
         // Add base object
         $(`.main ${location}`).prepend(`
@@ -644,7 +777,7 @@
                 --music-obj-rotate:${iTeethRotate}deg;
                 --music-obj-height:${objParamThick}px;
                 --music-obj-width:${objParamWidth}px;
-                --music-obj-distance:-${(objParamDistance)}px;
+                --music-obj-distance:${(objParamDistance)}px;
                 --music-obj-color:${objParamBarsColor}; 
                 --music-obj-outline-width:${objParamOutlineWidth}px;
                 --music-obj-outline-color:${objParamOutlineColor};
@@ -654,6 +787,111 @@
                 "></li>
             `);
 		}
+    }
+
+    function objSpectrumUpdate(objConfig=[], objFlow) {
+        // Read Data
+        let objId                   = objConfig.id;
+        let objParams               = objConfig.params;
+        let objFlowEnergy           = objFlow.energy;
+        let objFlowSpectrum         = objFlow.spectrum;
+
+        // Set Parameters
+        let objParamScale           = float(objParams.scale);
+        let objParamScaleDynamic    = float(objParams.scaleDynamic);
+        let objParamBars            = float(objParams.bars);
+        let objParamBarsColor       = objParams.barsColor;
+        let objParamBarsRadius      = float(objParams.barsRadius);
+        let objParamOutlineWidth    = float(objParams.outlineWidth);
+        let objParamOutlineColor    = objParams.outlineColor;
+        let objParamShadowSpread    = float(objParams.shadowSpread);
+        let objParamShadowColor     = objParams.shadowColor;
+        let objParamWidth           = float(objParams.width);
+        let objParamThick           = float(objParams.thick);
+        let objParamDistance        = float(objParams.distance);
+        let objParamDistanceDynamic = float(objParams.distanceDynamic);
+        let objParamPosX            = float(objParams.posX);
+        let objParamPosY            = float(objParams.posY);
+        let objParamRotate          = float(objParams.rotate);
+        let objParamRepeat          = float(objParams.repeat);
+        let objParamStrength        = float(objParams.strength);
+        let objParamSensitivity     = float(objParams.sensitivity);
+        let objParamOpacity         = float(objParams.opacity);
+        let objParamOpacityDynamic  = float(objParams.opacityDynamic);
+        
+        // Data Flow
+        let dataDistance = objParamDistance + (objFlowEnergy * objParamDistanceDynamic);
+        $(`#objectId${objId} li`).css(`--music-obj-distance`,`-${dataDistance}px`);
+
+        let dataScale = objParamScale + (objFlowEnergy * objParamScaleDynamic);
+        $(`#objectId${objId}`).css(`--music-obj-scale`,`${dataScale}`);
+
+        let dataSpectrum = objFlowSpectrum;
+        let dataSpectrumBarRepeatThreshold = Math.round(objParamBars / objParamRepeat); 
+        let dataSpectrumBarBufferActive = 0;
+
+        for (let i = 0; i < (objParamBars); i++) {  dataSpectrumBarBufferActive ++;
+            if (dataSpectrumBarBufferActive % dataSpectrumBarRepeatThreshold == 0) { 
+                dataSpectrumBarBufferActive = dataSpectrumBarBufferActive - dataSpectrumBarRepeatThreshold; 
+            }
+            let dataSpectrumeBarBufferAudio = dataSpectrum[ (mediaSpectrume / objParamBars) * dataSpectrumBarBufferActive ];
+            let objBufferBarPos = i;
+            
+            let dataSpectrumMultiplier = ( Math.pow(dataSpectrumeBarBufferAudio/255, (1000/objParamSensitivity) )) * (objParamStrength/1000);
+            let dataSpectrumMultiplierMax = ( Math.pow(1, (1000/objParamSensitivity) )) * (objParamStrength/1000);
+
+            let objBufferBarHeight = (dataSpectrumeBarBufferAudio) * dataSpectrumMultiplier;
+            $(`#objectId${objId} li`).eq((objBufferBarPos)).css("--music-obj-active-height",`${objBufferBarHeight}px`);
+
+            let objBufferBarOpacity = (objParamOpacity/1000) + ((dataSpectrumMultiplier / dataSpectrumMultiplierMax) * (objParamOpacityDynamic/1000));
+            $(`#objectId${objId} li`).eq((objBufferBarPos)).css("--music-obj-active-opacity",`${objBufferBarOpacity}`);            
+        }
+
+        /*
+        --music-obj-rotate: 0deg;
+        --music-obj-scale: 1;
+        --music-obj-pos-left: 0px;
+        --music-obj-pos-top: 0px;
+        
+        --music-obj-rotate: 0deg;
+        --music-obj-distance: 120px;
+        --music-obj-height: 12px;
+        --music-obj-width: 4px;
+        --music-obj-color: #ffffff; 
+        --music-obj-outline-width: 1px;
+        --music-obj-outline-color: #ffffff;
+        --music-obj-shadow-spread: 0px;
+        --music-obj-shadow-color: #ffffff;
+        --music-obj-opacity: 0; 
+        --music-obj-shape-radius: 1rem;
+        */
+
+
+        // Draw Spectrume (Flow Data)
+        // let spectrumBarBase = spectrum;
+        // let spectrumBarRepeatThreshold = Math.round(objConfBars / objConfRepeat); 
+        // let spectrumBarBufferActive = 0;
+        // for (let i = 0; i < (objConfBars); i++) {  spectrumBarBufferActive ++;
+        //     if (spectrumBarBufferActive % spectrumBarRepeatThreshold == 0) { 
+        //         spectrumBarBufferActive = spectrumBarBufferActive - spectrumBarRepeatThreshold; 
+        //     }
+        //     let spectrumeBarBufferAudio = spectrumBarBase[ (mediaSpectrume / objConfBars) * spectrumBarBufferActive ];
+        //     let objBufferBarPos = i;
+            
+        //     let spectrumMultiplier = ( Math.pow(spectrumeBarBufferAudio/255, (1000/objConfSensitivity) )) * (objConfStrength/1000);
+        //     let spectrumMultiplierMax = ( Math.pow(1, (1000/objConfSensitivity) )) * (objConfStrength/1000);
+
+        //     let objBufferBarHeight = (spectrumeBarBufferAudio) * spectrumMultiplier;
+        //     $(`#objectId${objId} li`).eq((objBufferBarPos)).css("--music-obj-active-height",`${objBufferBarHeight}px`);
+
+        //     let objBufferBarOpacity = (objConfOpacity/1000) + ((spectrumMultiplier / spectrumMultiplierMax) * (objConfOpacityDynamic/1000));
+        //     $(`#objectId${objId} li`).eq((objBufferBarPos)).css("--music-obj-active-opacity",`${objBufferBarOpacity}`);
+
+        //     let objBufferBarDistanceDynamic = (parseInt(objConfDistance, 10)/parseInt(objConfDistance, 10)) + ((energyStrength * parseInt(objConfDistanceDynamic, 10)) / parseInt(objConfDistance, 10));
+        //     $(`#objectId${objId}`).css(`--music-obj-scale`,`${objBufferBarDistanceDynamic}`);
+            
+        // }
+
     }
 </script>
 <script type="text/javascript">
@@ -679,6 +917,12 @@
     }
 
     function draw() {
+        // Media Progress Bar
+		let musicCurrentTime = audioElement.currentTime;
+		let musicDuration = audioElement.duration;
+		let musicProgress = (musicCurrentTime/musicDuration) * 100;
+		$(".music.progress-bar .bar").css('--music-progress', `${musicProgress}%`);
+
         // Spectrum Data
         let spectrum = fft.analyze();
         let waveform = fft.waveform();
@@ -688,13 +932,9 @@
 		let lowMidEnergy = fft.getEnergy("lowMid"); let gitar_e = (lowMidEnergy/512) * 0.8; 
 		let midEnergy = fft.getEnergy("mid"); let snare_e = (midEnergy/512) * 0.2;
         let energyCombine = (bass_e + gitar_e + snare_e );
-        let energyStrength = ( Math.pow((energyCombine), 5) * energyCombine ) * 3;
+        let energyStrength = ( Math.pow((energyCombine), 2) * energyCombine );
 
-        // Media Progress Bar
-		let musicCurrentTime = audioElement.currentTime;
-		let musicDuration = audioElement.duration;
-		let musicProgress = (musicCurrentTime/musicDuration) * 100;
-		$(".music.progress-bar .bar").css('--music-progress', `${musicProgress}%`);
+        let flowData = {energy: energyStrength, spectrum: spectrum}
 
         // Read object and update into layout
         for (let key in objectMemory) {
@@ -702,87 +942,17 @@
                 let item = objectMemory[key];
                 switch (item.tipe) {
                     case 100:
-                        mainLayoutUpdate(item);
+                        mainLayoutUpdate(item, flowData);
+                        break;
+                    case 2:
+                        objImageUpdate(item, flowData);
+                        break;
+                    case 1:
+                        objSpectrumUpdate(item, flowData);
                         break;
                 }
             }
         }
-
-        // // Fungsi Update Object
-        // function objSpectrumUpdate(element) {
-        //     // Read Data
-        //     let objId                   = element.id;
-        //     let objConfig               = element.config;
-            
-        //     // Config
-        //     let objConfScale            = objConfig.scale;
-        //     let objConfBars             = objConfig.bars;
-        //     let objConfBarsColor        = objConfig.barsColor;
-        //     let objConfBarsRadius       = objConfig.barsRadius + 'rem';
-        //     let objConfOutlineWidth     = objConfig.outlineWidth + 'px';
-        //     let objConfOutlineColor     = objConfig.outlineColor;
-        //     let objConfShadowSpread     = objConfig.shadowSpread + 'px';
-        //     let objConfShadowColor      = objConfig.shadowColor;
-        //     let objConfWidth            = objConfig.width + 'px';
-        //     let objConfThick            = objConfig.thick + 'px';
-        //     let objConfDistance         = objConfig.distance + 'px';
-        //     let objConfDistanceDynamic  = objConfig.distanceDynamic + 'px';
-        //     let objConfPosX             = objConfig.posX + 'px';
-        //     let objConfPosY             = objConfig.posY + 'px';
-        //     let objConfRotate           = objConfig.rotate + 'deg';
-        //     let objConfRepeat           = objConfig.repeat;
-        //     let objConfStrength         = objConfig.strength;
-        //     let objConfSensitivity      = objConfig.sensitivity;
-        //     let objConfOpacity          = objConfig.opacity;
-        //     let objConfOpacityDynamic   = objConfig.opacityDynamic;
-        
-        //     // Draw Spectrume (Flow Data)
-        //     let spectrumBarBase = spectrum;
-        //     let spectrumBarRepeatThreshold = Math.round(objConfBars / objConfRepeat); 
-        //     let spectrumBarBufferActive = 0;
-        //     for (let i = 0; i < (objConfBars); i++) {  spectrumBarBufferActive ++;
-        //         if (spectrumBarBufferActive % spectrumBarRepeatThreshold == 0) { 
-        //             spectrumBarBufferActive = spectrumBarBufferActive - spectrumBarRepeatThreshold; 
-        //         }
-        //         let spectrumeBarBufferAudio = spectrumBarBase[ (mediaSpectrume / objConfBars) * spectrumBarBufferActive ];
-        //         let objBufferBarPos = i;
-                
-        //         let spectrumMultiplier = ( Math.pow(spectrumeBarBufferAudio/255, (1000/objConfSensitivity) )) * (objConfStrength/1000);
-        //         let spectrumMultiplierMax = ( Math.pow(1, (1000/objConfSensitivity) )) * (objConfStrength/1000);
-
-        //         let objBufferBarHeight = (spectrumeBarBufferAudio) * spectrumMultiplier;
-        //         $(`#objectId${objId} li`).eq((objBufferBarPos)).css("--music-obj-active-height",`${objBufferBarHeight}px`);
-
-        //         let objBufferBarOpacity = (objConfOpacity/1000) + ((spectrumMultiplier / spectrumMultiplierMax) * (objConfOpacityDynamic/1000));
-        //         $(`#objectId${objId} li`).eq((objBufferBarPos)).css("--music-obj-active-opacity",`${objBufferBarOpacity}`);
-
-        //         let objBufferBarDistanceDynamic = (parseInt(objConfDistance, 10)/parseInt(objConfDistance, 10)) + ((energyStrength * parseInt(objConfDistanceDynamic, 10)) / parseInt(objConfDistance, 10));
-        //         $(`#objectId${objId}`).css(`--music-obj-scale`,`${objBufferBarDistanceDynamic}`);
-                
-        //     }
-        // }
-
-        // // Fungsi Update Object
-        // function objImageUpdate(element) {
-        //     // Read Data
-        //     let objId                   = element.id;
-        //     let objConfig               = element.config;
-            
-        //     // Config
-        //     let objConfImage            = objConfig.image;
-        //     let objConfWidth            = objConfig.width + 'px';
-        //     let objConfHeight           = objConfig.height + 'px';
-        //     let objConfPosX             = objConfig.posX + 'px';
-        //     let objConfPosY             = objConfig.posY + 'px';
-        //     let objConfScale            = objConfig.scale;
-        //     let objConfScaleDynamic     = objConfig.scaleDynamic;
-        //     let objConfRotate           = objConfig.rotate + 'deg';
-        //     let objConfOpacity          = objConfig.opacity;
-        
-        //     // Draw (Flow Data)
-        //     let objBufferScaleDynamic = (objConfScale/objConfScale) + ((energyStrength * objConfScaleDynamic / objConfScale));
-        //     $(`#objectId${objId}`).css(`--music-obj-scale`,`${objBufferScaleDynamic}`);
-        // }
 
         // Debugging
 		if (count_delay > 60){
