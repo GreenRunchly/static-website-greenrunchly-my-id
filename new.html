@@ -228,7 +228,7 @@
                 </div>
                 <div class="col py-4 d-flex justify-content-center align-items-center z-0">
                     <div class="main rounded-5" data-bs-toggle="collapse" data-bs-target=".main-panel" role="button" >
-                        <!-- <iframe width="420" height="345" src="http://www.youtube.com/embed/BJuoqqlVr1U?autoplay=1" frameborder="0" allowfullscreen></iframe> -->
+                        
                     </div>
                 </div>
                 <div class="col-12  z-1">
@@ -259,7 +259,7 @@
                                         <div class="col-12 mt-2">
                                             <div id="mediaControlPanelPartMeta" class="collapse show">
                                                 <audio class="d-none" id="mediaPlayerAudio" controls>
-                                                    <source src="assets/audio/Nightcore - Sits Still Pretty.weba" type="audio/mpeg">
+                                                    <source src="assets/audio/Nightcore - Someone To You .weba" type="audio/mpeg">
                                                 </audio>
                                                 <a class="btn btn-sm text-white text-center w-100">
                                                     <p class="m-0 text-truncate fs-6">
@@ -334,162 +334,274 @@
                                     <div class="row">                                        
                                         <div class="col-12 text-white">
                                             <div id="designControlPanelPartLayout" class="collapse show">
-                                                <div class="container overflow-y-scroll" style="max-height: 200px;">
+                                                <div class="container overflow-y-scroll" style="max-height: 300px;">
                                                     <div class="row g-2">
-                                                        <div class="col-12 d-flex justify-content-start">
-                                                            <a class="btn btn-light px-3 rounded-5 w-100 text-start">
-                                                                <p class="m-0 text-truncate fw-bold">
-                                                                    <i class="bi bi-box me-2"></i> <span>Global</span>
-                                                                </p>
-                                                            </a>
+
+                                                        <div class="col-12">
+                                                            <div class="row g-2">
+                                                                <div class="col col-sm d-flex justify-content-start">
+                                                                    <a class="btn btn-light px-3 rounded-5 w-100 text-start" data-bs-toggle="collapse" data-bs-target=".design-obj-global-layout">
+                                                                        <p class="m-0 text-truncate fw-bold">
+                                                                            <i class="bi bi-box me-2"></i> <span>Layout</span>
+                                                                        </p>
+                                                                    </a>
+                                                                </div>
+                                                                <div class="col-auto col-sm-auto d-flex justify-content-start">
+                                                                    <a class="btn btn-danger px-3 rounded-5 w-100 action-designer-object-reset" designer-object-id="layoutGlobal" role="button">
+                                                                        <p class="m-0 text-truncate">
+                                                                            <i class="bi bi-arrow-clockwise"></i> <span>Reset</span>
+                                                                        </p>
+                                                                    </a>
+                                                                </div>
+                                                                <div class="col-12">
+                                                                    <div class="design-obj-global-layout container collapse border border-light rounded-4">
+                                                                        <div class="row py-2">
+                                                                            <div class="col-12 col-sm-6">
+                                                                                <label for="mainLayoutColor" class="form-label ms-3">Background Color</label>
+                                                                                <input type="color" class="form-control form-control-color btn btn-md btn-light w-100 rounded-5 action-designer-object-config" id="mainLayoutColor" 
+                                                                                designer-object-id="layoutGlobal" designer-object-param="color"
+                                                                                title="Set Background Color">
+                                                                            </div>
+                                                                            <div class="col-12 col-sm-6">
+                                                                                <label for="mainLayoutColor" class="form-label ms-3">Effect Color</label>
+                                                                                <input type="color" class="form-control form-control-color btn btn-md btn-light w-100 rounded-5 action-designer-object-config" id="mainLayoutColor" 
+                                                                                designer-object-id="layoutGlobal" designer-object-param="colorFlash"
+                                                                                title="Set Background Color">
+                                                                            </div>
+                                                                            <div class="col-12 col-sm-6">
+                                                                                <label for="mainLayoutScale" class="form-label ms-3">Scale</label>
+                                                                                <input type="range" class="form-range custom-range action-designer-object-config" id="mainLayoutScale"
+                                                                                designer-object-id="layoutGlobal" designer-object-param="scale"
+                                                                                step="0.1" min="-2" max="2">
+                                                                            </div>
+                                                                            <div class="col-12 col-sm-6">
+                                                                                <label for="mainLayoutScaleDynamic" class="form-label ms-3">Scale Dynamic</label>
+                                                                                <input type="range" class="form-range custom-range action-designer-object-config" id="mainLayoutScaleDynamic"
+                                                                                designer-object-id="layoutGlobal" designer-object-param="scaleDynamic"
+                                                                                step="0.01" min="-1" max="1">
+                                                                            </div>
+                                                                            <div class="col-12 col-sm-6">
+                                                                                <label for="mainLayoutRotation" class="form-label ms-3">Rotation</label>
+                                                                                <input type="range" class="form-range custom-range action-designer-object-config" id="mainLayoutRotation" 
+                                                                                designer-object-id="layoutGlobal" designer-object-param="rotate"
+                                                                                step="15" min="0" max="360">
+                                                                            </div>
+                                                                            <div class="col-12 col-sm-6">
+                                                                                <label for="mainLayoutOpacity" class="form-label ms-3">Opacity</label>
+                                                                                <input type="range" class="form-range custom-range action-designer-object-config" id="mainLayoutOpacity"
+                                                                                designer-object-id="layoutGlobal" designer-object-param="opacity"
+                                                                                step="0.1" min="0" max="1">
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            
                                                         </div>
-                                                        <div class="col-12 col-sm-6">
-                                                            <label for="mainLayoutColor" class="form-label ms-3">Global Background Color</label>
-                                                            <input type="color" class="form-control form-control-color btn btn-md btn-light w-100 rounded-5 action-designer-object-config" id="mainLayoutColor" 
-                                                            designer-object-id="layoutGlobal" designer-object-param="color"
-                                                            title="Set Background Color">
+                                                        
+                                                        <div class="col-12">
+                                                            <div class="row g-2">
+                                                                <div class="col col-sm d-flex justify-content-start">
+                                                                    <a class="btn btn-light px-3 rounded-5 w-100 text-start" data-bs-toggle="collapse" data-bs-target=".design-obj-image">
+                                                                        <p class="m-0 text-truncate fw-bold">
+                                                                            <i class="bi bi-box me-2"></i> <span>Image</span>
+                                                                        </p>
+                                                                    </a>
+                                                                </div>
+                                                                <div class="col-auto col-sm-auto d-flex justify-content-start">
+                                                                    <a class="btn btn-danger px-3 rounded-5 w-100 action-designer-object-reset" designer-object-id="imageGlobal" role="button">
+                                                                        <p class="m-0 text-truncate">
+                                                                            <i class="bi bi-arrow-clockwise"></i> <span>Reset</span>
+                                                                        </p>
+                                                                    </a>
+                                                                </div>
+                                                                <div class="col-12">
+                                                                    <div class="design-obj-image container collapse border border-light rounded-4">
+                                                                        <div class="row py-2">
+                                                                            <div class="col-12 col-sm-6">
+                                                                                <label for="musicDesignImage" class="form-label ms-3">Character/Image</label>
+                                                                                <label for="musicDesignImage" class="btn btn-light text-center w-100 rounded-5">
+                                                                                    <p class="m-0 text-truncate">
+                                                                                        <i class="bi bi-plus"></i> <span>Select Image</span>
+                                                                                    </p>
+                                                                                </label>
+                                                                                <input class="form-control d-none" type="file" id="musicDesignImage" accept="image/*" />
+                                                                            </div>
+                                                                            <div class="col-12 col-sm-6">
+                                                                                <label for="mainImageOpacity" class="form-label ms-3">Opacity</label>
+                                                                                <input type="range" class="form-range custom-range action-designer-object-config" id="mainImageOpacity"
+                                                                                designer-object-id="imageGlobal" designer-object-param="opacity"
+                                                                                step="0.1" min="0" max="1">
+                                                                            </div>
+                                                                            <div class="col-12 col-sm-6">
+                                                                                <label for="mainImageWidth" class="form-label ms-3">Width</label>
+                                                                                <input type="range" class="form-range custom-range action-designer-object-config" id="mainImageWidth"
+                                                                                designer-object-id="imageGlobal" designer-object-param="width"
+                                                                                step="1" min="-600" max="600">
+                                                                            </div>
+                                                                            <div class="col-12 col-sm-6">
+                                                                                <label for="mainImageHeight" class="form-label ms-3">Height</label>
+                                                                                <input type="range" class="form-range custom-range action-designer-object-config" id="mainImageHeight"
+                                                                                designer-object-id="imageGlobal" designer-object-param="height"
+                                                                                step="1" min="-600" max="600">
+                                                                            </div>
+                                                                            <div class="col-12 col-sm-6">
+                                                                                <label for="mainImagePosX" class="form-label ms-3">Pos X</label>
+                                                                                <input type="range" class="form-range custom-range action-designer-object-config" id="mainImagePosX"
+                                                                                designer-object-id="imageGlobal" designer-object-param="posX"
+                                                                                step="1" min="-600" max="600">
+                                                                            </div>
+                                                                            <div class="col-12 col-sm-6">
+                                                                                <label for="mainImagePosY" class="form-label ms-3">Pos Y</label>
+                                                                                <input type="range" class="form-range custom-range action-designer-object-config" id="mainImagePosY"
+                                                                                designer-object-id="imageGlobal" designer-object-param="posY"
+                                                                                step="1" min="-300" max="300">
+                                                                            </div>
+                                                                            <div class="col-12 col-sm-6">
+                                                                                <label for="mainImageScale" class="form-label ms-3">Scale</label>
+                                                                                <input type="range" class="form-range custom-range action-designer-object-config" id="mainImageScale"
+                                                                                designer-object-id="imageGlobal" designer-object-param="scale"
+                                                                                step="0.1" min="-2" max="2">
+                                                                            </div>
+                                                                            <div class="col-12 col-sm-6">
+                                                                                <label for="mainImageScaleDynamic" class="form-label ms-3">Scale Dynamic</label>
+                                                                                <input type="range" class="form-range custom-range action-designer-object-config" id="mainImageScaleDynamic"
+                                                                                designer-object-id="imageGlobal" designer-object-param="scaleDynamic"
+                                                                                step="0.01" min="-1" max="1">
+                                                                            </div>
+                                                                            <div class="col-12 col-sm-6">
+                                                                                <label for="mainImageRotation" class="form-label ms-3">Rotation</label>
+                                                                                <input type="range" class="form-range custom-range action-designer-object-config" id="mainImageRotation" 
+                                                                                designer-object-id="imageGlobal" designer-object-param="rotate"
+                                                                                step="15" min="0" max="360">
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
                                                         </div>
-                                                        <div class="col-12 py-3">
-                                                            <div class="border-bottom w-75 mx-auto"></div>
+
+                                                        <div class="col-12">
+                                                            <div class="row g-2">
+                                                                <div class="col col-sm d-flex justify-content-start">
+                                                                    <a class="btn btn-light px-3 rounded-5 w-100 text-start" data-bs-toggle="collapse" data-bs-target=".design-obj-spectrum">
+                                                                        <p class="m-0 text-truncate fw-bold">
+                                                                            <i class="bi bi-box me-2"></i> <span>Spectrum</span>
+                                                                        </p>
+                                                                    </a>
+                                                                </div>
+                                                                <div class="col-auto col-sm-auto d-flex justify-content-start">
+                                                                    <a class="btn btn-danger px-3 rounded-5 w-100 action-designer-object-reset" designer-object-id="spectrumGlobal" role="button">
+                                                                        <p class="m-0 text-truncate">
+                                                                            <i class="bi bi-arrow-clockwise"></i> <span>Reset</span>
+                                                                        </p>
+                                                                    </a>
+                                                                </div>
+                                                                <div class="col-12">
+                                                                    <div class="design-obj-spectrum container collapse border border-light rounded-4">
+                                                                        <div class="row py-2">
+                                                                            <div class="col-12 col-sm-6">
+                                                                                <label for="mainSpectrumBars" class="form-label ms-3">Bars</label>
+                                                                                <input type="range" class="form-range custom-range action-designer-object-config" id="mainSpectrumBars"
+                                                                                designer-object-id="spectrumGlobal" designer-object-param="bars"
+                                                                                step="8" min="8" max="128">
+                                                                            </div>
+                                                                            <div class="col-12 col-sm-6">
+                                                                                <label for="mainSpectrumBarsRadius" class="form-label ms-3">Bars Radius</label>
+                                                                                <input type="range" class="form-range custom-range action-designer-object-config" id="mainSpectrumBarsRadius"
+                                                                                designer-object-id="spectrumGlobal" designer-object-param="barsRadius"
+                                                                                step="0.1" min="0" max="2">
+                                                                            </div>
+                                                                            <div class="col-12 col-sm-6">
+                                                                                <label for="mainSpectrumRepeat" class="form-label ms-3">Bars Repeat</label>
+                                                                                <input type="range" class="form-range custom-range action-designer-object-config" id="mainSpectrumRepeat"
+                                                                                designer-object-id="spectrumGlobal" designer-object-param="repeat"
+                                                                                step="1" min="1" max="8">
+                                                                            </div>
+                                                                            <div class="col-12 col-sm-6">
+                                                                                <label for="mainSpectrumStrength" class="form-label ms-3">Strength</label>
+                                                                                <input type="range" class="form-range custom-range action-designer-object-config" id="mainSpectrumStrength"
+                                                                                designer-object-id="spectrumGlobal" designer-object-param="strength"
+                                                                                step="1" min="0" max="1000">
+                                                                            </div>
+                                                                            <div class="col-12 col-sm-6">
+                                                                                <label for="mainSpectrumSensitivity" class="form-label ms-3">Sensitivity</label>
+                                                                                <input type="range" class="form-range custom-range action-designer-object-config" id="mainSpectrumSensitivity"
+                                                                                designer-object-id="spectrumGlobal" designer-object-param="sensitivity"
+                                                                                step="1" min="0" max="1000">
+                                                                            </div>
+                                                                            <div class="col-12 col-sm-6">
+                                                                                <label for="mainSpectrumDistance" class="form-label ms-3">Distance</label>
+                                                                                <input type="range" class="form-range custom-range action-designer-object-config" id="mainSpectrumDistance"
+                                                                                designer-object-id="spectrumGlobal" designer-object-param="distance"
+                                                                                step="1" min="-400" max="400">
+                                                                            </div>
+                                                                            <div class="col-12 col-sm-6">
+                                                                                <label for="mainSpectrumDistanceDynamic" class="form-label ms-3">Distance Dynamic</label>
+                                                                                <input type="range" class="form-range custom-range action-designer-object-config" id="mainSpectrumDistanceDynamic"
+                                                                                designer-object-id="spectrumGlobal" designer-object-param="distanceDynamic"
+                                                                                step="1" min="-400" max="400">
+                                                                            </div>
+                                                                            <div class="col-12 col-sm-6">
+                                                                                <label for="mainSpectrumWidth" class="form-label ms-3">Width</label>
+                                                                                <input type="range" class="form-range custom-range action-designer-object-config" id="mainSpectrumWidth"
+                                                                                designer-object-id="spectrumGlobal" designer-object-param="width"
+                                                                                step="1" min="1" max="100">
+                                                                            </div>
+                                                                            <div class="col-12 col-sm-6">
+                                                                                <label for="mainSpectrumThick" class="form-label ms-3">Thinkess</label>
+                                                                                <input type="range" class="form-range custom-range action-designer-object-config" id="mainSpectrumThick"
+                                                                                designer-object-id="spectrumGlobal" designer-object-param="thick"
+                                                                                step="1" min="1" max="100">
+                                                                            </div>
+                                                                            <div class="col-12 col-sm-6">
+                                                                                <label for="mainSpectrumPosX" class="form-label ms-3">Pos X</label>
+                                                                                <input type="range" class="form-range custom-range action-designer-object-config" id="mainSpectrumPosX"
+                                                                                designer-object-id="spectrumGlobal" designer-object-param="posX"
+                                                                                step="1" min="-600" max="600">
+                                                                            </div>
+                                                                            <div class="col-12 col-sm-6">
+                                                                                <label for="mainSpectrumPosY" class="form-label ms-3">Pos Y</label>
+                                                                                <input type="range" class="form-range custom-range action-designer-object-config" id="mainSpectrumPosY"
+                                                                                designer-object-id="spectrumGlobal" designer-object-param="posY"
+                                                                                step="1" min="-300" max="300">
+                                                                            </div>
+                                                                            <div class="col-12 col-sm-6">
+                                                                                <label for="mainSpectrumScale" class="form-label ms-3">Scale</label>
+                                                                                <input type="range" class="form-range custom-range action-designer-object-config" id="mainSpectrumScale"
+                                                                                designer-object-id="spectrumGlobal" designer-object-param="scale"
+                                                                                step="0.1" min="-2" max="2">
+                                                                            </div>
+                                                                            <div class="col-12 col-sm-6">
+                                                                                <label for="mainSpectrumScaleDynamic" class="form-label ms-3">Scale Dynamic</label>
+                                                                                <input type="range" class="form-range custom-range action-designer-object-config" id="mainSpectrumScaleDynamic"
+                                                                                designer-object-id="spectrumGlobal" designer-object-param="scaleDynamic"
+                                                                                step="0.01" min="-1" max="1">
+                                                                            </div>
+                                                                            <div class="col-12 col-sm-6">
+                                                                                <label for="mainSpectrumRotation" class="form-label ms-3">Rotation</label>
+                                                                                <input type="range" class="form-range custom-range action-designer-object-config" id="mainSpectrumRotation" 
+                                                                                designer-object-id="spectrumGlobal" designer-object-param="rotate"
+                                                                                step="15" min="0" max="360">
+                                                                            </div>
+                                                                            <div class="col-12 col-sm-6">
+                                                                                <label for="mainSpectrumOpacity" class="form-label ms-3">Opacity</label>
+                                                                                <input type="range" class="form-range custom-range action-designer-object-config" id="mainSpectrumOpacity"
+                                                                                designer-object-id="spectrumGlobal" designer-object-param="opacity"
+                                                                                step="1" min="0" max="1000">
+                                                                            </div>
+                                                                            <div class="col-12 col-sm-6">
+                                                                                <label for="mainSpectrumOpacity" class="form-label ms-3">Opacity Dynamic</label>
+                                                                                <input type="range" class="form-range custom-range action-designer-object-config" id="mainSpectrumOpacityDynamic"
+                                                                                designer-object-id="spectrumGlobal" designer-object-param="opacityDynamic"
+                                                                                step="1" min="0" max="2000">
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
                                                         </div>
-                                                        <div class="col-12 d-flex justify-content-start">
-                                                            <a class="btn btn-light px-3 rounded-5 w-100 text-start">
-                                                                <p class="m-0 text-truncate fw-bold">
-                                                                    <i class="bi bi-box me-2"></i> <span>Layout</span>
-                                                                </p>
-                                                            </a>
-                                                        </div>
-                                                        <div class="col-12 col-sm-6">
-                                                            <label for="mainLayoutScale" class="form-label ms-3">Layout Scale</label>
-                                                            <input type="range" class="form-range custom-range action-designer-object-config" id="mainLayoutScale"
-                                                            designer-object-id="layoutGlobal" designer-object-param="scale"
-                                                            step="0.1" min="-2" max="2">
-                                                        </div>
-                                                        <div class="col-12 col-sm-6">
-                                                            <label for="mainLayoutScaleDynamic" class="form-label ms-3">Layout Scale Dynamic</label>
-                                                            <input type="range" class="form-range custom-range action-designer-object-config" id="mainLayoutScaleDynamic"
-                                                            designer-object-id="layoutGlobal" designer-object-param="scaleDynamic"
-                                                            step="0.01" min="-1" max="1">
-                                                        </div>
-                                                        <div class="col-12 col-sm-6">
-                                                            <label for="mainLayoutRotation" class="form-label ms-3">Layout Rotation</label>
-                                                            <input type="range" class="form-range custom-range action-designer-object-config" id="mainLayoutRotation" 
-                                                            designer-object-id="layoutGlobal" designer-object-param="rotate"
-                                                            step="15" min="0" max="360">
-                                                        </div>
-                                                        <div class="col-12 col-sm-6">
-                                                            <label for="mainLayoutOpacity" class="form-label ms-3">Layout Opacity</label>
-                                                            <input type="range" class="form-range custom-range action-designer-object-config" id="mainLayoutOpacity"
-                                                            designer-object-id="layoutGlobal" designer-object-param="opacity"
-                                                            step="0.1" min="0" max="1">
-                                                        </div>
-                                                        <div class="col-12 py-3">
-                                                            <div class="border-bottom w-75 mx-auto"></div>
-                                                        </div>
-                                                        <div class="col-12 d-flex justify-content-start">
-                                                            <a class="btn btn-light px-3 rounded-5 w-100 text-start">
-                                                                <p class="m-0 text-truncate fw-bold">
-                                                                    <i class="bi bi-box me-2"></i> <span>Image</span>
-                                                                </p>
-                                                            </a>
-                                                        </div>
-                                                        <div class="col-12 col-sm-6">
-                                                            <label for="musicDesignImage" class="form-label ms-3">Character/Image</label>
-                                                            <label for="musicDesignImage" class="btn btn-light text-center w-100 rounded-5">
-                                                                <p class="m-0 text-truncate">
-                                                                    <i class="bi bi-plus"></i> <span>Select Image</span>
-                                                                </p>
-                                                            </label>
-                                                            <input class="form-control d-none" type="file" id="musicDesignImage" accept="image/*" />
-                                                        </div>
-                                                        <div class="col-12 col-sm-6">
-                                                            <label for="mainImageOpacity" class="form-label ms-3">Image Opacity</label>
-                                                            <input type="range" class="form-range custom-range action-designer-object-config" id="mainImageOpacity"
-                                                            designer-object-id="imageGlobal" designer-object-param="opacity"
-                                                            step="0.1" min="0" max="1">
-                                                        </div>
-                                                        <div class="col-12 col-sm-6">
-                                                            <label for="mainImageWidth" class="form-label ms-3">Image Width</label>
-                                                            <input type="range" class="form-range custom-range action-designer-object-config" id="mainImageWidth"
-                                                            designer-object-id="imageGlobal" designer-object-param="width"
-                                                            step="1" min="-600" max="600">
-                                                        </div>
-                                                        <div class="col-12 col-sm-6">
-                                                            <label for="mainImageHeight" class="form-label ms-3">Image Height</label>
-                                                            <input type="range" class="form-range custom-range action-designer-object-config" id="mainImageHeight"
-                                                            designer-object-id="imageGlobal" designer-object-param="height"
-                                                            step="1" min="-600" max="600">
-                                                        </div>
-                                                        <div class="col-12 col-sm-6">
-                                                            <label for="mainImagePosX" class="form-label ms-3">Image Pos X</label>
-                                                            <input type="range" class="form-range custom-range action-designer-object-config" id="mainImagePosX"
-                                                            designer-object-id="imageGlobal" designer-object-param="posX"
-                                                            step="1" min="-600" max="600">
-                                                        </div>
-                                                        <div class="col-12 col-sm-6">
-                                                            <label for="mainImagePosY" class="form-label ms-3">Image Pos Y</label>
-                                                            <input type="range" class="form-range custom-range action-designer-object-config" id="mainImagePosY"
-                                                            designer-object-id="imageGlobal" designer-object-param="posY"
-                                                            step="1" min="-300" max="300">
-                                                        </div>
-                                                        <div class="col-12 col-sm-6">
-                                                            <label for="mainImageScale" class="form-label ms-3">Image Scale</label>
-                                                            <input type="range" class="form-range custom-range action-designer-object-config" id="mainImageScale"
-                                                            designer-object-id="imageGlobal" designer-object-param="scale"
-                                                            step="0.1" min="-2" max="2">
-                                                        </div>
-                                                        <div class="col-12 col-sm-6">
-                                                            <label for="mainImageScaleDynamic" class="form-label ms-3">Image Scale Dynamic</label>
-                                                            <input type="range" class="form-range custom-range action-designer-object-config" id="mainImageScaleDynamic"
-                                                            designer-object-id="imageGlobal" designer-object-param="scaleDynamic"
-                                                            step="0.01" min="-1" max="1">
-                                                        </div>
-                                                        <div class="col-12 col-sm-6">
-                                                            <label for="mainImageRotation" class="form-label ms-3">Image Rotation</label>
-                                                            <input type="range" class="form-range custom-range action-designer-object-config" id="mainImageRotation" 
-                                                            designer-object-id="imageGlobal" designer-object-param="rotate"
-                                                            step="15" min="0" max="360">
-                                                        </div>
-                                                        <!-- <div class="col-6">
-                                                            <label for="musicSpectrumBar" class="form-label ms-3">Bar</label>
-                                                            <input type="range" class="form-range custom-range" id="musicSpectrumBar" step="8" min="8" max="128">
-                                                        </div>
-                                                        <div class="col-6">
-                                                            <label for="musicSpectrumThickness" class="form-label ms-3">Bar Thickness</label>
-                                                            <input type="range" class="form-range custom-range" id="musicSpectrumThickness" step="1" min="1" max="32">
-                                                        </div>
-                                                        <div class="col-6">
-                                                            <label for="musicSpectrumDistance" class="form-label ms-3">Distance</label>
-                                                            <input type="range" class="form-range custom-range" id="musicSpectrumDistance" step="10" min="50" max="300">
-                                                        </div>
-                                                        <div class="col-6">
-                                                            <label for="musicSpectrumDynamicDistance" class="form-label ms-3">Dynamic Distance</label>
-                                                            <input type="range" class="form-range custom-range" id="musicSpectrumDynamicDistance" step="1" min="0" max="100">
-                                                        </div>
-                                                        <div class="col-6">
-                                                            <label for="musicSpectrumRotation" class="form-label ms-3">Rotation</label>
-                                                            <input type="range" class="form-range custom-range" id="musicSpectrumRotation" step="1" min="0" max="360">
-                                                        </div>
-                                                        <div class="col-6">
-                                                            <label for="musicSpectrumRepetition" class="form-label ms-3">Repetition</label>
-                                                            <input type="range" class="form-range custom-range" id="musicSpectrumRepetition" step="1" min="1" max="8">
-                                                        </div>
-                                                        <div class="col-6">
-                                                            <label for="musicSpectrumStrength" class="form-label ms-3">Strength</label>
-                                                            <input type="range" class="form-range custom-range" id="musicSpectrumStrength" step="1" min="1" max="1000">
-                                                        </div>
-                                                        <div class="col-6">
-                                                            <label for="musicSpectrumSensitivity" class="form-label ms-3">Sensitivity</label>
-                                                            <input type="range" class="form-range custom-range" id="musicSpectrumSensitivity" step="1" min="1" max="1000">
-                                                        </div>
-                                                        <div class="col-6">
-                                                            <label for="musicSpectrumOpacity" class="form-label ms-3">Opacity</label>
-                                                            <input type="range" class="form-range custom-range" id="musicSpectrumOpacity" step="1" min="1" max="1000">
-                                                        </div>
-                                                        <div class="col-6">
-                                                            <label for="musicSpectrumDynamicOpacity" class="form-label ms-3">Dynamic Opacity</label>
-                                                            <input type="range" class="form-range custom-range" id="musicSpectrumDynamicOpacity" step="1" min="1" max="1000">
-                                                        </div> -->
+
                                                     </div>
                                                 </div>
                                             </div>
@@ -543,6 +655,7 @@
                                                 scaleDynamic: 0,
                                                 rotate: 0,
                                                 color: '#a792e1',
+                                                colorEffect: '#ffffff',
                                                 opacity: 1,
                                             }
                                         };
@@ -578,8 +691,8 @@
                                                 scale: 1, // 0.1-1
                                                 scaleDynamic: 0.1, // 0.1-1
                                                 rotate: -55, // 0-360
-                                                distance: 120, // 0-100
-                                                distanceDynamic: -30, // 0-100
+                                                distance: -120, // 0-100
+                                                distanceDynamic: 15, // 0-100
                                                 strength: 800, // 0-1000
                                                 sensitivity: 300, // 0-1000
                                             }
@@ -787,6 +900,8 @@
                 "></li>
             `);
 		}
+
+        rebuildObjectConfig(objConfig);
     }
 
     function objSpectrumUpdate(objConfig=[], objFlow) {
@@ -821,7 +936,7 @@
         
         // Data Flow
         let dataDistance = objParamDistance + (objFlowEnergy * objParamDistanceDynamic);
-        $(`#objectId${objId} li`).css(`--music-obj-distance`,`-${dataDistance}px`);
+        $(`#objectId${objId} li`).css(`--music-obj-distance`,`${dataDistance}px`);
 
         let dataScale = objParamScale + (objFlowEnergy * objParamScaleDynamic);
         $(`#objectId${objId}`).css(`--music-obj-scale`,`${dataScale}`);
@@ -846,52 +961,6 @@
             let objBufferBarOpacity = (objParamOpacity/1000) + ((dataSpectrumMultiplier / dataSpectrumMultiplierMax) * (objParamOpacityDynamic/1000));
             $(`#objectId${objId} li`).eq((objBufferBarPos)).css("--music-obj-active-opacity",`${objBufferBarOpacity}`);            
         }
-
-        /*
-        --music-obj-rotate: 0deg;
-        --music-obj-scale: 1;
-        --music-obj-pos-left: 0px;
-        --music-obj-pos-top: 0px;
-        
-        --music-obj-rotate: 0deg;
-        --music-obj-distance: 120px;
-        --music-obj-height: 12px;
-        --music-obj-width: 4px;
-        --music-obj-color: #ffffff; 
-        --music-obj-outline-width: 1px;
-        --music-obj-outline-color: #ffffff;
-        --music-obj-shadow-spread: 0px;
-        --music-obj-shadow-color: #ffffff;
-        --music-obj-opacity: 0; 
-        --music-obj-shape-radius: 1rem;
-        */
-
-
-        // Draw Spectrume (Flow Data)
-        // let spectrumBarBase = spectrum;
-        // let spectrumBarRepeatThreshold = Math.round(objConfBars / objConfRepeat); 
-        // let spectrumBarBufferActive = 0;
-        // for (let i = 0; i < (objConfBars); i++) {  spectrumBarBufferActive ++;
-        //     if (spectrumBarBufferActive % spectrumBarRepeatThreshold == 0) { 
-        //         spectrumBarBufferActive = spectrumBarBufferActive - spectrumBarRepeatThreshold; 
-        //     }
-        //     let spectrumeBarBufferAudio = spectrumBarBase[ (mediaSpectrume / objConfBars) * spectrumBarBufferActive ];
-        //     let objBufferBarPos = i;
-            
-        //     let spectrumMultiplier = ( Math.pow(spectrumeBarBufferAudio/255, (1000/objConfSensitivity) )) * (objConfStrength/1000);
-        //     let spectrumMultiplierMax = ( Math.pow(1, (1000/objConfSensitivity) )) * (objConfStrength/1000);
-
-        //     let objBufferBarHeight = (spectrumeBarBufferAudio) * spectrumMultiplier;
-        //     $(`#objectId${objId} li`).eq((objBufferBarPos)).css("--music-obj-active-height",`${objBufferBarHeight}px`);
-
-        //     let objBufferBarOpacity = (objConfOpacity/1000) + ((spectrumMultiplier / spectrumMultiplierMax) * (objConfOpacityDynamic/1000));
-        //     $(`#objectId${objId} li`).eq((objBufferBarPos)).css("--music-obj-active-opacity",`${objBufferBarOpacity}`);
-
-        //     let objBufferBarDistanceDynamic = (parseInt(objConfDistance, 10)/parseInt(objConfDistance, 10)) + ((energyStrength * parseInt(objConfDistanceDynamic, 10)) / parseInt(objConfDistance, 10));
-        //     $(`#objectId${objId}`).css(`--music-obj-scale`,`${objBufferBarDistanceDynamic}`);
-            
-        // }
-
     }
 </script>
 <script type="text/javascript">
@@ -932,7 +1001,7 @@
 		let lowMidEnergy = fft.getEnergy("lowMid"); let gitar_e = (lowMidEnergy/512) * 0.8; 
 		let midEnergy = fft.getEnergy("mid"); let snare_e = (midEnergy/512) * 0.2;
         let energyCombine = (bass_e + gitar_e + snare_e );
-        let energyStrength = ( Math.pow((energyCombine), 2) * energyCombine );
+        let energyStrength = ( Math.pow((energyCombine), 5) * energyCombine ) * 3;
 
         let flowData = {energy: energyStrength, spectrum: spectrum}
 
@@ -969,9 +1038,16 @@
 
         // Tombol Aksi Load Object
         $(document).on("click", ".action-designer-object-reset", function(e) {
-            // Reset ke default
-            objectMemory = JSON.parse(JSON.stringify(objectMemoryDefault));
+            let objId = $(this).attr('designer-object-id');
 
+            if (objId){
+                // Reset ke default
+                objectMemory[objId] = JSON.parse(JSON.stringify(objectMemoryDefault[objId]));
+            }else{
+                // Reset ke pabrik
+                objectMemory = JSON.parse(JSON.stringify(objectMemoryDefault));
+            }
+            
             // Reload Object
             initObject();
         });
