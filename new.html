@@ -98,6 +98,10 @@
     .bi{
         -webkit-text-stroke: 1px;
     }
+    .bg-blur{
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px); /* For Safari */
+    }
     html{
         height: 100vh;
     }
@@ -283,7 +287,7 @@
                                 </div>
                             </div>
                             <div class="col-12">
-                                <div class="collapse library-panel border border-ligth rounded-4">
+                                <div class="collapse library-panel border border-ligth bg-light bg-opacity-10 bg-blur rounded-4">
                                     <div class="row px-2 py-3">
                                         <div class="col-12 text-white">
                                             <div id="librayControlPanelPartImporter" class="collapse show">
@@ -333,7 +337,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="collapse design-panel border border-ligth rounded-4">
+                                <div class="collapse design-panel border border-light bg-light bg-opacity-10 bg-blur rounded-4">
                                     <div class="row px-2 py-3">                                        
                                         <div class="col-12 text-white">
                                             <div id="designControlPanelPartLayout" class="collapse show">
