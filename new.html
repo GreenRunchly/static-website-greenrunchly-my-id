@@ -222,12 +222,12 @@
                         </div>
                     </div>
                 </div>
-                <div class="col py-4 d-flex justify-content-center align-items-center">
+                <div class="col py-4 d-flex justify-content-center align-items-center z-0">
                     <div class="main rounded-5" data-bs-toggle="collapse" data-bs-target=".main-panel" role="button" >
                         <!-- <iframe width="420" height="345" src="http://www.youtube.com/embed/BJuoqqlVr1U?autoplay=1" frameborder="0" allowfullscreen></iframe> -->
                     </div>
                 </div>
-                <div class="col-12">
+                <div class="col-12  z-1">
                     <div class="collapse main-panel show">
                         <div class="row">
                             <div class="col-12">
@@ -247,7 +247,7 @@
                                                 </button>
                                                 <button class="btn btn-md rounded-5 btn-light ms-4 me-auto" data-bs-toggle="collapse" data-bs-target=".design-panel" role="button">
                                                     <p class="m-0 text-truncate">
-                                                        <i class="bi bi-sliders2-vertical"></i>
+                                                        <i class="bi bi-brush"></i>
                                                     </p>
                                                 </button>
                                             </div>
@@ -255,7 +255,7 @@
                                         <div class="col-12 mt-2">
                                             <div id="mediaControlPanelPartMeta" class="collapse show">
                                                 <audio class="d-none" id="mediaPlayerAudio" controls>
-                                                    <source src="https://dj.bronyradio.com/stream.mp3">
+                                                    <source src="assets/audio/Nightcore - Dame Dame & Britt Lari - La La La.weba" type="audio/mpeg">
                                                 </audio>
                                                 <a class="btn btn-sm text-white text-center w-100">
                                                     <p class="m-0 text-truncate fs-6">
@@ -278,36 +278,48 @@
                             <div class="col-12">
                                 <div class="collapse library-panel">
                                     <div class="row">
-                                        <div class="col">
-                                            <div class="container d-flex justify-content-start">
-                                                <a class="btn rounded-5 text-white text-left">
-                                                    <p class="m-0 text-truncate fw-bold">
-                                                        <span>Music Library</span>
-                                                    </p>
-                                                </a>
-                                            </div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <div class="container overflow-y-scroll d-flex justify-content-end">
-                                                <button class="btn rounded-5 btn-light ms-auto" data-bs-toggle="collapse" data-bs-target=".library-panel" role="button">
-                                                    <p class="m-0 text-truncate">
-                                                        <i class="bi bi-chevron-left"></i> <span class="pe-2">Kembali</span>
-                                                    </p>
-                                                </button>
-                                            </div>
-                                        </div>
-                                        <div class="col-12 mt-2 text-white">
+                                        <div class="col-12 text-white">
                                             <div id="librayControlPanelPartImporter" class="collapse show">
-                                                <div class="container overflow-y-scroll" style="max-height: 120px;">
+                                                <div class="container overflow-y-scroll" style="max-height: 200px;">
                                                     <div class="row g-2">
                                                         <div class="col-12">
-                                                            <label for="musicDesignImage" class="btn btn-light text-center w-100 rounded-5">
+                                                            <button for="musicDesignImage" class="btn btn-light text-start w-100 rounded-5 px-3">
                                                                 <p class="m-0 text-truncate">
-                                                                    <i class="bi bi-plus"></i> <span>Import Music</span>
+                                                                    <span class="me-2">1.</span> <span>Ruth - Dendalions [Nightcore]</span>
                                                                 </p>
-                                                            </label>
-                                                            <input class="form-control d-none" type="file" id="mediaPlayerAudioImporter" accept="audio/*" webkitdirectory directory multiple />
+                                                            </button>
                                                         </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col py-3">
+                                            <div class="border-bottom w-75 mx-auto"></div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="container pe-3">
+                                                <div class="row g-2">
+                                                    <div class="col-12 col-sm d-flex justify-content-start">
+                                                        <a class="btn btn-light px-3 rounded-5 w-100 text-start">
+                                                            <p class="m-0 text-truncate fw-bold">
+                                                                <i class="bi bi-music-note-beamed me-2"></i> <span>Music Library</span>
+                                                            </p>
+                                                        </a>
+                                                    </div>
+                                                    <div class="col-6 col-sm-auto d-flex justify-content-start">
+                                                        <label for="mediaPlayerAudioImporter" class="btn btn-light px-3 rounded-5 w-100">
+                                                            <p class="m-0 text-truncate">
+                                                                <i class="bi bi-plus"></i> <span>Import</span>
+                                                            </p>
+                                                        </label>
+                                                        <input class="form-control d-none" type="file" id="mediaPlayerAudioImporter" accept="audio/*" webkitdirectory directory multiple />
+                                                    </div>
+                                                    <div class="col-6 col-sm-auto pe-2">
+                                                        <button class="btn btn-light px-3 rounded-5 w-100" data-bs-toggle="collapse" data-bs-target=".library-panel" role="button">
+                                                            <p class="m-0 text-truncate">
+                                                                <i class="bi bi-chevron-left"></i> <span>Back</span>
+                                                            </p>
+                                                        </button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -315,49 +327,37 @@
                                     </div>
                                 </div>
                                 <div class="collapse design-panel">
-                                    <div class="row">
-                                        <div class="col">
-                                            <div class="container d-flex justify-content-start">
-                                                <a class="btn rounded-5 text-white text-left">
-                                                    <p class="m-0 text-truncate fw-bold">
-                                                        <span>Personalization</span>
-                                                    </p>
-                                                </a>
-                                            </div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <div class="container overflow-y-scroll d-flex justify-content-end">
-                                                <button class="btn rounded-5 btn-light ms-auto" data-bs-toggle="collapse" data-bs-target=".design-panel" role="button">
-                                                    <p class="m-0 text-truncate">
-                                                        <i class="bi bi-chevron-left"></i> <span class="pe-2">Kembali</span>
-                                                    </p>
-                                                </button>
-                                            </div>
-                                        </div>
-                                        <div class="col-12 mt-2 text-white">
+                                    <div class="row">                                        
+                                        <div class="col-12 text-white">
                                             <div id="designControlPanelPartLayout" class="collapse show">
-                                                <div class="container overflow-y-scroll" style="max-height: 120px;">
+                                                <div class="container overflow-y-scroll" style="max-height: 200px;">
                                                     <div class="row g-2">
-                                                        <!-- <div class="col-6">
-                                                            <label for="mainLayoutScale" class="form-label ms-3">Layout Scale</label>
-                                                            <input type="range" class="form-range custom-range" id="mainLayoutScale" step="0.1" min="0.5" max="2">
-                                                        </div>
-                                                        <div class="col-6">
-                                                            <label for="mainLayoutRotation" class="form-label ms-3">Layout Rotation</label>
-                                                            <input type="range" class="form-range custom-range" id="mainLayoutRotation" step="15" min="0" max="360">
-                                                        </div> -->
                                                         <div class="col-12 col-sm-6">
                                                             <label for="mainLayoutColor" class="form-label ms-3">Layout Color</label>
-                                                            <input type="color" class="form-control form-control-color btn btn-md btn-light w-100 rounded-5" id="mainLayoutColor" title="Set Background Color">
+                                                            <input type="color" class="form-control form-control-color btn btn-md btn-light w-100 rounded-5 action-designer-object-config" id="mainLayoutColor" 
+                                                            designer-object-id="layoutGlobal" designer-object-param="color"
+                                                            title="Set Background Color">
                                                         </div>
                                                         <div class="col-12 col-sm-6">
-                                                            <label for="musicDesignImage" class="form-label ms-3">Character Image</label>
+                                                            <label for="musicDesignImage" class="form-label ms-3">Character/Image</label>
                                                             <label for="musicDesignImage" class="btn btn-light text-center w-100 rounded-5">
                                                                 <p class="m-0 text-truncate">
                                                                     <i class="bi bi-plus"></i> <span>Select Image</span>
                                                                 </p>
                                                             </label>
                                                             <input class="form-control d-none" type="file" id="musicDesignImage" accept="image/*" />
+                                                        </div>
+                                                        <div class="col-12 col-sm-6">
+                                                            <label for="mainLayoutScale" class="form-label ms-3">Layout Scale</label>
+                                                            <input type="range" class="form-range custom-range action-designer-object-config" id="mainLayoutScale"
+                                                            designer-object-id="layoutGlobal" designer-object-param="scale"
+                                                            step="0.1" min="-2" max="2">
+                                                        </div>
+                                                        <div class="col-12 col-sm-6">
+                                                            <label for="mainLayoutRotation" class="form-label ms-3">Layout Rotation</label>
+                                                            <input type="range" class="form-range custom-range action-designer-object-config" id="mainLayoutRotation" 
+                                                            designer-object-id="layoutGlobal" designer-object-param="rotate"
+                                                            step="15" min="0" max="360">
                                                         </div>
                                                         <!-- <div class="col-6">
                                                             <label for="musicSpectrumBar" class="form-label ms-3">Bar</label>
@@ -402,7 +402,37 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div> 
+                                        </div>
+                                        <div class="col py-3">
+                                            <div class="border-bottom w-75 mx-auto"></div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="container pe-3">
+                                                <div class="row g-2">
+                                                    <div class="col-12 col-sm d-flex justify-content-start">
+                                                        <a class="btn btn-light px-3 rounded-5 w-100 text-start">
+                                                            <p class="m-0 text-truncate fw-bold">
+                                                                <i class="bi bi-brush me-2"></i> <span>Visual Designer</span>
+                                                            </p>
+                                                        </a>
+                                                    </div>
+                                                    <div class="col-6 col-sm-auto d-flex justify-content-start">
+                                                        <a class="btn btn-danger px-3 rounded-5 w-100 action-designer-object-reset" role="button">
+                                                            <p class="m-0 text-truncate">
+                                                                <i class="bi bi-arrow-clockwise"></i> <span>Reset</span>
+                                                            </p>
+                                                        </a>
+                                                    </div>
+                                                    <div class="col-6 col-sm-auto pe-2">
+                                                        <button class="btn btn-light px-3 rounded-5 w-100" data-bs-toggle="collapse" data-bs-target=".design-panel" role="button">
+                                                            <p class="m-0 text-truncate">
+                                                                <i class="bi bi-chevron-left"></i> <span>Back</span>
+                                                            </p>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div> 
                                 </div> 
                             </div>
@@ -414,53 +444,221 @@
 	</main>
 </body>
 <script>
+    let objectMemory = {}; 
+    let objectMemoryDefault = {};
+    objectMemory['layoutGlobal'] =      { id: 'layoutGlobal', tipe: 100, params : 
+                                            {
+                                                scale: 1,
+                                                rotate: 0,
+                                                color: '#a792e1',
+                                            }
+                                        };
+    objectMemory['imageGlobal'] =       { id: 'imageGlobal', tipe: 2, params : 
+                                            {
+                                                image: 'assets/characters/rivin/Rivin.png',
+                                                width: 300,
+                                                height: 300,
+                                                posX: 150,
+                                                posY: 50,
+                                                scale: 1,
+                                                scaleDynamic: 0.1, 
+                                                rotate: 0,
+                                                opacity: 1,
+                                            }
+                                        };
+    objectMemory['spectrumGlobal'] =    { id: 'spectrumGlobal', tipe: 1, params : 
+                                            {
+                                                bars: 64, // 0-1024
+                                                barsColor: '#ffffff75',
+                                                barsRadius: 1, // 0.1-2
+                                                outlineWidth: 2, // 0-8
+                                                outlineColor: '#ffffff',
+                                                shadowSpread: 0, // 0-50
+                                                shadowColor: '#ffd3ee',
+                                                repeat: 2, // 0-8
+                                                width: 7, // 0-100
+                                                thick: 20, // 0-100
+                                                posX: 300, // 0-600
+                                                posY: 200, // 0-400
+                                                opacity: 200, // 0 - 1000
+                                                opacityDynamic: 1000, // 0 - 1000
+                                                scale: 1, // 0.1-1
+                                                rotate: -55, // 0-360
+                                                distance: 120, // 0-100
+                                                distanceDynamic: -10, // 0-100
+                                                strength: 800, // 0-1000
+                                                sensitivity: 300, // 0-1000
+                                            }
+                                        };
+    objectMemoryDefault = JSON.parse(JSON.stringify(objectMemory));
+</script>
+<script>
     function initObject() {
+        // Clean object from layout
+        $(`.main`).empty();
+
+        // Load object to layout
+        for (let key in objectMemory) {
+            if (objectMemory.hasOwnProperty(key)) {
+                let item = objectMemory[key];
+                switch (item.tipe) {
+                    case 100:
+                        mainLayoutSet(item);
+                        break;
+                    case 2:
+                        objImageAdd(item);
+                        break;
+                    case 1:
+                        objSpectrumAdd(item);
+                        break;
+                }
+            }
+        }
+
+        console.log('Current', objectMemory);
+        console.log('Restore point', objectMemoryDefault);
+    }
+
+    function rebuildObjectConfig(objConfig) {
+        // Read Data
+        let objId                   = objConfig.id;
+        let objParams               = objConfig.params;
+
+        // Set object at designer config on each object 
+        for (let param in objParams) {
+            if (objParams.hasOwnProperty(param)) {
+                let paramValue = objParams[param];
+                $(`.action-designer-object-config[designer-object-id="${objId}"][designer-object-param="${param}"]`).val(paramValue);
+            }
+        }
+    }
+
+    function mainLayoutSet(objConfig=[]) {
+        // Read Data
+        let objId                   = objConfig.id;
+        let objParams               = objConfig.params;
+
+        // Set Parameters
+        let objParamScale           = objParams.scale;
+        let objParamRotate          = objParams.rotate;
+        let objParamColor           = objParams.color;
+
         
-        mainLayoutSet({
-            scale: 1,
-            rotate: 0,
-            color: '#ffffff00',
-        });
 
-        objImageAdd({
-            image: 'assets/characters/rivin/Rivin.png',
-            width: 300,
-            height: 300,
-            posX: 150,
-            posY: 50,
-            scale: 1,
-            scaleDynamic: 0.1, 
-            rotate: 0,
-            opacity: 1,
-        })
+        $(`.main`).css('--main-layout-scale', `${objParamScale}`);
+        $(`.main`).css('--main-layout-rotate', `${objParamRotate}deg`);
+        $(`body`).css('--music-theme-color', `${objParamColor}`);
+        // $(`.main`).css('--main-layout-color', `${objParamColor}`);
+        
+        rebuildObjectConfig(objConfig);
+    }
 
-        objSpectrumAdd({
-            bars: 64, // 0-1024
-            barsColor: '#ffffff75',
-            barsRadius: 1, // 0.1-2
-            outlineWidth: 2, // 0-8
-            outlineColor: '#ffffff',
-            shadowSpread: 0, // 0-50
-            shadowColor: '#ffd3ee',
-            repeat: 2, // 0-8
-            width: 7, // 0-100
-            thick: 20, // 0-100
-            posX: 300, // 0-600
-            posY: 200, // 0-400
-            opacity: 200, // 0 - 1000
-            opacityDynamic: 1000, // 0 - 1000
-            scale: 1, // 0.1-1
-            rotate: -55, // 0-360
-            distance: 120, // 0-100
-            distanceDynamic: -10, // 0-100
-            strength: 1200, // 0-1000
-            sensitivity: 300, // 0-1000
-        });
+    function mainLayoutUpdate(objConfig=[]) {
+        // Read Data
+        let objId                   = objConfig.id;
+        let objParams               = objConfig.params;
+
+        // Set Parameters
+        let objParamScale           = objParams.scale;
+        let objParamRotate          = objParams.rotate;
+        let objParamColor           = objParams.color;
+
+        $(`.main`).css('--main-layout-scale', `${objParamScale}`);
+        $(`.main`).css('--main-layout-rotate', `${objParamRotate}deg`);
+        $(`.main`).css('--main-layout-color', `${objParamColor}`);
+    }
+
+    function objImageAdd(objConfig=[], location='') {
+        // Read Data
+        let objId                   = objConfig.id;
+        let objParams               = objConfig.params;
+
+        // Config
+        let objParamImage            = objParams.image;
+        let objParamWidth            = objParams.width;
+        let objParamHeight           = objParams.height;
+        let objParamPosX             = objParams.posX;
+        let objParamPosY             = objParams.posY;
+        let objParamScale            = objParams.scale;
+        let objParamScaleDynamic     = objParams.scaleDynamic;
+        let objParamRotate           = objParams.rotate;
+        let objParamOpacity          = objParams.opacity;
+
+        // Add base object
+        $(`.main ${location}`).prepend(`
+            <img src="${objParamImage}" class="music image p-0 m-0" id="objectId${objId}" draggable="false"
+            style="
+            --music-obj-width:${objParamWidth}px;
+            --music-obj-height:${objParamHeight}px;
+            --music-obj-pos-left:${objParamPosX}px;
+            --music-obj-pos-top:${objParamPosY}px;
+            --music-obj-scale:${objParamScale};
+            --music-obj-rotate:${objParamRotate}deg;
+            --music-obj-opacity:${objParamOpacity};
+            ">
+        `);
+    }
+
+    function objSpectrumAdd(objConfig=[], location='') {
+        // Read Data
+        let objId                   = objConfig.id;
+        let objParams               = objConfig.params;
+
+        // Config
+        let objParamScale            = objParams.scale;
+        let objParamBars             = objParams.bars;
+        let objParamBarsColor        = objParams.barsColor;
+        let objParamBarsRadius       = objParams.barsRadius;
+        let objParamOutlineWidth     = objParams.outlineWidth;
+        let objParamOutlineColor     = objParams.outlineColor;
+        let objParamShadowSpread     = objParams.shadowSpread;
+        let objParamShadowColor      = objParams.shadowColor;
+        let objParamWidth            = objParams.width;
+        let objParamThick            = objParams.thick;
+        let objParamDistance         = objParams.distance;
+        let objParamDistanceDynamic  = objParams.distanceDynamic;
+        let objParamPosX             = objParams.posX;
+        let objParamPosY             = objParams.posY;
+        let objParamRotate           = objParams.rotate;
+        let objParamRepeat           = objParams.repeat;
+        let objParamStrength         = objParams.strength;
+        let objParamSensitivity      = objParams.sensitivity;
+        let objParamOpacity          = objParams.opacity;
+        let objParamOpacityDynamic   = objParams.opacityDynamic;
+
+        // Add base object
+        $(`.main ${location}`).prepend(`
+            <ul id="objectId${objId}" class="music spectrume p-0 m-0" style="
+            --music-obj-pos-left:${objParamPosX}px;
+            --music-obj-pos-top:${objParamPosY}px;
+            --music-obj-scale:${objParamScale};
+            --music-obj-rotate:${objParamRotate}deg;
+            "></ul>
+        `);
+        
+        // Add sub object dalam base
+		for (let i = 0; i < objParamBars; i++) {
+			let iTeethRotate = ( (360)/objParamBars ) * i;
+			$(`.main ${location} #objectId${objId}`).append(`
+                <li style="
+                --music-obj-rotate:${iTeethRotate}deg;
+                --music-obj-height:${objParamThick}px;
+                --music-obj-width:${objParamWidth}px;
+                --music-obj-distance:-${(objParamDistance)}px;
+                --music-obj-color:${objParamBarsColor}; 
+                --music-obj-outline-width:${objParamOutlineWidth}px;
+                --music-obj-outline-color:${objParamOutlineColor};
+                --music-obj-shadow-spread:${objParamShadowSpread}px;
+                --music-obj-shadow-color:${objParamShadowColor};
+                --music-obj-shape-radius:${objParamBarsRadius}rem;
+                "></li>
+            `);
+		}
     }
 </script>
 <script type="text/javascript">
     let canvas; let fft; let audioElement; let mediaSpectrume = 1024;
-    let count_delay = 0; let objectMemory = [];
+    let count_delay = 0;
 
     function setup() {
         // Memulai listener spectrum audio pada base
@@ -472,124 +670,12 @@
         }
 		audioElement = document.getElementById('mediaPlayerAudio');
 
-        // Load Objects
-		initObject();
-    } function touchStarted() {
+        // Load Objects into layout (autoload)
+	    initObject();
+    } 
+
+    function touchStarted() {
         getAudioContext().resume();
-    }
-
-    function mainLayoutSet(objConfig=[]) {
-        // Read Data
-        let objId                   = Math.floor(Math.random() * 1000);
-
-        // Config
-        let objConfScale            = objConfig.scale;
-        let objConfRotate           = objConfig.rotate;
-        let objConfColor            = objConfig.color;
-
-        $(`.main`).css('--main-layout-scale', `${objConfScale}`);
-        $(`.main`).css('--main-layout-rotate', `${objConfRotate}deg`);
-        $(`.main`).css('--main-layout-color', `${objConfColor}`);
-
-        // obj buffer
-        objectMemory[objId] = {id: objId, tipe: 100, config : objConfig};
-
-        console.log(objConfig);
-    }
-
-    function objImageAdd(objConfig=[], location='') {
-        // Read Data
-        let objId                   = Math.floor(Math.random() * 1000);
-
-        // Config
-        let objConfImage            = objConfig.image;
-        let objConfWidth            = objConfig.width + 'px';
-        let objConfHeight           = objConfig.height + 'px';
-        let objConfPosX             = objConfig.posX + 'px';
-        let objConfPosY             = objConfig.posY + 'px';
-        let objConfScale            = objConfig.scale;
-        let objConfScaleDynamic     = objConfig.scaleDynamic;
-        let objConfRotate           = objConfig.rotate + 'deg';
-        let objConfOpacity          = objConfig.opacity;
-
-        // Add base object
-        $(`.main ${location}`).prepend(`
-            <img src="${objConfImage}" class="music image p-0 m-0" id="objectId${objId}" draggable="false"
-            style="
-            --music-obj-width:${objConfWidth};
-            --music-obj-height:${objConfHeight};
-            --music-obj-pos-left:${objConfPosX};
-            --music-obj-pos-top:${objConfPosY};
-            --music-obj-scale:${objConfScale};
-            --music-obj-rotate:${objConfRotate};
-            --music-obj-opacity:${objConfOpacity};
-            ">
-        `);
-
-        // obj buffer
-        objectMemory[objId] = {id: objId, tipe: 2, config : objConfig};
-
-        console.log(objConfig);
-    }
-
-    function objSpectrumAdd(objConfig=[], location='') {
-        // Read Data
-        let objId                   = Math.floor(Math.random() * 1000);
-
-        // Config
-        let objConfScale            = objConfig.scale;
-        let objConfBars             = objConfig.bars;
-        let objConfBarsColor        = objConfig.barsColor;
-        let objConfBarsRadius       = objConfig.barsRadius + 'rem';
-        let objConfOutlineWidth     = objConfig.outlineWidth + 'px';
-        let objConfOutlineColor     = objConfig.outlineColor;
-        let objConfShadowSpread     = objConfig.shadowSpread + 'px';
-        let objConfShadowColor      = objConfig.shadowColor;
-        let objConfWidth            = objConfig.width + 'px';
-        let objConfThick            = objConfig.thick + 'px';
-        let objConfDistance         = objConfig.distance + 'px';
-        let objConfDistanceDynamic  = objConfig.distanceDynamic + 'px';
-        let objConfPosX             = objConfig.posX + 'px';
-        let objConfPosY             = objConfig.posY + 'px';
-        let objConfRotate           = objConfig.rotate + 'deg';
-        let objConfRepeat           = objConfig.repeat;
-        let objConfStrength         = objConfig.strength;
-        let objConfSensitivity      = objConfig.sensitivity;
-        let objConfOpacity          = objConfig.opacity;
-        let objConfOpacityDynamic   = objConfig.opacityDynamic;
-
-        // Add base object
-        $(`.main ${location}`).prepend(`
-            <ul id="objectId${objId}" class="music spectrume p-0 m-0" style="
-            --music-obj-pos-left:${objConfPosX};
-            --music-obj-pos-top:${objConfPosY};
-            --music-obj-scale:${objConfScale};
-            --music-obj-rotate:${objConfRotate};
-            "></ul>
-        `);
-        
-        // Add sub object dalam base
-		for (let i = 0; i < objConfBars; i++) {
-			let iTeethRotate = ( (360)/objConfBars ) * i;
-			$(`.main ${location} #objectId${objId}`).append(`
-                <li style="
-                --music-obj-rotate:${iTeethRotate}deg;
-                --music-obj-height:${objConfThick};
-                --music-obj-width:${objConfWidth};
-                --music-obj-distance:-${(objConfDistance)};
-                --music-obj-color:${objConfBarsColor}; 
-                --music-obj-outline-width:${objConfOutlineWidth};
-                --music-obj-outline-color:${objConfOutlineColor};
-                --music-obj-shadow-spread:${objConfShadowSpread};
-                --music-obj-shadow-color:${objConfShadowColor};
-                --music-obj-shape-radius:${objConfBarsRadius};
-                "></li>
-            `);
-		}
-
-        // obj buffer
-        objectMemory[objId] = {id: objId, tipe: 1, config : objConfig};
-        console.log(objConfig);
     }
 
     function draw() {
@@ -610,93 +696,93 @@
 		let musicProgress = (musicCurrentTime/musicDuration) * 100;
 		$(".music.progress-bar .bar").css('--music-progress', `${musicProgress}%`);
 
-        // Object placement
-		objectMemory.forEach(element => {
-            switch (element.tipe) {
-                case 1:
-                    objSpectrumUpdate(element);
-                    break;
-                case 2:
-                    objImageUpdate(element);
-                    break;
-            }
-        });
-
-        // Fungsi Update Object
-        function objSpectrumUpdate(element) {
-            // Read Data
-            let objId                   = element.id;
-            let objConfig               = element.config;
-            
-            // Config
-            let objConfScale            = objConfig.scale;
-            let objConfBars             = objConfig.bars;
-            let objConfBarsColor        = objConfig.barsColor;
-            let objConfBarsRadius       = objConfig.barsRadius + 'rem';
-            let objConfOutlineWidth     = objConfig.outlineWidth + 'px';
-            let objConfOutlineColor     = objConfig.outlineColor;
-            let objConfShadowSpread     = objConfig.shadowSpread + 'px';
-            let objConfShadowColor      = objConfig.shadowColor;
-            let objConfWidth            = objConfig.width + 'px';
-            let objConfThick            = objConfig.thick + 'px';
-            let objConfDistance         = objConfig.distance + 'px';
-            let objConfDistanceDynamic  = objConfig.distanceDynamic + 'px';
-            let objConfPosX             = objConfig.posX + 'px';
-            let objConfPosY             = objConfig.posY + 'px';
-            let objConfRotate           = objConfig.rotate + 'deg';
-            let objConfRepeat           = objConfig.repeat;
-            let objConfStrength         = objConfig.strength;
-            let objConfSensitivity      = objConfig.sensitivity;
-            let objConfOpacity          = objConfig.opacity;
-            let objConfOpacityDynamic   = objConfig.opacityDynamic;
-        
-            // Draw Spectrume (Flow Data)
-            let spectrumBarBase = spectrum;
-            let spectrumBarRepeatThreshold = Math.round(objConfBars / objConfRepeat); 
-            let spectrumBarBufferActive = 0;
-            for (let i = 0; i < (objConfBars); i++) {  spectrumBarBufferActive ++;
-                if (spectrumBarBufferActive % spectrumBarRepeatThreshold == 0) { 
-                    spectrumBarBufferActive = spectrumBarBufferActive - spectrumBarRepeatThreshold; 
+        // Read object and update into layout
+        for (let key in objectMemory) {
+            if (objectMemory.hasOwnProperty(key)) {
+                let item = objectMemory[key];
+                switch (item.tipe) {
+                    case 100:
+                        mainLayoutUpdate(item);
+                        break;
                 }
-                let spectrumeBarBufferAudio = spectrumBarBase[ (mediaSpectrume / objConfBars) * spectrumBarBufferActive ];
-                let objBufferBarPos = i;
-                
-                let spectrumMultiplier = ( Math.pow(spectrumeBarBufferAudio/255, (1000/objConfSensitivity) )) * (objConfStrength/1000);
-                let spectrumMultiplierMax = ( Math.pow(1, (1000/objConfSensitivity) )) * (objConfStrength/1000);
-
-                let objBufferBarHeight = (spectrumeBarBufferAudio) * spectrumMultiplier;
-                $(`#objectId${objId} li`).eq((objBufferBarPos)).css("--music-obj-active-height",`${objBufferBarHeight}px`);
-
-                let objBufferBarOpacity = (objConfOpacity/1000) + ((spectrumMultiplier / spectrumMultiplierMax) * (objConfOpacityDynamic/1000));
-                $(`#objectId${objId} li`).eq((objBufferBarPos)).css("--music-obj-active-opacity",`${objBufferBarOpacity}`);
-
-                let objBufferBarDistanceDynamic = (parseInt(objConfDistance, 10)/parseInt(objConfDistance, 10)) + ((energyStrength * parseInt(objConfDistanceDynamic, 10)) / parseInt(objConfDistance, 10));
-                $(`#objectId${objId}`).css(`--music-obj-scale`,`${objBufferBarDistanceDynamic}`);
-                
             }
         }
 
-        // Fungsi Update Object
-        function objImageUpdate(element) {
-            // Read Data
-            let objId                   = element.id;
-            let objConfig               = element.config;
+        // // Fungsi Update Object
+        // function objSpectrumUpdate(element) {
+        //     // Read Data
+        //     let objId                   = element.id;
+        //     let objConfig               = element.config;
             
-            // Config
-            let objConfImage            = objConfig.image;
-            let objConfWidth            = objConfig.width + 'px';
-            let objConfHeight           = objConfig.height + 'px';
-            let objConfPosX             = objConfig.posX + 'px';
-            let objConfPosY             = objConfig.posY + 'px';
-            let objConfScale            = objConfig.scale;
-            let objConfScaleDynamic     = objConfig.scaleDynamic;
-            let objConfRotate           = objConfig.rotate + 'deg';
-            let objConfOpacity          = objConfig.opacity;
+        //     // Config
+        //     let objConfScale            = objConfig.scale;
+        //     let objConfBars             = objConfig.bars;
+        //     let objConfBarsColor        = objConfig.barsColor;
+        //     let objConfBarsRadius       = objConfig.barsRadius + 'rem';
+        //     let objConfOutlineWidth     = objConfig.outlineWidth + 'px';
+        //     let objConfOutlineColor     = objConfig.outlineColor;
+        //     let objConfShadowSpread     = objConfig.shadowSpread + 'px';
+        //     let objConfShadowColor      = objConfig.shadowColor;
+        //     let objConfWidth            = objConfig.width + 'px';
+        //     let objConfThick            = objConfig.thick + 'px';
+        //     let objConfDistance         = objConfig.distance + 'px';
+        //     let objConfDistanceDynamic  = objConfig.distanceDynamic + 'px';
+        //     let objConfPosX             = objConfig.posX + 'px';
+        //     let objConfPosY             = objConfig.posY + 'px';
+        //     let objConfRotate           = objConfig.rotate + 'deg';
+        //     let objConfRepeat           = objConfig.repeat;
+        //     let objConfStrength         = objConfig.strength;
+        //     let objConfSensitivity      = objConfig.sensitivity;
+        //     let objConfOpacity          = objConfig.opacity;
+        //     let objConfOpacityDynamic   = objConfig.opacityDynamic;
         
-            // Draw (Flow Data)
-            let objBufferScaleDynamic = (objConfScale/objConfScale) + ((energyStrength * objConfScaleDynamic / objConfScale));
-            $(`#objectId${objId}`).css(`--music-obj-scale`,`${objBufferScaleDynamic}`);
-        }
+        //     // Draw Spectrume (Flow Data)
+        //     let spectrumBarBase = spectrum;
+        //     let spectrumBarRepeatThreshold = Math.round(objConfBars / objConfRepeat); 
+        //     let spectrumBarBufferActive = 0;
+        //     for (let i = 0; i < (objConfBars); i++) {  spectrumBarBufferActive ++;
+        //         if (spectrumBarBufferActive % spectrumBarRepeatThreshold == 0) { 
+        //             spectrumBarBufferActive = spectrumBarBufferActive - spectrumBarRepeatThreshold; 
+        //         }
+        //         let spectrumeBarBufferAudio = spectrumBarBase[ (mediaSpectrume / objConfBars) * spectrumBarBufferActive ];
+        //         let objBufferBarPos = i;
+                
+        //         let spectrumMultiplier = ( Math.pow(spectrumeBarBufferAudio/255, (1000/objConfSensitivity) )) * (objConfStrength/1000);
+        //         let spectrumMultiplierMax = ( Math.pow(1, (1000/objConfSensitivity) )) * (objConfStrength/1000);
+
+        //         let objBufferBarHeight = (spectrumeBarBufferAudio) * spectrumMultiplier;
+        //         $(`#objectId${objId} li`).eq((objBufferBarPos)).css("--music-obj-active-height",`${objBufferBarHeight}px`);
+
+        //         let objBufferBarOpacity = (objConfOpacity/1000) + ((spectrumMultiplier / spectrumMultiplierMax) * (objConfOpacityDynamic/1000));
+        //         $(`#objectId${objId} li`).eq((objBufferBarPos)).css("--music-obj-active-opacity",`${objBufferBarOpacity}`);
+
+        //         let objBufferBarDistanceDynamic = (parseInt(objConfDistance, 10)/parseInt(objConfDistance, 10)) + ((energyStrength * parseInt(objConfDistanceDynamic, 10)) / parseInt(objConfDistance, 10));
+        //         $(`#objectId${objId}`).css(`--music-obj-scale`,`${objBufferBarDistanceDynamic}`);
+                
+        //     }
+        // }
+
+        // // Fungsi Update Object
+        // function objImageUpdate(element) {
+        //     // Read Data
+        //     let objId                   = element.id;
+        //     let objConfig               = element.config;
+            
+        //     // Config
+        //     let objConfImage            = objConfig.image;
+        //     let objConfWidth            = objConfig.width + 'px';
+        //     let objConfHeight           = objConfig.height + 'px';
+        //     let objConfPosX             = objConfig.posX + 'px';
+        //     let objConfPosY             = objConfig.posY + 'px';
+        //     let objConfScale            = objConfig.scale;
+        //     let objConfScaleDynamic     = objConfig.scaleDynamic;
+        //     let objConfRotate           = objConfig.rotate + 'deg';
+        //     let objConfOpacity          = objConfig.opacity;
+        
+        //     // Draw (Flow Data)
+        //     let objBufferScaleDynamic = (objConfScale/objConfScale) + ((energyStrength * objConfScaleDynamic / objConfScale));
+        //     $(`#objectId${objId}`).css(`--music-obj-scale`,`${objBufferScaleDynamic}`);
+        // }
 
         // Debugging
 		if (count_delay > 60){
@@ -710,6 +796,28 @@
 <script>
    
 	$(document).ready(function() {
+
+        // Tombol Aksi Load Object
+        $(document).on("click", ".action-designer-object-reset", function(e) {
+            // Reset ke default
+            objectMemory = JSON.parse(JSON.stringify(objectMemoryDefault));
+
+            // Reload Object
+            initObject();
+        });
+
+        $(document).on("change", ".action-designer-object-config", function(e) {
+            // Read object config 
+            let objId = $(this).attr('designer-object-id');
+            let objParam = $(this).attr('designer-object-param');
+            let objParamValue = $(this).val();
+
+            // Set object config
+            objectMemory[objId]['params'][objParam] = objParamValue;
+            
+            // Reload Object
+            initObject();
+        });
 
         // Tombol Aksi Play/Pause
         $(document).on("click", ".action-mediaplayer", function(e) {
