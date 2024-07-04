@@ -1,0 +1,1164 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="google" content="notranslate" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+	<meta name="title" content="GreenRunchly">
+	<meta name="author" content="GreenRunchly">
+	<link rel="icon" href="assets/characters/greenrunchly/me.png">
+
+	<title>GreenRunchly</title>
+
+	<meta property="og:site_name" content="GreenRunchly">
+    <meta property="og:title" content="GreenRunchly" />
+    <meta property="og:description" content="Rizki's Personal Audio Visualizer Site" />
+    <meta property="og:image" itemprop="image" content="assets/me.png">
+    <meta property="og:type" content="website" />
+
+	<!-- Bootstrap Style -->
+    <link href="assets/css/bootstrap-5.3.2-dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="assets/css/bootstrap-5.3.2-dist/js/bootstrap.bundle.min.js"></script>
+	<link rel="stylesheet" href="assets/css/bootstrap-icons-1.11.3/font/bootstrap-icons.min.css">
+	
+	<!-- JQuery -->
+	<script src="assets/js/jquery-3.5.1.min.js"></script>
+    <script src="assets/js/jquery.countdown.js"></script>
+
+	<!-- DB Framework -->
+	<script src="assets/js/localforage/dist/localforage.js"></script>
+
+	<!-- JSMedia -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jsmediatags/3.9.5/jsmediatags.min.js"></script>
+
+    <!-- P5 -->
+    <script src="assets/js/p5.js"></script>
+    <script src="assets/js/p5.sound.js"></script>   
+</head>
+<style>
+    :root{
+        --bs-border-radius: 1rem;
+
+        --music-theme-color: #a792e1;
+
+        --music-progress:100%;
+        --music-progress-bar-color: #ffffff;
+
+        --music-obj-pos-left: 0px;
+        --music-obj-pos-top: 0px;
+        --music-obj-rotate: 120deg;
+        --music-obj-size: 100px;
+
+        --music-obj-width: 3px;
+        --music-obj-height: 10px;        
+        --music-obj-color: #ffffff8a;
+        --music-obj-outline-color: #ffffff;
+        --music-obj-outline-size: 0px;
+        --music-obj-shadow-size: 50px;
+        --music-obj-shadow-strength: 1;
+    }
+    #defaultCanvas0{
+        display: none;
+    }
+    .custom-range::-webkit-slider-runnable-track{
+        background-color: #ffffff00;
+        width: 100%;
+        border-radius: 7px;
+        border:1px solid var(--music-progress-bar-color);
+		height: 9px;
+    }
+    .custom-range::-webkit-slider-thumb {
+        background: var(--bs-light);
+        width:15px;
+        height: 20px;
+    }
+    .custom-range::-ms-fill-lower {
+      background: #ddd;
+      border-radius: 5px;
+    }
+    .custom-range::-ms-fill-upper {
+      background: #ddd;
+      border-radius: 5px;
+    }
+    ::-webkit-scrollbar {
+        width: 7px;
+    }
+    ::-webkit-scrollbar-track {
+        background-color: #ffffff00;
+        width: 100%;
+        border-radius: 7px;
+        border:1px solid var(--music-progress-bar-color);
+		height: 9px;
+    }
+    ::-webkit-scrollbar-thumb {
+        border-radius: 10px;
+        background-color: var(--bs-light);
+    }
+    .bi{
+        -webkit-text-stroke: 1px;
+    }
+    .bg-blur{
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px); /* For Safari */
+    }
+    html{
+        height: 100vh;
+    }
+	body{
+		margin: 0px;
+		padding: 0px;
+        height: 100vh;
+		background-color: var(--music-theme-color);
+	}
+    .form-label{
+        margin-bottom: 0px;
+    }
+	.main{
+        position: absolute;
+        --main-layout-width: 600px;
+        --main-layout-height: 400px;
+        --main-layout-scale: 1;
+        --main-layout-rotate: 1;
+        --main-layout-color: #ffffff00;
+        --main-layout-outline-color: #ffffff;
+        --main-layout-opacity: 1;
+
+        display: block;
+        min-width: var(--main-layout-width);
+		width: var(--main-layout-width);
+        height: 100%;
+		max-height: var(--main-layout-height);
+        border: 1px solid var(--main-layout-outline-color);
+        background-color: var(--main-layout-color);
+        transform: rotate(var(--main-layout-rotate)) scale(var(--main-layout-scale));
+        opacity: var(--main-layout-opacity);
+	}
+    .main:hover{
+        border: 1px solid #ffffff;
+    }
+
+	.music.progress-bar{
+        display: block;
+        width: 100%;
+        border-radius: 7px;
+        border:1px solid var(--music-progress-bar-color);
+		height: 9px;
+	}
+	.music.progress-bar .bar{
+        display: flex;
+		width: calc(var(--music-progress));
+		min-width: 0px;
+        height: 100%;
+		transition: 1s;
+        background-color: var(--music-progress-bar-color);
+	}
+
+	.music.spectrume{
+        position: relative;
+        --music-obj-rotate: 0deg;
+        --music-obj-scale: 1;
+        --music-obj-pos-left: 0px;
+        --music-obj-pos-top: 0px;
+
+        left: var(--music-obj-pos-left);
+        top: var(--music-obj-pos-top);
+		display: flex;
+		align-items: flex-end;
+		list-style-type: none;
+		margin: 0rem;
+		padding: 0rem;
+        transform: rotate(var(--music-obj-rotate)) scale(var(--music-obj-scale));
+        transform-origin: 0%;
+	}
+	.music.spectrume li{
+        --music-obj-rotate: 0deg;
+        --music-obj-distance: 120px;
+        --music-obj-height: 12px;
+        --music-obj-width: 4px;
+        --music-obj-color: #ffffff; 
+        --music-obj-outline-width: 1px;
+        --music-obj-outline-color: #ffffff;
+        --music-obj-shadow-spread: 0px;
+        --music-obj-shadow-color: #ffffff;
+        --music-obj-opacity: 0; 
+        --music-obj-shape-radius: 1rem;
+
+		position: absolute;
+        padding-bottom: var(--music-obj-height);
+		width: var(--music-obj-width);
+		background-color: var(--music-obj-color);
+        border: var(--music-obj-outline-width) solid var(--music-obj-outline-color);
+        box-shadow: 0 0 var(--music-obj-shadow-spread) var(--music-obj-shadow-color), 0 0 var(--music-obj-shadow-spread) var(--music-obj-shadow-color), 0 0 var(--music-obj-shadow-spread) var(--music-obj-shadow-color);
+        transform: rotate(var(--music-obj-rotate)) translateY(var(--music-obj-distance));
+        transform-origin: 0% 100%;
+        border-radius: var(--music-obj-shape-radius);
+
+        --music-obj-active-height: 0px;
+        --music-obj-active-opacity: 1;
+        opacity: var(--music-obj-active-opacity);
+        padding-top: var(--music-obj-active-height);
+    }
+
+    .music.image{
+        --music-obj-width: 250px;
+        --music-obj-height: 250px;
+        --music-obj-scale: 1;
+        --music-obj-rotate: 0deg;
+        --music-obj-opacity: 1; 
+        --music-obj-pos-left: 0px;
+        --music-obj-pos-top: 0px;
+
+        position: relative;
+        left: var(--music-obj-pos-left);
+        top: var(--music-obj-pos-top);
+        width: calc(var(--music-obj-width));
+        height:var(--music-obj-height);
+        transform: rotate(var(--music-obj-rotate)) scale(var(--music-obj-scale));
+        transform-origin: 50%;
+        opacity: var(--music-obj-opacity);
+    }
+    
+</style>
+<body class="overflow-hidden">
+	<main class="container-fluid"  style="height: 100vh;">
+		<div class="container" style="height: 100dvh; max-height: 100dvh; max-width: 500px;">
+            <div class="row g-2 d-flex flex-column h-100">
+                <div class="col-12">
+                    <div class="container collapse main-panel show">
+                        <div class="row g-2">
+                            <div class="col-12 d-flex">
+                                <!-- Filler saja -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col py-4 d-flex justify-content-center align-items-center z-0">
+                    <div class="main rounded-5" data-bs-toggle="collapse" data-bs-target=".main-panel" role="button" >
+                        
+                    </div>
+                </div>
+                <div class="col-12  z-1">
+                    <div class="collapse main-panel show">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="collapse control-panel design-panel library-panel show">
+                                    <div class="row">
+                                        <div class="col-12 d-flex ">
+                                            <div id="mediaControlPanelPartAction" class="collapse show mx-auto z-3">
+                                                <button class="btn btn-md rounded-5 btn-light me-4 ms-auto" data-bs-toggle="collapse" data-bs-target=".library-panel" role="button">
+                                                    <p class="m-0 text-truncate">
+                                                        <i class="bi bi-music-note-beamed"></i>
+                                                    </p>
+                                                </button>
+                                                <button class="btn btn-lg rounded-5 btn-light action-mediaplayer fs-2" data-bs-toggle="collapse" data-bs-target=".main-panel" role="button">
+                                                    <p class="m-0 text-truncate">
+                                                        <i class="bi bi-play-fill"></i>
+                                                    </p>
+                                                </button>
+                                                <button class="btn btn-md rounded-5 btn-light ms-4 me-auto" data-bs-toggle="collapse" data-bs-target=".design-panel" role="button">
+                                                    <p class="m-0 text-truncate">
+                                                        <i class="bi bi-brush"></i>
+                                                    </p>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 mt-2">
+                                            <div id="mediaControlPanelPartMeta" class="collapse show">
+                                                <audio class="d-none" id="mediaPlayerAudio" controls>
+                                                    <source src="assets/audio/Nightcore - Someone To You .mp3" type="audio/mpeg">
+                                                </audio>
+                                                <a class="btn btn-sm text-white text-center w-100">
+                                                    <p class="m-0 text-truncate fs-6">
+                                                        <span>Ruth - Dendalions [Nightcore]</span>
+                                                    </p>
+                                                </a>
+                                                <div class="music progress-bar rounded-5 my-2">
+                                                    <div class="bar rounded-5"></div>
+                                                </div>
+                                                <a class="btn btn-sm text-white text-center w-100" href="https://greenrunchly.my.id">
+                                                    <p class="m-0 text-truncate">
+                                                        <small>&copy2024 GreenRunchly</small>
+                                                    </p>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="collapse library-panel border border-ligth bg-light bg-opacity-10 bg-blur rounded-4">
+                                    <div class="row px-2 py-3">
+                                        <div class="col-12 text-white">
+                                            <div id="librayControlPanelPartImporter" class="collapse show">
+                                                <div class="container overflow-y-scroll" style="max-height: 200px;">
+                                                    <div class="row g-2">
+                                                        <div class="col-12">
+                                                            <button for="musicDesignImage" class="btn btn-light text-start w-100 rounded-5 px-3">
+                                                                <p class="m-0 text-truncate">
+                                                                    <span class="me-2">1.</span> <span>Ruth - Dendalions [Nightcore]</span>
+                                                                </p>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col py-3">
+                                            <div class="border-bottom w-75 mx-auto"></div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="container pe-3">
+                                                <div class="row g-2">
+                                                    <div class="col-12 col-sm d-flex justify-content-start">
+                                                        <a class="btn btn-light px-3 rounded-5 w-100 text-start">
+                                                            <p class="m-0 text-truncate fw-bold">
+                                                                <i class="bi bi-music-note-beamed me-2"></i> <span>Music Library</span>
+                                                            </p>
+                                                        </a>
+                                                    </div>
+                                                    <div class="col-6 col-sm-auto d-flex justify-content-start">
+                                                        <label for="mediaPlayerAudioImporter" class="btn btn-light px-3 rounded-5 w-100">
+                                                            <p class="m-0 text-truncate">
+                                                                <i class="bi bi-plus"></i> <span>Import</span>
+                                                            </p>
+                                                        </label>
+                                                        <input class="form-control d-none" type="file" id="mediaPlayerAudioImporter" accept="audio/*" webkitdirectory directory multiple />
+                                                    </div>
+                                                    <div class="col-6 col-sm-auto pe-2">
+                                                        <button class="btn btn-light px-3 rounded-5 w-100" data-bs-toggle="collapse" data-bs-target=".library-panel" role="button">
+                                                            <p class="m-0 text-truncate">
+                                                                <i class="bi bi-chevron-left"></i> <span>Back</span>
+                                                            </p>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="collapse design-panel border border-light bg-light bg-opacity-10 bg-blur rounded-4">
+                                    <div class="row px-2 py-3">                                        
+                                        <div class="col-12 text-white">
+                                            <div id="designControlPanelPartLayout" class="collapse show">
+                                                <div class="container overflow-y-scroll" style="max-height: 300px;">
+                                                    <div class="row g-2">
+
+                                                        <div class="col-12">
+                                                            <div class="row g-2">
+                                                                <div class="col col-sm d-flex justify-content-start">
+                                                                    <a class="btn btn-light px-3 rounded-5 w-100 text-start" data-bs-toggle="collapse" data-bs-target=".design-obj-global-layout">
+                                                                        <p class="m-0 text-truncate fw-bold">
+                                                                            <i class="bi bi-box me-2"></i> <span>Layout</span>
+                                                                        </p>
+                                                                    </a>
+                                                                </div>
+                                                                <div class="col-auto col-sm-auto d-flex justify-content-start">
+                                                                    <a class="btn btn-danger px-3 rounded-5 w-100 action-designer-object-reset" designer-object-id="layoutGlobal" role="button">
+                                                                        <p class="m-0 text-truncate">
+                                                                            <i class="bi bi-arrow-clockwise"></i> <span>Reset</span>
+                                                                        </p>
+                                                                    </a>
+                                                                </div>
+                                                                <div class="col-12">
+                                                                    <div class="design-obj-global-layout container collapse border border-light rounded-4">
+                                                                        <div class="row py-2">
+                                                                            <div class="col-12 col-sm-6">
+                                                                                <label for="mainLayoutColor" class="form-label ms-3">Background Color</label>
+                                                                                <input type="color" class="form-control form-control-color btn btn-md btn-light w-100 rounded-5 action-designer-object-config" id="mainLayoutColor" 
+                                                                                designer-object-id="layoutGlobal" designer-object-param="color"
+                                                                                title="Set Background Color">
+                                                                            </div>
+                                                                            <div class="col-12 col-sm-6">
+                                                                                <label for="mainLayoutOutlineColor" class="form-label ms-3">Outline Color</label>
+                                                                                <input type="color" class="form-control form-control-color btn btn-md btn-light w-100 rounded-5 action-designer-object-config" id="mainLayoutOutlineColor" 
+                                                                                designer-object-id="layoutGlobal" designer-object-param="outlineColor"
+                                                                                title="Set Outline Color">
+                                                                            </div>
+                                                                            <div class="col-12 col-sm-6">
+                                                                                <label for="mainLayoutWidth" class="form-label ms-3">Width</label>
+                                                                                <input type="range" class="form-range custom-range action-designer-object-config" id="mainLayoutWidth"
+                                                                                designer-object-id="layoutGlobal" designer-object-param="width"
+                                                                                step="1" min="300" max="1500">
+                                                                            </div>
+                                                                            <div class="col-12 col-sm-6">
+                                                                                <label for="mainLayoutHeight" class="form-label ms-3">Height</label>
+                                                                                <input type="range" class="form-range custom-range action-designer-object-config" id="mainLayoutHeight"
+                                                                                designer-object-id="layoutGlobal" designer-object-param="height"
+                                                                                step="1" min="150" max="1000">
+                                                                            </div>
+                                                                            <div class="col-12 col-sm-6">
+                                                                                <label for="mainLayoutScale" class="form-label ms-3">Scale</label>
+                                                                                <input type="range" class="form-range custom-range action-designer-object-config" id="mainLayoutScale"
+                                                                                designer-object-id="layoutGlobal" designer-object-param="scale"
+                                                                                step="0.1" min="-2" max="2">
+                                                                            </div>
+                                                                            <div class="col-12 col-sm-6">
+                                                                                <label for="mainLayoutScaleDynamic" class="form-label ms-3">Scale Dynamic</label>
+                                                                                <input type="range" class="form-range custom-range action-designer-object-config" id="mainLayoutScaleDynamic"
+                                                                                designer-object-id="layoutGlobal" designer-object-param="scaleDynamic"
+                                                                                step="0.01" min="-1" max="1">
+                                                                            </div>
+                                                                            <div class="col-12 col-sm-6">
+                                                                                <label for="mainLayoutOpacity" class="form-label ms-3">Opacity</label>
+                                                                                <input type="range" class="form-range custom-range action-designer-object-config" id="mainLayoutOpacity"
+                                                                                designer-object-id="layoutGlobal" designer-object-param="opacity"
+                                                                                step="0.1" min="0" max="1">
+                                                                            </div>
+                                                                            <div class="col-12 col-sm-6">
+                                                                                <label for="mainLayoutOpacityDynamic" class="form-label ms-3">Opacity Dynamic</label>
+                                                                                <input type="range" class="form-range custom-range action-designer-object-config" id="mainLayoutOpacityDynamic"
+                                                                                designer-object-id="layoutGlobal" designer-object-param="opacityDynamic"
+                                                                                step="1" min="0" max="2000">
+                                                                            </div>
+                                                                            <div class="col-12 col-sm-6">
+                                                                                <label for="mainLayoutRotation" class="form-label ms-3">Rotation</label>
+                                                                                <input type="range" class="form-range custom-range action-designer-object-config" id="mainLayoutRotation" 
+                                                                                designer-object-id="layoutGlobal" designer-object-param="rotate"
+                                                                                step="15" min="0" max="360">
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            
+                                                        </div>
+                                                        
+                                                        <div class="col-12">
+                                                            <div class="row g-2">
+                                                                <div class="col col-sm d-flex justify-content-start">
+                                                                    <a class="btn btn-light px-3 rounded-5 w-100 text-start" data-bs-toggle="collapse" data-bs-target=".design-obj-image">
+                                                                        <p class="m-0 text-truncate fw-bold">
+                                                                            <i class="bi bi-box me-2"></i> <span>Image</span>
+                                                                        </p>
+                                                                    </a>
+                                                                </div>
+                                                                <div class="col-auto col-sm-auto d-flex justify-content-start">
+                                                                    <a class="btn btn-danger px-3 rounded-5 w-100 action-designer-object-reset" designer-object-id="imageGlobal" role="button">
+                                                                        <p class="m-0 text-truncate">
+                                                                            <i class="bi bi-arrow-clockwise"></i> <span>Reset</span>
+                                                                        </p>
+                                                                    </a>
+                                                                </div>
+                                                                <div class="col-12">
+                                                                    <div class="design-obj-image container collapse border border-light rounded-4">
+                                                                        <div class="row py-2">
+                                                                            <div class="col-12 col-sm-6">
+                                                                                <label for="musicDesignImage" class="form-label ms-3">Character/Image</label>
+                                                                                <label for="musicDesignImage" class="btn btn-light text-center w-100 rounded-5">
+                                                                                    <p class="m-0 text-truncate">
+                                                                                        <i class="bi bi-plus"></i> <span>Select Image</span>
+                                                                                    </p>
+                                                                                </label>
+                                                                                <input class="form-control d-none" type="file" id="musicDesignImage" accept="image/*" />
+                                                                            </div>
+                                                                            <div class="col-12 col-sm-6">
+                                                                                <label for="mainImageRotation" class="form-label ms-3">Rotation</label>
+                                                                                <input type="range" class="form-range custom-range action-designer-object-config" id="mainImageRotation" 
+                                                                                designer-object-id="imageGlobal" designer-object-param="rotate"
+                                                                                step="15" min="0" max="360">
+                                                                            </div>
+                                                                            <div class="col-12 col-sm-6">
+                                                                                <label for="mainImageOpacity" class="form-label ms-3">Opacity</label>
+                                                                                <input type="range" class="form-range custom-range action-designer-object-config" id="mainImageOpacity"
+                                                                                designer-object-id="imageGlobal" designer-object-param="opacity"
+                                                                                step="0.1" min="0" max="1">
+                                                                            </div>
+                                                                            <div class="col-12 col-sm-6">
+                                                                                <label for="mainImageOpacityDynamic" class="form-label ms-3">Opacity Dynamic</label>
+                                                                                <input type="range" class="form-range custom-range action-designer-object-config" id="mainImageOpacityDynamic"
+                                                                                designer-object-id="imageGlobal" designer-object-param="opacityDynamic"
+                                                                                step="0.1" min="0" max="2">
+                                                                            </div>
+                                                                            <div class="col-12 col-sm-6">
+                                                                                <label for="mainImageWidth" class="form-label ms-3">Width</label>
+                                                                                <input type="range" class="form-range custom-range action-designer-object-config" id="mainImageWidth"
+                                                                                designer-object-id="imageGlobal" designer-object-param="width"
+                                                                                step="1" min="-600" max="600">
+                                                                            </div>
+                                                                            <div class="col-12 col-sm-6">
+                                                                                <label for="mainImageHeight" class="form-label ms-3">Height</label>
+                                                                                <input type="range" class="form-range custom-range action-designer-object-config" id="mainImageHeight"
+                                                                                designer-object-id="imageGlobal" designer-object-param="height"
+                                                                                step="1" min="-600" max="600">
+                                                                            </div>
+                                                                            <div class="col-12 col-sm-6">
+                                                                                <label for="mainImagePosX" class="form-label ms-3">Pos X</label>
+                                                                                <input type="range" class="form-range custom-range action-designer-object-config" id="mainImagePosX"
+                                                                                designer-object-id="imageGlobal" designer-object-param="posX"
+                                                                                step="1" min="-600" max="600">
+                                                                            </div>
+                                                                            <div class="col-12 col-sm-6">
+                                                                                <label for="mainImagePosY" class="form-label ms-3">Pos Y</label>
+                                                                                <input type="range" class="form-range custom-range action-designer-object-config" id="mainImagePosY"
+                                                                                designer-object-id="imageGlobal" designer-object-param="posY"
+                                                                                step="1" min="-300" max="300">
+                                                                            </div>
+                                                                            <div class="col-12 col-sm-6">
+                                                                                <label for="mainImageScale" class="form-label ms-3">Scale</label>
+                                                                                <input type="range" class="form-range custom-range action-designer-object-config" id="mainImageScale"
+                                                                                designer-object-id="imageGlobal" designer-object-param="scale"
+                                                                                step="0.1" min="-2" max="2">
+                                                                            </div>
+                                                                            <div class="col-12 col-sm-6">
+                                                                                <label for="mainImageScaleDynamic" class="form-label ms-3">Scale Dynamic</label>
+                                                                                <input type="range" class="form-range custom-range action-designer-object-config" id="mainImageScaleDynamic"
+                                                                                designer-object-id="imageGlobal" designer-object-param="scaleDynamic"
+                                                                                step="0.01" min="-1" max="1">
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-12">
+                                                            <div class="row g-2">
+                                                                <div class="col col-sm d-flex justify-content-start">
+                                                                    <a class="btn btn-light px-3 rounded-5 w-100 text-start" data-bs-toggle="collapse" data-bs-target=".design-obj-spectrum">
+                                                                        <p class="m-0 text-truncate fw-bold">
+                                                                            <i class="bi bi-box me-2"></i> <span>Spectrum</span>
+                                                                        </p>
+                                                                    </a>
+                                                                </div>
+                                                                <div class="col-auto col-sm-auto d-flex justify-content-start">
+                                                                    <a class="btn btn-danger px-3 rounded-5 w-100 action-designer-object-reset" designer-object-id="spectrumGlobal" role="button">
+                                                                        <p class="m-0 text-truncate">
+                                                                            <i class="bi bi-arrow-clockwise"></i> <span>Reset</span>
+                                                                        </p>
+                                                                    </a>
+                                                                </div>
+                                                                <div class="col-12">
+                                                                    <div class="design-obj-spectrum container collapse border border-light rounded-4">
+                                                                        <div class="row py-2">
+                                                                            <div class="col-12 col-sm-6">
+                                                                                <label for="mainSpectrumBarsColor" class="form-label ms-3">Bars Color</label>
+                                                                                <input type="color" class="form-control form-control-color btn btn-md btn-light w-100 rounded-5 action-designer-object-config" id="mainSpectrumBarsColor" 
+                                                                                designer-object-id="spectrumGlobal" designer-object-param="barsColor"
+                                                                                title="Set Spectrum Bars Color">
+                                                                            </div>
+                                                                            <div class="col-12 col-sm-6">
+                                                                                <label for="mainSpectrumBars" class="form-label ms-3">Bars</label>
+                                                                                <input type="range" class="form-range custom-range action-designer-object-config" id="mainSpectrumBars"
+                                                                                designer-object-id="spectrumGlobal" designer-object-param="bars"
+                                                                                step="8" min="8" max="128">
+                                                                            </div>
+                                                                            <div class="col-12 col-sm-6">
+                                                                                <label for="mainSpectrumRepeat" class="form-label ms-3">Bars Repeat</label>
+                                                                                <input type="range" class="form-range custom-range action-designer-object-config" id="mainSpectrumRepeat"
+                                                                                designer-object-id="spectrumGlobal" designer-object-param="repeat"
+                                                                                step="1" min="1" max="8">
+                                                                            </div>  
+                                                                            <div class="col-12 col-sm-6">
+                                                                                <label for="mainSpectrumBarsRadius" class="form-label ms-3">Bars Radius</label>
+                                                                                <input type="range" class="form-range custom-range action-designer-object-config" id="mainSpectrumBarsRadius"
+                                                                                designer-object-id="spectrumGlobal" designer-object-param="barsRadius"
+                                                                                step="0.1" min="0" max="2">
+                                                                            </div>
+                                                                            <div class="col-12 col-sm-6">
+                                                                                <label for="mainSpectrumOutlineColor" class="form-label ms-3">Bars Outline Color</label>
+                                                                                <input type="color" class="form-control form-control-color btn btn-md btn-light w-100 rounded-5 action-designer-object-config" id="mainSpectrumOutlineColor" 
+                                                                                designer-object-id="spectrumGlobal" designer-object-param="outlineColor"
+                                                                                title="Set Spectrum Outline Bars Color">
+                                                                            </div>
+                                                                            <div class="col-12 col-sm-6">
+                                                                                <label for="mainSpectrumOutlineWidth" class="form-label ms-3">Bars Outline Width</label>
+                                                                                <input type="range" class="form-range custom-range action-designer-object-config" id="mainSpectrumOutlineWidth"
+                                                                                designer-object-id="spectrumGlobal" designer-object-param="outlineWidth"
+                                                                                step="1" min="0" max="10">
+                                                                            </div>
+                                                                            <div class="col-12 col-sm-6">
+                                                                                <label for="mainSpectrumStrength" class="form-label ms-3">Strength</label>
+                                                                                <input type="range" class="form-range custom-range action-designer-object-config" id="mainSpectrumStrength"
+                                                                                designer-object-id="spectrumGlobal" designer-object-param="strength"
+                                                                                step="1" min="0" max="1000">
+                                                                            </div>
+                                                                            <div class="col-12 col-sm-6">
+                                                                                <label for="mainSpectrumSensitivity" class="form-label ms-3">Sensitivity</label>
+                                                                                <input type="range" class="form-range custom-range action-designer-object-config" id="mainSpectrumSensitivity"
+                                                                                designer-object-id="spectrumGlobal" designer-object-param="sensitivity"
+                                                                                step="1" min="0" max="1000">
+                                                                            </div>
+                                                                            <div class="col-12 col-sm-6">
+                                                                                <label for="mainSpectrumDistance" class="form-label ms-3">Distance</label>
+                                                                                <input type="range" class="form-range custom-range action-designer-object-config" id="mainSpectrumDistance"
+                                                                                designer-object-id="spectrumGlobal" designer-object-param="distance"
+                                                                                step="1" min="-400" max="400">
+                                                                            </div>
+                                                                            <div class="col-12 col-sm-6">
+                                                                                <label for="mainSpectrumDistanceDynamic" class="form-label ms-3">Distance Dynamic</label>
+                                                                                <input type="range" class="form-range custom-range action-designer-object-config" id="mainSpectrumDistanceDynamic"
+                                                                                designer-object-id="spectrumGlobal" designer-object-param="distanceDynamic"
+                                                                                step="1" min="-100" max="100">
+                                                                            </div>
+                                                                            <div class="col-12 col-sm-6">
+                                                                                <label for="mainSpectrumWidth" class="form-label ms-3">Width</label>
+                                                                                <input type="range" class="form-range custom-range action-designer-object-config" id="mainSpectrumWidth"
+                                                                                designer-object-id="spectrumGlobal" designer-object-param="width"
+                                                                                step="1" min="1" max="100">
+                                                                            </div>
+                                                                            <div class="col-12 col-sm-6">
+                                                                                <label for="mainSpectrumThick" class="form-label ms-3">Thinkess</label>
+                                                                                <input type="range" class="form-range custom-range action-designer-object-config" id="mainSpectrumThick"
+                                                                                designer-object-id="spectrumGlobal" designer-object-param="thick"
+                                                                                step="1" min="1" max="100">
+                                                                            </div>
+                                                                            <div class="col-12 col-sm-6">
+                                                                                <label for="mainSpectrumPosX" class="form-label ms-3">Pos X</label>
+                                                                                <input type="range" class="form-range custom-range action-designer-object-config" id="mainSpectrumPosX"
+                                                                                designer-object-id="spectrumGlobal" designer-object-param="posX"
+                                                                                step="1" min="-600" max="600">
+                                                                            </div>
+                                                                            <div class="col-12 col-sm-6">
+                                                                                <label for="mainSpectrumPosY" class="form-label ms-3">Pos Y</label>
+                                                                                <input type="range" class="form-range custom-range action-designer-object-config" id="mainSpectrumPosY"
+                                                                                designer-object-id="spectrumGlobal" designer-object-param="posY"
+                                                                                step="1" min="-300" max="300">
+                                                                            </div>
+                                                                            <div class="col-12 col-sm-6">
+                                                                                <label for="mainSpectrumScale" class="form-label ms-3">Scale</label>
+                                                                                <input type="range" class="form-range custom-range action-designer-object-config" id="mainSpectrumScale"
+                                                                                designer-object-id="spectrumGlobal" designer-object-param="scale"
+                                                                                step="0.1" min="-2" max="2">
+                                                                            </div>
+                                                                            <div class="col-12 col-sm-6">
+                                                                                <label for="mainSpectrumScaleDynamic" class="form-label ms-3">Scale Dynamic</label>
+                                                                                <input type="range" class="form-range custom-range action-designer-object-config" id="mainSpectrumScaleDynamic"
+                                                                                designer-object-id="spectrumGlobal" designer-object-param="scaleDynamic"
+                                                                                step="0.01" min="-1" max="1">
+                                                                            </div>
+                                                                            <div class="col-12 col-sm-6">
+                                                                                <label for="mainSpectrumOpacity" class="form-label ms-3">Opacity</label>
+                                                                                <input type="range" class="form-range custom-range action-designer-object-config" id="mainSpectrumOpacity"
+                                                                                designer-object-id="spectrumGlobal" designer-object-param="opacity"
+                                                                                step="1" min="0" max="1000">
+                                                                            </div>
+                                                                            <div class="col-12 col-sm-6">
+                                                                                <label for="mainSpectrumOpacity" class="form-label ms-3">Opacity Dynamic</label>
+                                                                                <input type="range" class="form-range custom-range action-designer-object-config" id="mainSpectrumOpacityDynamic"
+                                                                                designer-object-id="spectrumGlobal" designer-object-param="opacityDynamic"
+                                                                                step="1" min="0" max="2000">
+                                                                            </div>
+                                                                            <div class="col-12 col-sm-6">
+                                                                                <label for="mainSpectrumRotation" class="form-label ms-3">Rotation</label>
+                                                                                <input type="range" class="form-range custom-range action-designer-object-config" id="mainSpectrumRotation" 
+                                                                                designer-object-id="spectrumGlobal" designer-object-param="rotate"
+                                                                                step="15" min="0" max="360">
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col py-3">
+                                            <div class="border-bottom w-75 mx-auto"></div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="container pe-3">
+                                                <div class="row g-2">
+                                                    <div class="col-12 col-sm d-flex justify-content-start">
+                                                        <a class="btn btn-light px-3 rounded-5 w-100 text-start">
+                                                            <p class="m-0 text-truncate fw-bold">
+                                                                <i class="bi bi-brush me-2"></i> <span>Visual Designer</span>
+                                                            </p>
+                                                        </a>
+                                                    </div>
+                                                    <div class="col-6 col-sm-auto d-flex justify-content-start">
+                                                        <a class="btn btn-danger px-3 rounded-5 w-100 action-designer-object-reset" role="button">
+                                                            <p class="m-0 text-truncate">
+                                                                <i class="bi bi-arrow-clockwise"></i> <span>Reset</span>
+                                                            </p>
+                                                        </a>
+                                                    </div>
+                                                    <div class="col-6 col-sm-auto pe-2">
+                                                        <button class="btn btn-light px-3 rounded-5 w-100" data-bs-toggle="collapse" data-bs-target=".design-panel" role="button">
+                                                            <p class="m-0 text-truncate">
+                                                                <i class="bi bi-chevron-left"></i> <span>Back</span>
+                                                            </p>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div> 
+                                </div> 
+                            </div>
+                        </div>
+                    </div>
+                </div>     
+            </div>
+        </div>
+	</main>
+</body>
+<script>
+    let objectMemory = {}; 
+    let objectMemoryDefault = {};
+    objectMemory['layoutGlobal'] = { id: 'layoutGlobal', tipe: 100, 
+    params : {
+            width: 600,
+            height: 400,
+            scale: 1,
+            scaleDynamic: 0,
+            rotate: 0,
+            color: '#a792e1',
+            outlineColor: '#ffffff00',
+            opacity: 1,
+            opacityDynamic: 0,
+        }
+    };
+    objectMemory['imageGlobal'] = { id: 'imageGlobal', tipe: 2, 
+    params : {
+            image: 'assets/characters/rivin/Rivin.png',
+            width: 300,
+            height: 300,
+            posX: 150,
+            posY: 50,
+            scale: 1,
+            scaleDynamic: 0.1, 
+            rotate: 0,
+            opacity: 1,
+            opacityDynamic: 0,
+        }
+    };
+
+    objectMemory['spectrumGlobal'] = { 
+        id: 'spectrumGlobal', tipe: 1, 
+        params : {
+            bars: 64, // 0-1024
+            barsColor: '#ffffff',
+            barsRadius: 1, // 0.1-2
+            outlineWidth: 2, // 0-8
+            outlineColor: '#ffffff',
+            shadowSpread: 0, // 0-50
+            shadowColor: '#ffd3ee',
+            repeat: 2, // 0-8
+            width: 7, // 0-100
+            thick: 20, // 0-100
+            posX: 300, // 0-600
+            posY: 200, // 0-400
+            opacity: 200, // 0 - 1000
+            opacityDynamic: 1000, // 0 - 1000
+            scale: 1, // 0.1-1
+            scaleDynamic: 0.1, // 0.1-1
+            rotate: -55, // 0-360
+            distance: -120, // 0-100
+            distanceDynamic: 15, // 0-100
+            strength: 800, // 0-1000
+            sensitivity: 300, // 0-1000
+        }
+    };
+    
+    objectMemoryDefault = JSON.parse(JSON.stringify(objectMemory));
+</script>
+<script>
+    function initObject() {
+        // Clean object from layout
+        $(`.main`).empty();
+
+        // Load object to layout
+        for (let key in objectMemory) {
+            if (objectMemory.hasOwnProperty(key)) {
+                let item = objectMemory[key];
+                switch (item.tipe) {
+                    case 100:
+                        mainLayoutSet(item);
+                        break;
+                    case 2:
+                        objImageAdd(item);
+                        break;
+                    case 1:
+                        objSpectrumAdd(item);
+                        break;
+                }
+            }
+        }
+
+        console.log('Current', objectMemory);
+        console.log('Restore point', objectMemoryDefault);
+    }
+
+    function rebuildObjectConfig(objConfig) {
+        // Read Data
+        let objId                   = objConfig.id;
+        let objParams               = objConfig.params;
+
+        // Set object at designer config on each object 
+        for (let param in objParams) {
+            if (objParams.hasOwnProperty(param)) {
+                let paramValue = objParams[param];
+                $(`.action-designer-object-config[designer-object-id="${objId}"][designer-object-param="${param}"]`).val(paramValue);
+            }
+        }
+    }
+
+    function mainLayoutSet(objConfig=[], location='') {
+        // Read Data
+        let objId                   = objConfig.id;
+        let objParams               = objConfig.params;
+
+        // Set Parameters
+        let objParamWidth           = float(objParams.width);
+        let objParamHeight          = float(objParams.height);
+        let objParamScale           = float(objParams.scale);
+        let objParamScaleDynamic    = float(objParams.scaleDynamic);
+        let objParamRotate          = float(objParams.rotate);
+        let objParamColor           = objParams.color;
+        let objParamOutlineColor    = objParams.outlineColor;
+        let objParamOpacity         = float(objParams.opacity);
+        let objParamOpacityDynamic  = float(objParams.opacityDynamic);
+
+        $(`.main`).attr('id', `objectId${objId}`);
+        $(`body`).css('--music-theme-color', `${objParamColor}`);
+
+        $(`#objectId${objId}`).css('--main-layout-width', `${objParamWidth}px`);
+        $(`#objectId${objId}`).css('--main-layout-height', `${objParamHeight}px`);
+        $(`#objectId${objId}`).css('--main-layout-scale', `${objParamScale}`);
+        $(`#objectId${objId}`).css('--main-layout-rotate', `${objParamRotate}deg`);
+        $(`#objectId${objId}`).css('--main-layout-opacity', `${objParamOpacity}`);
+        $(`#objectId${objId}`).css('--main-layout-outline-color', `${objParamOutlineColor}`);
+        
+		
+        rebuildObjectConfig(objConfig);
+    }
+
+    function mainLayoutUpdate(objConfig=[], objFlow) {
+        // Read Data
+        let objId                   = objConfig.id;
+        let objParams               = objConfig.params;
+        let objFlowEnergy           = objFlow.energy;
+
+        // Set Parameters
+        let objParamWidth           = float(objParams.width);
+        let objParamHeight          = float(objParams.height);
+        let objParamScale           = float(objParams.scale);
+        let objParamScaleDynamic    = float(objParams.scaleDynamic);
+        let objParamRotate          = float(objParams.rotate);
+        let objParamColor           = objParams.color;
+        let objParamOutlineColor    = objParams.outlineColor;
+        let objParamOpacity         = float(objParams.opacity);
+        let objParamOpacityDynamic  = float(objParams.opacityDynamic);
+        
+        // Data Flow
+        let dataScale = objParamScale + (objFlowEnergy * objParamScaleDynamic);
+        $(`#objectId${objId}`).css('--main-layout-scale', `${dataScale}`);
+
+        let dataOpacity = objParamOpacity + (objFlowEnergy * (objParamOpacityDynamic/1000));
+        $(`#objectId${objId}`).css('--main-layout-opacity', `${dataOpacity}`);
+
+        $(`#objectId${objId}`).css('--main-layout-rotate', `${objParamRotate}deg`);
+        $(`#objectId${objId}`).css('--main-layout-outline-color', `${objParamOutlineColor}`);
+
+        $(`body`).css('--music-theme-color', `${objParamColor}`);
+    }
+
+    function objImageAdd(objConfig=[], location='') {
+        // Read Data
+        let objId                   = objConfig.id;
+        let objParams               = objConfig.params;
+
+        // Set Parameters
+        let objParamImage           = objParams.image;
+        let objParamWidth           = float(objParams.width);
+        let objParamHeight          = float(objParams.height);
+        let objParamPosX            = float(objParams.posX);
+        let objParamPosY            = float(objParams.posY);
+        let objParamScale           = float(objParams.scale);
+        let objParamScaleDynamic    = float(objParams.scaleDynamic);
+        let objParamRotate          = float(objParams.rotate);
+        let objParamOpacity         = float(objParams.opacity);
+        let objParamOpacityDynamic  = float(objParams.opacityDynamic);
+
+        // Add base object
+        $(`.main ${location}`).prepend(`
+            <img src="${objParamImage}" class="music image p-0 m-0" id="objectId${objId}" draggable="false"
+            style="
+            --music-obj-width:${objParamWidth}px;
+            --music-obj-height:${objParamHeight}px;
+            --music-obj-pos-left:${objParamPosX}px;
+            --music-obj-pos-top:${objParamPosY}px;
+            --music-obj-scale:${objParamScale};
+            --music-obj-rotate:${objParamRotate}deg;
+            --music-obj-opacity:${objParamOpacity};
+            ">
+        `);
+
+        rebuildObjectConfig(objConfig);
+    }
+
+    function objImageUpdate(objConfig=[], objFlow) {
+        // Read Data
+        let objId                   = objConfig.id;
+        let objParams               = objConfig.params;
+        let objFlowEnergy           = objFlow.energy;
+
+        // Set Parameters
+        let objParamImage           = objParams.image;
+        let objParamWidth           = float(objParams.width);
+        let objParamHeight          = float(objParams.height);
+        let objParamPosX            = float(objParams.posX);
+        let objParamPosY            = float(objParams.posY);
+        let objParamScale           = float(objParams.scale);
+        let objParamScaleDynamic    = float(objParams.scaleDynamic);
+        let objParamRotate          = float(objParams.rotate);
+        let objParamOpacity         = float(objParams.opacity);
+        let objParamOpacityDynamic  = float(objParams.opacityDynamic);
+        
+        // Data Flow
+        let dataScale = objParamScale + (objFlowEnergy * objParamScaleDynamic);
+        $(`#objectId${objId}`).css(`--music-obj-scale`,`${dataScale}`);
+
+        let dataOpacity = objParamOpacity + (objFlowEnergy * (objParamOpacityDynamic/1000));
+        $(`#objectId${objId}`).css(`--music-obj-opacity`,`${dataOpacity}`);
+
+        $(`#objectId${objId}`).css(`--music-obj-width`,`${objParamWidth}px`);
+        $(`#objectId${objId}`).css(`--music-obj-height`,`${objParamHeight}px`);
+        $(`#objectId${objId}`).css(`--music-obj-rotate`,`${objParamRotate}deg`);
+        $(`#objectId${objId}`).css(`--music-obj-pos-left`,`${objParamPosX}px`);
+        $(`#objectId${objId}`).css(`--music-obj-pos-top`,`${objParamPosY}px`);
+    }
+
+    function objSpectrumAdd(objConfig=[], location='') {
+        // Read Data
+        let objId                   = objConfig.id;
+        let objParams               = objConfig.params;
+
+        // Set Parameters
+        let objParamScale           = float(objParams.scale);
+        let objParamScaleDynamic    = float(objParams.scaleDynamic);
+        let objParamBars            = float(objParams.bars);
+        let objParamBarsColor       = objParams.barsColor;
+        let objParamBarsRadius      = float(objParams.barsRadius);
+        let objParamOutlineWidth    = float(objParams.outlineWidth);
+        let objParamOutlineColor    = objParams.outlineColor;
+        let objParamShadowSpread    = float(objParams.shadowSpread);
+        let objParamShadowColor     = objParams.shadowColor;
+        let objParamWidth           = float(objParams.width);
+        let objParamThick           = float(objParams.thick);
+        let objParamDistance        = float(objParams.distance);
+        let objParamDistanceDynamic = float(objParams.distanceDynamic);
+        let objParamPosX            = float(objParams.posX);
+        let objParamPosY            = float(objParams.posY);
+        let objParamRotate          = float(objParams.rotate);
+        let objParamRepeat          = float(objParams.repeat);
+        let objParamStrength        = float(objParams.strength);
+        let objParamSensitivity     = float(objParams.sensitivity);
+        let objParamOpacity         = float(objParams.opacity);
+        let objParamOpacityDynamic  = float(objParams.opacityDynamic);
+
+        // Add base object
+        $(`.main ${location}`).prepend(`
+            <ul id="objectId${objId}" class="music spectrume p-0 m-0" style="
+            --music-obj-pos-left:${objParamPosX}px;
+            --music-obj-pos-top:${objParamPosY}px;
+            --music-obj-scale:${objParamScale};
+            --music-obj-rotate:${objParamRotate}deg;
+            "></ul>
+        `);
+        
+        // Add sub object dalam base
+		for (let i = 0; i < objParamBars; i++) {
+			let iTeethRotate = ( (360)/objParamBars ) * i;
+			$(`.main ${location} #objectId${objId}`).append(`
+                <li style="
+                --music-obj-rotate:${iTeethRotate}deg;
+                --music-obj-height:${objParamThick}px;
+                --music-obj-width:${objParamWidth}px;
+                --music-obj-distance:${(objParamDistance)}px;
+                --music-obj-color:${objParamBarsColor}; 
+                --music-obj-outline-width:${objParamOutlineWidth}px;
+                --music-obj-outline-color:${objParamOutlineColor};
+                --music-obj-shadow-spread:${objParamShadowSpread}px;
+                --music-obj-shadow-color:${objParamShadowColor};
+                --music-obj-shape-radius:${objParamBarsRadius}rem;
+                "></li>
+            `);
+		}
+
+        rebuildObjectConfig(objConfig);
+    }
+
+    function objSpectrumUpdate(objConfig=[], objFlow) {
+        // Read Data
+        let objId                   = objConfig.id;
+        let objParams               = objConfig.params;
+        let objFlowEnergy           = objFlow.energy;
+        let objFlowSpectrum         = objFlow.spectrum;
+
+        // Set Parameters
+        let objParamScale           = float(objParams.scale);
+        let objParamScaleDynamic    = float(objParams.scaleDynamic);
+        let objParamBars            = float(objParams.bars);
+        let objParamBarsColor       = objParams.barsColor;
+        let objParamBarsRadius      = float(objParams.barsRadius);
+        let objParamOutlineWidth    = float(objParams.outlineWidth);
+        let objParamOutlineColor    = objParams.outlineColor;
+        let objParamShadowSpread    = float(objParams.shadowSpread);
+        let objParamShadowColor     = objParams.shadowColor;
+        let objParamWidth           = float(objParams.width);
+        let objParamThick           = float(objParams.thick);
+        let objParamDistance        = float(objParams.distance);
+        let objParamDistanceDynamic = float(objParams.distanceDynamic);
+        let objParamPosX            = float(objParams.posX);
+        let objParamPosY            = float(objParams.posY);
+        let objParamRotate          = float(objParams.rotate);
+        let objParamRepeat          = float(objParams.repeat);
+        let objParamStrength        = float(objParams.strength);
+        let objParamSensitivity     = float(objParams.sensitivity);
+        let objParamOpacity         = float(objParams.opacity);
+        let objParamOpacityDynamic  = float(objParams.opacityDynamic);
+        
+        // Data Flow
+        let dataDistance = objParamDistance + (objFlowEnergy * objParamDistanceDynamic);
+        $(`#objectId${objId} li`).css(`--music-obj-distance`,`${dataDistance}px`);
+
+        let dataScale = objParamScale + (objFlowEnergy * objParamScaleDynamic);
+        $(`#objectId${objId}`).css(`--music-obj-scale`,`${dataScale}`);
+
+        let dataSpectrum = objFlowSpectrum;
+        let dataSpectrumBarRepeatThreshold = Math.round(objParamBars / objParamRepeat); 
+        let dataSpectrumBarBufferActive = 0;
+
+        for (let i = 0; i < (objParamBars); i++) {  dataSpectrumBarBufferActive ++;
+            if (dataSpectrumBarBufferActive % dataSpectrumBarRepeatThreshold == 0) { 
+                dataSpectrumBarBufferActive = dataSpectrumBarBufferActive - dataSpectrumBarRepeatThreshold; 
+            }
+            let dataSpectrumeBarBufferAudio = dataSpectrum[ Math.round(mediaSpectrume / objParamBars) * dataSpectrumBarBufferActive ];
+            let objBufferBarPos = i;
+            
+            let dataSpectrumMultiplier = ( Math.pow(dataSpectrumeBarBufferAudio/255, (1000/objParamSensitivity) )) * (objParamStrength/1000);
+            let dataSpectrumMultiplierMax = ( Math.pow(1, (1000/objParamSensitivity) )) * (objParamStrength/1000);
+
+            let objBufferBarHeight = (dataSpectrumeBarBufferAudio) * dataSpectrumMultiplier;
+            $(`#objectId${objId} li`).eq((objBufferBarPos)).css("--music-obj-active-height",`${objBufferBarHeight}px`);
+
+            let objBufferBarOpacity = (objParamOpacity/1000) + ((dataSpectrumMultiplier / dataSpectrumMultiplierMax) * (objParamOpacityDynamic/1000));
+            $(`#objectId${objId} li`).eq((objBufferBarPos)).css("--music-obj-active-opacity",`${objBufferBarOpacity}`);            
+        }
+    }
+</script>
+<script type="text/javascript">
+    let canvas; let fft; let audioElement; let mediaSpectrume = 1024;
+    let count_delay = 0;
+
+    function setup() {
+        // Memulai listener spectrum audio pada base
+        fft = new p5.FFT(0.78);
+        let context = getAudioContext();
+        for (let elem of selectAll('audio')) {
+            let mediaSource = context.createMediaElementSource(elem.elt);
+            mediaSource.connect(p5.soundOut);
+        }
+		audioElement = document.getElementById('mediaPlayerAudio');
+
+        // Load Objects into layout (autoload)
+	    initObject();
+    } 
+
+    function touchStarted() {
+        getAudioContext().resume();
+    }
+
+    function draw() {
+        // Media Progress Bar
+		let musicCurrentTime = audioElement.currentTime;
+		let musicDuration = audioElement.duration;
+		let musicProgress = (musicCurrentTime/musicDuration) * 100;
+		$(".music.progress-bar .bar").css('--music-progress', `${musicProgress}%`);
+
+        // Spectrum Data
+        let spectrum = fft.analyze();
+        let waveform = fft.waveform();
+
+	    // Spectrume Energy
+		let bassEnergy = fft.getEnergy("bass"); let bass_e = (bassEnergy/512) * 1; 
+		let lowMidEnergy = fft.getEnergy("lowMid"); let gitar_e = (lowMidEnergy/512) * 0.8; 
+		let midEnergy = fft.getEnergy("mid"); let snare_e = (midEnergy/512) * 0.2;
+        let energyCombine = (bass_e + gitar_e + snare_e );
+        let energyStrength = ( Math.pow((energyCombine), 5) * energyCombine ) * 3;
+
+        let flowData = {energy: energyStrength, spectrum: spectrum}
+
+        // Read object and update into layout
+        for (let key in objectMemory) {
+            if (objectMemory.hasOwnProperty(key)) {
+                let item = objectMemory[key];
+                switch (item.tipe) {
+                    case 100:
+                        mainLayoutUpdate(item, flowData);
+                        break;
+                    case 2:
+                        objImageUpdate(item, flowData);
+                        break;
+                    case 1:
+                        objSpectrumUpdate(item, flowData);
+                        break;
+                }
+            }
+        }
+
+        // Debugging
+		if (count_delay > 60){
+			// Do something :v
+			count_delay = 0;
+		}else{
+			count_delay ++;
+		}
+    }
+</script>
+<script>
+   
+	$(document).ready(function() {
+
+        // Tombol Aksi Load Object
+        $(document).on("click", ".action-designer-object-reset", function(e) {
+            let objId = $(this).attr('designer-object-id');
+
+            if (objId){
+                // Reset ke default
+                objectMemory[objId] = JSON.parse(JSON.stringify(objectMemoryDefault[objId]));
+            }else{
+                // Reset ke pabrik
+                objectMemory = JSON.parse(JSON.stringify(objectMemoryDefault));
+            }
+            
+            // Reload Object
+            initObject();
+        });
+
+        $(document).on("change", ".action-designer-object-config", function(e) {
+            // Read object config 
+            let objId = $(this).attr('designer-object-id');
+            let objParam = $(this).attr('designer-object-param');
+            let objParamValue = $(this).val();
+
+            // Set object config
+            objectMemory[objId]['params'][objParam] = objParamValue;
+            
+            // Reload Object
+            initObject();
+        });
+
+        // Tombol Aksi Play/Pause
+        $(document).on("click", ".action-mediaplayer", function(e) {
+            $('#mediaPlayerAudio').prop("paused") ? $("#mediaPlayerAudio")[0].play() : $("#mediaPlayerAudio")[0].pause();
+        });
+
+        // Cek setiap saat untuk perubahaan sesuai kondisi
+        setInterval(() => {
+            // Perubahan tombol action-mediaplayer disebabkan mediaPlayerAudio
+            if ($('#mediaPlayerAudio').prop("paused") == true){
+                $(".action-mediaplayer").html('<i class="bi bi-play-fill"></i>');
+            }else{
+                $(".action-mediaplayer").html('<i class="bi bi-pause-fill"></i>');
+            }
+        }, 1000);
+        
+    });
+    
+</script>
+</html>
