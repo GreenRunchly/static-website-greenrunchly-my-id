@@ -1,0 +1,4 @@
+[ZoneTransfer]
+ZoneId=3
+ReferrerUrl=https://cloudconvert.com/
+HostUrl=https://eu-central.storage.cloudconvert.com/tasks/0d4aaea0-2276-4a91-9c94-8522144fe66e/cupid.mp3?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=cloudconvert-production%2F20240703%2Ffra%2Fs3%2Faws4_request&X-Amz-Date=20240703T113522Z&X-Amz-Expires=86400&X-Amz-Signature=79d6856e78ec77c22964b2cb3228b70307d64183cb576b0d0a1e21f575f6d726&X-Amz-SignedHeaders=host&response-content-disposition=attachment%3B%20filename%3D%22cupid.mp3%22&response-content-type=audio%2Fmpeg&x-id=GetObject
